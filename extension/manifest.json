@@ -1,0 +1,25 @@
+{
+
+  "manifest_version": 2,
+  "name": "Freelinette",
+  "version": "1.0",
+
+  "description": "Testing tool helping PO to record their tests.",
+
+  "icons": {
+    "48": "icons/border-48.png",
+    "96": "icons/border-96.png"
+  },
+
+  "permissions": [
+    "activeTab"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["picker.js"]
+    }
+  ]
+
+}

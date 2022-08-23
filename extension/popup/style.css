@@ -1,0 +1,10 @@
+.highlight{
+    background: rgba(250, 200, 10, 0.5);
+}
+
+button {
+    display: inline-block;
+    width: 50px;
+    height: 30px;
+    margin: 1px;
+}
