@@ -8,3 +8,34 @@ button {
     height: 30px;
     margin: 1px;
 }
+
+.button_slick {
+	color: #FFF;
+	border: 2px solid rgb(216, 2, 134);
+	background-color: #162944;
+	border-radius: 0px;
+	padding: 18px 36px;
+	display: inline-block;
+	font-family: monospace;
+	font-size: 14px;
+	letter-spacing: 1px;
+	box-shadow: inset 0 0 0 0 #D80286;
+	-webkit-transition: ease-out 0.4s;
+	-moz-transition: ease-out 0.4s;
+	transition: ease-out 0.4s;
+  }
+  
+.button_slick:hover {
+		cursor: pointer;
+	  box-shadow: inset 0 100px 0 0 #D80286;
+}
+
+@font-face {
+	font-family: "Spotnik";
+	src: url("../assets/Spotnik.ttf");
+}
+
+.Spotnik{
+	font-family: "Spotnik";
+	font-size: 1m;
+}
