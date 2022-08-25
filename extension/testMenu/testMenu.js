@@ -12,44 +12,20 @@ inject the menu\
 toggle highlight\
 </div>"
 
+let contain = document.createElement('div')
+
+let blurDrop = document.createElement('iframe')
+blurDrop.src = '/home/earnaud/Work/freelinette/extension/testMenu/injectedMenu/injectedMenu.html'
+blurDrop.frameBorder = 0
+blurDrop.style.boxShadow = '0 25px 40px rgba(0, 0, 0, 0.8)'
 
 
-let redMenu = document.createElement('div')
-redMenu.innerHTML = '\
-<link rel="stylesheet" href="/home/earnaud/Work/freelinette/extension/testMenu/testMenu.css"/>\
-<div class="FABMenu">\
-  <input type="checkbox" checked/>\
-  <div class="hamburger">\
-    <div class="dots">\
-      <span class="first"></span>\
-      <span class="second"></span>\
-      <span class="third"></span>\
-    </div>\
-  </div>\
-  <div class="action_items_bar">\
-    <div class="action_items">\
-      <span class="first_item">\
-        <i class="material-icons">\
-        favorite\
-        </i>\
-      </span>\
-      <span class="second_item">\
-        <i class="material-icons">\
-        chat\
-        </i>\
-      </span>\
-      <span class="third_item">\
-        <i class="material-icons">\
-        get_app\
-        </i>\
-      </span>\
-      <span class="fourth_item">\
-        <i class="material-icons">\
-        share\
-        </i>\
-      </span>\
-    </div>\
-  </div>\
-</div>'
+contain.style.zIndex = '420'
+contain.style.position = 'fixed'
+contain.style.top = '200px'
+contain.style.left = '200px'
 
-document.body.append(redMenu)
+
+contain.appendChild(blurDrop)
+
+document.body.append(contain)
