@@ -1,12 +1,13 @@
+
 console.log('testMenu launched')
 
 let contain = document.createElement('div')
 
-let blurDrop = document.createElement('iframe')
-//blurDrop.src = '/home/earnaud/Work/freelinette/extension/testMenu/injectedMenu/injectedMenu.html'
-blurDrop.frameBorder = 0
-blurDrop.style.boxShadow = '0 25px 40px rgba(0, 0, 0, 0.8)'
-blurDrop.id = 'blurDrop'
+let menuIframe = document.createElement('iframe')
+//menuIframe.src = '/home/earnaud/Work/freelinette/extension/testMenu/injectedMenu/injectedMenu.html'
+menuIframe.frameBorder = 0
+menuIframe.style.boxShadow = '0 25px 40px rgba(0, 0, 0, 0.8)'
+menuIframe.id = 'menuIframe'
 
 
 contain.style.zIndex = '420'
@@ -15,55 +16,41 @@ contain.style.top = '40%'
 contain.style.left = '20%'
 contain.id = 'menu_contain'
 
-contain.appendChild(blurDrop)
+contain.appendChild(menuIframe)
 document.body.append(contain)
 
-let lol = document.getElementById('blurDrop').contentDocument.createElement('div')
-document.getElementById('blurDrop').contentDocument.getElementsByTagName('head')[0].appendChild(lol)
+menuIframe.onload = function () {
+	let lol = document.createElement('div')
+	menuIframe.contentDocument.getElementsByTagName('head')[0].appendChild(lol)
+	console.log(lol)
+
+	let head = menuIframe.contentDocument.getElementsByTagName('head')[0]
+	let body = menuIframe.contentDocument.getElementsByTagName('body')[0]
+
+	head.innerHTML = '\
+	<meta charset="utf-8">\
+	<style>\
+	.glass\
+	{\
+		position: absolute;\
+		top: 0;\
+		left: 0;\
+		width: 100%;\
+		height: 100%;\
+		/* box-shadow: 0 25px 40px rgba(0, 0, 0, 0.8); */\
+		background: transparent;\
+		backdrop-filter: blur(10px);\
+		transition: 0.2s;\
+		cursor: move;\
+	}\
+	</style>'
+	body.innerHTML = '\
+	<body>\
+		<div id="glassMenu" class="glass"/>\
+	</body>'
 
 
-//console.log(document.getElementById('blurDrop'))
-//let blur = document.getElementById('blurDrop').contentDocument
-//let mdr = blur.createElement('div')
-//mdr.id = 'glassMenu'
-//let head = blur.getElementsByTagName('head')[0]
-//let body = blur.getElementsByTagName('body')[0]
-
-//head.appendChild(mdr)
-
-
-// blurDrop.contentWindow.document.getElementsByClassName('html').innerHTML = '\
-// <head>\
-//     <meta charset="utf-8">\
-// 	<style>\
-// 	.glass\
-// 	{\
-// 		position: absolute;\
-// 		top: 0;\
-// 		left: 0;\
-// 		width: 100%;\
-// 		height: 100%;\
-// 		/* box-shadow: 0 25px 40px rgba(0, 0, 0, 0.8); */\
-// 		background: transparent;\
-// 		backdrop-filter: blur(10px);\
-// 		transition: 0.2s;\
-// 		cursor: move;\
-// 	}\
-// </style>\
-// </head>\
-// <body>\
-// 	<h1>pouet</h1>\
-// 	<div id="glassMenu" class="glass"/>\
-// </body>'
-
-
-//dragElement(blurDrop);
-
-//document.getElementById('blurDrop').contentWindow.postMessage('testing', '*')
-//var iframe = document.getElementById('blurDrop');
-
-//let contentWindow = iframe.contentWindow //this is better approach
-//console.log(contentWindow.document.body.getElementsByTagName('div'))
+	dragElement(menuIframe);
 
 function dragElement(elmnt) {
 	var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -104,4 +91,6 @@ function dragElement(elmnt) {
 		document.onmouseup = null;
 		document.onmousemove = null;
 	}
+}
+
 }
