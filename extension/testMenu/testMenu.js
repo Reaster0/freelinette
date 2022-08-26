@@ -41,7 +41,6 @@ menuIframe.onload = function () {
 		background: transparent;\
 		backdrop-filter: blur(10px);\
 		transition: 0.2s;\
-		cursor: move;\
 	}\
 	</style>'
 	body.innerHTML = '\
@@ -50,47 +49,40 @@ menuIframe.onload = function () {
 	</body>'
 
 
-	dragElement(menuIframe);
+	dragElement(contain);
+
 
 function dragElement(elmnt) {
-	var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+	var dragValue
 	console.log('drag element')
-	//elmnt.contentWindow.document.getElementById("glassMenu").onmousedown = dragMouseDown
-	//elmnt.onmousedown = dragMouseDown;
+	console.log(elmnt.getElementsByTagName('iframe')[0])
+	let iframe = elmnt.getElementsByTagName('iframe')[0]
+	let menu = iframe.contentDocument.getElementById("glassMenu")
+	console.log('lol')
 
-	function dragMouseDown(e) {
-		console.log('element clicked')
-		e = e || window.event;
-		e.preventDefault();
-		// get the mouse cursor position at startup:
-		pos3 = e.clientX;
-		pos4 = e.clientY;
-		document.onmouseup = closeDragElement;
-		// call a function whenever the cursor moves:
-		document.onmousemove = elementDrag;
-	}
+	menu.addEventListener("mousedown", () => {
+		menu.style.cursor = "move"
+		menu.addEventListener("mousemove", onDrag)
+	})
+	menu.addEventListener("mouseup", () => {
+		menu.style.cursor = ''
+		menu.removeEventListener("mousemove", onDrag)
+	})
 
-	function elementDrag(e) {
-		console.log('element dragged')
-		e = e || window.event;
-		e.preventDefault();
-		// calculate the new cursor position:
-		pos1 = pos3 - e.clientX;
-		pos2 = pos4 - e.clientY;
-		pos3 = e.clientX;
-		pos4 = e.clientY;
-		// set the element's new position:
-		elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-		elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+	function onDrag({movementX, movementY}){
+		let getStyle = window.getComputedStyle(elmnt)
+		let left = parseInt(getStyle.left)
+		let top = parseInt(getStyle.top)
+
+		//console.log(left, top)
+		elmnt.style.left = left + movementX + 'px'
+		elmnt.style.top = top + movementY + 'px'
+		//console.log(elmnt.style.left, elmnt.style.top)
+		console.log(e)
 	}
 
 
-	function closeDragElement() {
-		console.log('mouse out')
-		// stop moving when mouse button is released:
-		document.onmouseup = null;
-		document.onmousemove = null;
-	}
+	
+
 }
-
 }
