@@ -16,18 +16,20 @@
 	"default_popup": "./popup/popup.html"
   },
 
+  "background": {
+	"scripts": ["./background.js"]
+  },
+
   "permissions": [
-    "activeTab"
+    "activeTab",
+	"storage"
   ],
 
   "content_scripts": [
     {
-      "matches": ["*://*.mozilla.org/*"],
+      "matches": ["<all_urls>"],
       "js": [
-        "node_modules/html-element-picker/dist/ElementPicker.js",
-        "picker.js"
       ]
     }
   ]
-
 }
