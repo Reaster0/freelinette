@@ -22,14 +22,17 @@ contain.id = 'menu_contain'
 contain.appendChild(menuIframe)
 document.body.append(contain)
 
-menuIframe.onload = function () {
-	let lol = document.createElement('div')
-	menuIframe.contentDocument.getElementsByTagName('head')[0].appendChild(lol)
-	console.log(lol)
 
+menuIframe.onload = function () {
+	initialiseTestMenu(contain, menuIframe)
+
+}
+
+function initialiseTestMenu(contain, menuIframe)
+{
 	let head = menuIframe.contentDocument.getElementsByTagName('head')[0]
 	let body = menuIframe.contentDocument.getElementsByTagName('body')[0]
-
+	
 	head.innerHTML = '\
 	<meta charset="utf-8">\
 	<style>\
@@ -55,36 +58,34 @@ menuIframe.onload = function () {
 	dragElement(contain);
 
 
-function dragElement(elmnt) {
-	let menuPosBackup = {x: 0, y: 0}
-	let initialMousePos = {x: 0, y: 0}
-	console.log('drag element')
-	let menu = elmnt.getElementsByTagName('iframe')[0].contentDocument.getElementById('glassMenu')
+	function dragElement(elmnt) {
+		let menuPosBackup = {x: 0, y: 0}
+		let initialMousePos = {x: 0, y: 0}
+		let menu = elmnt.getElementsByTagName('iframe')[0].contentDocument.getElementById('glassMenu')
 
-	menu.addEventListener("mousedown", ({pageX, pageY}) => {
-		menu.style.cursor = "move"
-		let style = window.getComputedStyle(elmnt)
-		initialMousePos.x = pageX + parseInt(style.left)
-		initialMousePos.y = pageY + parseInt(style.top)
-		menuPosBackup.x = parseInt(window.getComputedStyle(elmnt).left)
-		menuPosBackup.y = parseInt(window.getComputedStyle(elmnt).top)
-		menu.addEventListener("mousemove", onDrag)
-	})
-	menu.addEventListener("mouseup", () => {
-		menu.style.cursor = ''
-		menu.removeEventListener("mousemove", onDrag)
-	})
-	menu.addEventListener("mouseleave", () => {
-		menu.style.cursor = ''
-		menu.removeEventListener("mousemove", onDrag)
-	})
+		menu.addEventListener("mousedown", ({pageX, pageY}) => {
+			menu.style.cursor = "move"
+			let style = window.getComputedStyle(elmnt)
+			initialMousePos.x = pageX + parseInt(style.left)
+			initialMousePos.y = pageY + parseInt(style.top)
+			menuPosBackup.x = parseInt(window.getComputedStyle(elmnt).left)
+			menuPosBackup.y = parseInt(window.getComputedStyle(elmnt).top)
+			menu.addEventListener("mousemove", onDrag)
+		})
+		menu.addEventListener("mouseup", () => {
+			menu.style.cursor = ''
+			menu.removeEventListener("mousemove", onDrag)
+		})
+		menu.addEventListener("mouseleave", () => {
+			menu.style.cursor = ''
+			menu.removeEventListener("mousemove", onDrag)
+		})
 
-	function onDrag({pageX, pageY, offsetX, offsetY}) {
-		let style = window.getComputedStyle(elmnt)
+		function onDrag({pageX, pageY}) {
+			let style = window.getComputedStyle(elmnt)
 
-		elmnt.style.left = pageX + parseInt(style.left) - initialMousePos.x + menuPosBackup.x + 'px'
-		elmnt.style.top = pageY + parseInt(style.top) - initialMousePos.y + menuPosBackup.y + 'px'
+			elmnt.style.left = pageX + parseInt(style.left) - initialMousePos.x + menuPosBackup.x + 'px'
+			elmnt.style.top = pageY + parseInt(style.top) - initialMousePos.y + menuPosBackup.y + 'px'
+		}
 	}
-
-}
 }
