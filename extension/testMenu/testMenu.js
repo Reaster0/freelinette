@@ -7,6 +7,9 @@ let menuIframe = document.createElement('iframe')
 //menuIframe.src = '/home/earnaud/Work/freelinette/extension/testMenu/injectedMenu/injectedMenu.html'
 menuIframe.frameBorder = 0
 menuIframe.style.boxShadow = '0 25px 40px rgba(0, 0, 0, 0.8)'
+menuIframe.style.borderRadius = '10px'
+menuIframe.style.height = '300px'
+menuIframe.style.width = '200px'
 menuIframe.id = 'menuIframe'
 
 
@@ -53,36 +56,35 @@ menuIframe.onload = function () {
 
 
 function dragElement(elmnt) {
-	var dragValue
+	let menuPosBackup = {x: 0, y: 0}
+	let initialMousePos = {x: 0, y: 0}
 	console.log('drag element')
-	console.log(elmnt.getElementsByTagName('iframe')[0])
-	let iframe = elmnt.getElementsByTagName('iframe')[0]
-	let menu = iframe.contentDocument.getElementById("glassMenu")
-	console.log('lol')
+	let menu = elmnt.getElementsByTagName('iframe')[0].contentDocument.getElementById('glassMenu')
 
-	menu.addEventListener("mousedown", () => {
+	menu.addEventListener("mousedown", ({pageX, pageY}) => {
 		menu.style.cursor = "move"
+		let style = window.getComputedStyle(elmnt)
+		initialMousePos.x = pageX + parseInt(style.left)
+		initialMousePos.y = pageY + parseInt(style.top)
+		menuPosBackup.x = parseInt(window.getComputedStyle(elmnt).left)
+		menuPosBackup.y = parseInt(window.getComputedStyle(elmnt).top)
 		menu.addEventListener("mousemove", onDrag)
 	})
 	menu.addEventListener("mouseup", () => {
 		menu.style.cursor = ''
 		menu.removeEventListener("mousemove", onDrag)
 	})
+	menu.addEventListener("mouseleave", () => {
+		menu.style.cursor = ''
+		menu.removeEventListener("mousemove", onDrag)
+	})
 
-	function onDrag({movementX, movementY}){
-		let getStyle = window.getComputedStyle(elmnt)
-		let left = parseInt(getStyle.left)
-		let top = parseInt(getStyle.top)
+	function onDrag({pageX, pageY, offsetX, offsetY}) {
+		let style = window.getComputedStyle(elmnt)
 
-		//console.log(left, top)
-		elmnt.style.left = left + movementX + 'px'
-		elmnt.style.top = top + movementY + 'px'
-		//console.log(elmnt.style.left, elmnt.style.top)
-		console.log(e)
+		elmnt.style.left = pageX + parseInt(style.left) - initialMousePos.x + menuPosBackup.x + 'px'
+		elmnt.style.top = pageY + parseInt(style.top) - initialMousePos.y + menuPosBackup.y + 'px'
 	}
-
-
-	
 
 }
 }
