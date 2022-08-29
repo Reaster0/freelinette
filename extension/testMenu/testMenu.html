@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+	<link rel="stylesheet" href="testMenu.css"/>
+</head>
+
+<body>
+		<div id="glassMenu" class="glass">
+			<div class="menuBackground">
+				<div class="listTests">
+					<form id="newTestInput" class="newTestInput">
+						<input id="testInput" type="text" class="text" placeholder="New Test+"/>
+					</form>
+						<div class="test">
+						<input class="text" value="a special test"/>
+						<button class="buttonDelete">Delete</button>
+					</div>
+				</div>
+			</div>
+		</div>	
+</body>
+
+<script>
+	const form = document.getElementById('newTestInput')
+	const inputForm = document.getElementById('testInput')
+
+	form.onsubmit = function(e) {
+		e.preventDefault();
+		const newTest = document.createElement('div');
+		newTest.className = 'test';
+		newTest.innerHTML = '<input class="text" value="' + inputForm.value + '"/>' + '<button class="buttonDelete">Delete</button>';
+		document.getElementsByClassName('listTests')[0].appendChild(newTest);
+		form.value = '';
+	}
+</script>
+
+</html>

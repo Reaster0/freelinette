@@ -8,8 +8,8 @@ let menuIframe = document.createElement('iframe')
 menuIframe.frameBorder = 0
 menuIframe.style.boxShadow = '0 25px 40px rgba(0, 0, 0, 0.8)'
 menuIframe.style.borderRadius = '10px'
-menuIframe.style.height = '300px'
-menuIframe.style.width = '200px'
+menuIframe.style.height = '600px'
+menuIframe.style.width = '400px'
 menuIframe.id = 'menuIframe'
 
 
@@ -35,6 +35,7 @@ function initialiseTestMenu(contain, menuIframe)
 	
 	head.innerHTML = '\
 	<meta charset="utf-8">\
+	<link rel="stylesheet" href="/home/earnaud/Work/freelinette/extension/testMenu/testMenu.css"\
 	<style>\
 	.glass\
 	{\
@@ -51,7 +52,19 @@ function initialiseTestMenu(contain, menuIframe)
 	</style>'
 	body.innerHTML = '\
 	<body>\
-		<div id="glassMenu" class="glass"/>\
+		<div id="glassMenu" class="glass">\
+			<div class="menuBackground">\
+				<div class="listTests">\
+					<form id="newTestInput" class="newTestInput">\
+						<input id="testInput" type="text" class="text" placeholder="New Test+"/>\
+					</form>\
+						<div class="test">\
+						<input class="text" value="a special test"/>\
+						<button class="buttonDelete">Delete</button>\
+					</div>\
+				</div>\
+			</div>\
+		</div>\
 	</body>'
 
 
