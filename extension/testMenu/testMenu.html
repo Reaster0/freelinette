@@ -11,12 +11,12 @@
 		<div class="menuBackground">
 			<div class="listTests">
 				<div id="newTestInput" class="newTestInput">
-					<div class="dropDown" data-dropdown>
-						<button class="btnActionFull" data-dropdown-button>Action</button>
+					<div id="data-dropdown" class="dropDown">
+						<button id="data-dropdown-button" class="btnActionFull">Action</button>
 						<div class="dropDownMenu">
 							<button id="btnActionClick" class="btnActionEmptyAlt">Click</butt>
 							<button id="btnActionFill" class="btnActionEmptyAlt">Fill</butt>
-							<button id="btnActionObserve" class="btnActionEmptyAlt">Observe</button>
+							<button id="btnActionObserve" class="btnActionEmptyAlt">Look</button>
 						</div>
 					</div>
 					<button class="btnActionEmpty">Element</button>
@@ -29,41 +29,76 @@
 </body>
 
 <script>
-	let testInput = {}
+	let _testInput = {
+		"action": null,
+		"element": null,
+		"params": {}
+	}
+
+	let _testsQueue = []
+
+	let testInput = new Proxy(_testInput, {
+		set: function (target, key, value) {
+			console.log("has changed")
+			if (key === "action"){
+				if (value === null)
+					document.getElementById("data-dropdown-button").innerHTML = "Action"
+				else
+					document.getElementById("data-dropdown-button").innerHTML = value
+			}
+			target[key] = value
+		}
+	})
+
+	let testsQueue = new Proxy(_testsQueue, {
+		set: function (target, key, value) {
+			if (key == "length")
+				return true
+			console.log("testqueue has changed", key, value)
+			target.push(value)
+			return true
+		}
+	})
 
 	drawerSystemInit()
 	inputingForm()
 	testConfigInput()
 
-
+	
 
 	function testConfigInput() {
 		document.getElementById("btnConfirmTest").addEventListener("click", (e) => {
-			console.log(testInput)
+			console.log(_testInput)
+			testsQueue.push(structuredClone(_testInput))
+			testInput.action = null
+			testInput.element = null
+			testInput.params = {}
+			console.log(_testsQueue)
 		})
 		document.getElementById("btnActionClick").addEventListener("click", (e) => {
-			testInput.action = "click"
+			testInput.action = "Click"
 		})
 		document.getElementById("btnActionFill").addEventListener("click", (e) => {
-			testInput.action = "fill"
+			testInput.action = "Fill"
 		})
 		document.getElementById("btnActionObserve").addEventListener("click", (e) => {
-			testInput.action = "observe"
+			testInput.action = "Look"
 		})
 	}
 
 	function drawerSystemInit() {
 		document.addEventListener('click', e => {
-			const isDropdownButton = e.target.matches('[data-dropdown-button')
-			if (!isDropdownButton && e.target.closest("[data-dropdown]") != null) return 
+			const isDropdownButton = e.target.matches('#data-dropdown-button')
+			if (!isDropdownButton && e.target.closest("#data-dropdown") != null && !e.target.matches("button"))
+				return
 			
 			let currentDropdown
 			if (isDropdownButton) {
-				currentDropdown = e.target.closest('[data-dropdown]')
+				currentDropdown = e.target.closest('#data-dropdown')
 				currentDropdown.classList.toggle('active')
 			}
 			
-			document.querySelectorAll("[data-dropdown].active").forEach(dropdown => {
+			document.querySelectorAll("#data-dropdown.active").forEach(dropdown => {
 				if (dropdown !== currentDropdown)
 				dropdown.classList.remove('active')
 			})

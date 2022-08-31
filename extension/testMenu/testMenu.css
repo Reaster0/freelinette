@@ -65,6 +65,7 @@ section h2
 	margin: 0.5rem;
 	min-height: 92%;
 	justify-content: center;
+	gap: 10px
 }
 
 .newTest {
@@ -88,7 +89,7 @@ input, button {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
-	gap: 3px;
+	/* gap: 3px; */
 }
 
 .test {
@@ -127,6 +128,7 @@ input, button {
 	justify-content: space-between;
 	width: 100%;
 	height: 100%;
+	gap: 10px
 }
 
 .btnActionFull {
@@ -135,7 +137,8 @@ input, button {
 	color: #fff;
 	font-weight: bold;
 	background-color: var(--blue-yonder);
-	font-size: 1.5rem;
+	font-size: 120%;
+	/* font-size: 1.5rem; */
 	background-color: var(--crimson);
 	border-radius: 15px;
 	padding: 0.5rem;
@@ -148,7 +151,8 @@ input, button {
 	color: var(--light);
 	border-radius: 15px;
 	padding: 0.5rem;
-	font-size: 1.5rem;
+	font-size: 120%;
+	/* font-size: 1.5rem; */
 	border: 5px solid var(--blue-yonder);
 }
 
@@ -161,7 +165,8 @@ input, button {
 	var(--light);
 	border-radius: 15px;
 	padding: 0.5rem;
-	font-size: 1.5rem;
+	font-size: 120%;
+	/* font-size: 1.5rem; */
 	border: 5px solid var(--light);	
 }
 
@@ -171,7 +176,8 @@ input, button {
 	color: var(--light);
 	border-radius: 15px;
 	padding: 0.5rem;
-	font-size: 1.5rem;
+	font-size: 120%;
+	/* font-size: 1.5rem; */
 	border: 5px solid var(--light);
 }
 

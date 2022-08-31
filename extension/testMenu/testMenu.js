@@ -35,7 +35,7 @@ function initialiseTestMenu(contain, menuIframe)
 	
 	head.innerHTML = '\
 	<meta charset="utf-8">\
-	<link rel="stylesheet" href="/home/earnaud/Work/freelinette/extension/testMenu/testMenu.css"\
+	<link rel="stylesheet" href="./extension/testMenu/testMenu.css"\
 	<style>\
 	</style>'
 	body.innerHTML = '\
