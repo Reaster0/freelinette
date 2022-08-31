@@ -8,12 +8,12 @@ let menuIframe = document.createElement('iframe')
 menuIframe.frameBorder = 0
 menuIframe.style.boxShadow = '0 25px 40px rgba(0, 0, 0, 0.8)'
 menuIframe.style.borderRadius = '10px'
-menuIframe.style.height = '300px'
-menuIframe.style.width = '200px'
+menuIframe.style.height = '600px'
+menuIframe.style.width = '400px'
 menuIframe.id = 'menuIframe'
 
 
-contain.style.zIndex = '420'
+contain.style.zIndex = '4200000'
 contain.style.position = 'absolute'
 contain.style.top = '40%'
 contain.style.left = '20%'
@@ -35,27 +35,105 @@ function initialiseTestMenu(contain, menuIframe)
 	
 	head.innerHTML = '\
 	<meta charset="utf-8">\
+	<link rel="stylesheet" href="./extension/testMenu/testMenu.css"\
 	<style>\
-	.glass\
-	{\
-		position: absolute;\
-		top: 0;\
-		left: 0;\
-		width: 100%;\
-		height: 100%;\
-		/* box-shadow: 0 25px 40px rgba(0, 0, 0, 0.8); */\
-		background: transparent;\
-		backdrop-filter: blur(10px);\
-		transition: 0.2s;\
-	}\
 	</style>'
 	body.innerHTML = '\
 	<body>\
-		<div id="glassMenu" class="glass"/>\
+		<div id="glassMenu" class="glass">\
+			<div class="menuBackground">\
+				<div class="listTests">\
+					<div id="newTestInput" class="newTestInput">\
+						<div class="dropDown" data-dropdown>\
+							<button class="btnActionFull" data-dropdown-button>Action</button>\
+							<div class="dropDownMenu">\
+								<button id="btnActionClick" class="btnActionEmptyAlt">Click</butt>\
+								<button id="btnActionFill" class="btnActionEmptyAlt">Fill</butt>\
+								<button id="btnActionObserve" class="btnActionEmptyAlt">Observe</button>\
+							</div>\
+						</div>\
+						<button class="btnActionEmpty">Element</button>\
+						<button class="btnActionEmptyAlt">Params</button>\
+					</div>\
+					<button id="btnConfirmTest" class="btnActionFullAlt">Confirm</button>\
+				</div>\
+			</div>\
+		</div>\
 	</body>'
 
 
 	dragElement(contain);
+	innerPageScript(menuIframe.contentDocument)
+
+
+	function innerPageScript(document){
+		let testInput = {}
+
+		drawerSystemInit()
+		inputingForm()
+		testConfigInput()
+	
+	
+	
+		function testConfigInput() {
+			document.getElementById("btnConfirmTest").addEventListener("click", (e) => {
+				console.log(testInput)
+			})
+			document.getElementById("btnActionClick").addEventListener("click", (e) => {
+				testInput.action = "click"
+			})
+			document.getElementById("btnActionFill").addEventListener("click", (e) => {
+				testInput.action = "fill"
+			})
+			document.getElementById("btnActionObserve").addEventListener("click", (e) => {
+				testInput.action = "observe"
+			})
+		}
+	
+		function drawerSystemInit() {
+			document.addEventListener('click', e => {
+				const isDropdownButton = e.target.matches('[data-dropdown-button')
+				if (!isDropdownButton && e.target.closest("[data-dropdown]") != null) return 
+				
+				let currentDropdown
+				if (isDropdownButton) {
+					currentDropdown = e.target.closest('[data-dropdown]')
+					currentDropdown.classList.toggle('active')
+				}
+				
+				document.querySelectorAll("[data-dropdown].active").forEach(dropdown => {
+					if (dropdown !== currentDropdown)
+					dropdown.classList.remove('active')
+				})
+			})
+		}
+	
+		function inputingForm() {
+			const inputForm = document.getElementById('testInput')
+			document.getElementById('newTestInput').onsubmit = function(e) {
+				e.preventDefault();
+				const newTest = document.createElement('div');
+				newTest.className = 'test';
+	
+				const infoTest = document.createElement('input');
+				infoTest.className = 'text';
+				infoTest.value = inputForm.value
+	
+				const deleteBtn = document.createElement('button');
+				deleteBtn.className = 'buttonDelete';
+				deleteBtn.innerHTML = 'Delete';
+				deleteBtn.addEventListener('click', function(e) {
+					console.log('deleteBtn clicked');
+					document.getElementsByClassName('listTests')[0].removeChild(newTest)
+				})
+	
+				document.getElementsByClassName('listTests')[0].appendChild(newTest);
+				newTest.appendChild(infoTest)
+				newTest.appendChild(deleteBtn)
+				inputForm.value = ''
+			}
+		}
+	}
 
 
 	function dragElement(elmnt) {

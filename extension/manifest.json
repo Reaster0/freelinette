@@ -7,12 +7,12 @@
   "description": "Testing tool helping PO to record their tests.",
 
   "icons": {
-    "48": "icons/border-48.png",
-    "96": "icons/border-96.png"
+    "48": "icons/bracket.png",
+    "96": "icons/bracket.png"
   },
 
   "browser_action": {
-	"default_icon": "icons/border-48.png",
+	"default_icon": "icons/bracket.png",
 	"default_popup": "./popup/popup.html"
   },
 
