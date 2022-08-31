@@ -11,50 +11,89 @@
 		<div class="menuBackground">
 			<div class="listTests">
 				<div id="newTestInput" class="newTestInput">
-					<button class="btnActionFull">Action</button>
+					<div class="dropDown" data-dropdown>
+						<button class="btnActionFull" data-dropdown-button>Action</button>
+						<div class="dropDownMenu">
+							<button id="btnActionClick" class="btnActionEmptyAlt">Click</butt>
+							<button id="btnActionFill" class="btnActionEmptyAlt">Fill</butt>
+							<button id="btnActionObserve" class="btnActionEmptyAlt">Observe</button>
+						</div>
+					</div>
 					<button class="btnActionEmpty">Element</button>
 					<button class="btnActionEmptyAlt">Params</button>
-					<!-- <input id="testInput" type="text" class="text" placeholder="New Test+"/> -->
 				</div>
-				<button class="btnActionFullAlt">Confirm</button>
-				<!-- <div class="test">
-					<input class="text" value="a special test"/>
-					<button class="buttonDelete">Delete</button>
-				</div> -->
+				<button id="btnConfirmTest" class="btnActionFullAlt">Confirm</button>
 			</div>
 		</div>
 	</div>	
 </body>
 
 <script>
-	const form = document.getElementById('newTestInput')
-	const inputForm = document.getElementById('testInput')
+	let testInput = {}
 
-	document.getElementsByClassName('btnActionFull')[0].addEventListener('click', () => {
-		console.log('clicked')
-	})
+	drawerSystemInit()
+	inputingForm()
+	testConfigInput()
 
-	form.onsubmit = function(e) {
-		e.preventDefault();
-		const newTest = document.createElement('div');
-		newTest.className = 'test';
 
-		const infoTest = document.createElement('input');
-		infoTest.className = 'text';
-		infoTest.value = inputForm.value
 
-		const deleteBtn = document.createElement('button');
-		deleteBtn.className = 'buttonDelete';
-		deleteBtn.innerHTML = 'Delete';
-		deleteBtn.addEventListener('click', function(e) {
-			console.log('deleteBtn clicked');
-			document.getElementsByClassName('listTests')[0].removeChild(newTest)
+	function testConfigInput() {
+		document.getElementById("btnConfirmTest").addEventListener("click", (e) => {
+			console.log(testInput)
 		})
+		document.getElementById("btnActionClick").addEventListener("click", (e) => {
+			testInput.action = "click"
+		})
+		document.getElementById("btnActionFill").addEventListener("click", (e) => {
+			testInput.action = "fill"
+		})
+		document.getElementById("btnActionObserve").addEventListener("click", (e) => {
+			testInput.action = "observe"
+		})
+	}
 
-		document.getElementsByClassName('listTests')[0].appendChild(newTest);
-		newTest.appendChild(infoTest)
-		newTest.appendChild(deleteBtn)
-		inputForm.value = ''
+	function drawerSystemInit() {
+		document.addEventListener('click', e => {
+			const isDropdownButton = e.target.matches('[data-dropdown-button')
+			if (!isDropdownButton && e.target.closest("[data-dropdown]") != null) return 
+			
+			let currentDropdown
+			if (isDropdownButton) {
+				currentDropdown = e.target.closest('[data-dropdown]')
+				currentDropdown.classList.toggle('active')
+			}
+			
+			document.querySelectorAll("[data-dropdown].active").forEach(dropdown => {
+				if (dropdown !== currentDropdown)
+				dropdown.classList.remove('active')
+			})
+		})
+	}
+
+	function inputingForm() {
+		const inputForm = document.getElementById('testInput')
+		document.getElementById('newTestInput').onsubmit = function(e) {
+			e.preventDefault();
+			const newTest = document.createElement('div');
+			newTest.className = 'test';
+
+			const infoTest = document.createElement('input');
+			infoTest.className = 'text';
+			infoTest.value = inputForm.value
+
+			const deleteBtn = document.createElement('button');
+			deleteBtn.className = 'buttonDelete';
+			deleteBtn.innerHTML = 'Delete';
+			deleteBtn.addEventListener('click', function(e) {
+				console.log('deleteBtn clicked');
+				document.getElementsByClassName('listTests')[0].removeChild(newTest)
+			})
+
+			document.getElementsByClassName('listTests')[0].appendChild(newTest);
+			newTest.appendChild(infoTest)
+			newTest.appendChild(deleteBtn)
+			inputForm.value = ''
+		}
 	}
 </script>
 

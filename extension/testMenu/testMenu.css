@@ -88,6 +88,7 @@ input, button {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
+	gap: 3px;
 }
 
 .test {
@@ -119,10 +120,6 @@ input, button {
 	transition: 0.4s;
 }
 
-.buttonDelete:hover {
-	opacity: 0.6;
-}
-
 
 .listTests {
 	display: flex;
@@ -132,12 +129,6 @@ input, button {
 	height: 100%;
 }
 
-/* .textOne {
-	font-size: 2.5rem;
-	font-weight: bold;
-	color: var(--grey);
-} */
-
 .btnActionFull {
 	cursor: pointer;
 	font-family: Roboto;
@@ -145,10 +136,10 @@ input, button {
 	font-weight: bold;
 	background-color: var(--blue-yonder);
 	font-size: 1.5rem;
-	background-color: #D72638;
+	background-color: var(--crimson);
 	border-radius: 15px;
 	padding: 0.5rem;
-	border: 5px solid #D72638;
+	border: 5px solid var(--crimson);
 }
 
 .btnActionEmpty {
@@ -185,6 +176,34 @@ input, button {
 }
 
 
-.btnActionFull:hover, .btnActionEmpty:hover, .btnActionEmptyAlt:hover, .btnActionFullAlt:hover {
+.buttonDelete:hover, .btnActionFull:hover, .btnActionEmpty:hover, .btnActionEmptyAlt:hover, .btnActionFullAlt:hover {
 	opacity: 0.6;
+}
+
+.dropDown {
+	position: relative;
+}
+
+.dropDownMenu {
+	position: absolute;
+	left: 0;
+	top: calc(100% + .25rem);
+	background-color: var(--darker);
+	padding: 0.75rem;
+	border-radius: 0.25rem;
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.8);
+	opacity: 0;
+	transform: translateY(-10px);
+	pointer-events: none;
+	transition: opacity 150ms ease-in-out, transform 150ms ease-in-out;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+.dropDown.active > .dropDownMenu {
+	opacity: 1;
+	pointer-events: auto;
+	transform: translateY(0);
 }
