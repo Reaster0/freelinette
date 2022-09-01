@@ -12,7 +12,7 @@
 			<div id="testInterface">
 				<div id="newTestInput" class="newTestInput">
 					<div id="data-dropdown" class="dropDown">
-						<button id="data-dropdown-button" class="btnActionFull">Action</button>
+						<button id="action-dropdown-button" class="btnActionFull">Action</button>
 						<div class="dropDownMenu">
 							<button id="btnActionClick" class="btnActionEmptyAlt">Click</butt>
 							<button id="btnActionFill" class="btnActionEmptyAlt">Fill</butt>
@@ -20,7 +20,7 @@
 						</div>
 					</div>
 					<button class="btnActionEmpty">Element</button>
-					<button id="data-dropdown-button" class="btnActionEmptyAlt">Params</button>
+					<button class="btnActionEmptyAlt">Params</button>
 				</div>
 				<button id="btnConfirmTest" class="btnActionFullAlt">+</button>
 				<div id="testList"></div>
@@ -46,16 +46,16 @@
 			console.log("has changed")
 			if (key === "action"){
 				if (value === null)
-					document.getElementById("data-dropdown-button").innerHTML = "Action"
+					document.getElementById("action-dropdown-button").innerHTML = "Action"
 				else
-					document.getElementById("data-dropdown-button").innerHTML = value
-			}
-			if (key === "params") {
-				if (value.name === null)
-					document.getElementById("data-dropdown-button").innerHTML = "Params"
-				else
-					document.getElementById("data-dropdown-button").innerHTML = value.name
-			}
+					document.getElementById("action-dropdown-button").innerHTML = value
+				}
+			// if (key === "params") {
+			// 	if (value.name === null)
+			// 		document.getElementById("data-dropdown-button").innerHTML = "Params"
+			// 	else
+			// 		document.getElementById("data-dropdown-button").innerHTML = value.name
+			// }
 			target[key] = value
 		}
 	})
@@ -129,7 +129,7 @@
 	//initialize the animation of the drawer with id #data-dropdown
 	function drawerSystemInit() {
 		document.addEventListener('click', e => {
-			const isDropdownButton = e.target.matches('#data-dropdown-button')
+			const isDropdownButton = e.target.matches('#action-dropdown-button')
 			if (!isDropdownButton && e.target.closest("#data-dropdown") != null && !e.target.matches("button"))
 				return
 			
