@@ -42,20 +42,21 @@ function initialiseTestMenu(contain, menuIframe)
 	<body>\
 		<div id="glassMenu" class="glass">\
 			<div class="menuBackground">\
-				<div class="listTests">\
+				<div id="testInterface">\
 					<div id="newTestInput" class="newTestInput">\
-						<div class="dropDown" data-dropdown>\
-							<button class="btnActionFull" data-dropdown-button>Action</button>\
+						<div id="data-dropdown" class="dropDown">\
+							<button id="data-dropdown-button" class="btnActionFull">Action</button>\
 							<div class="dropDownMenu">\
 								<button id="btnActionClick" class="btnActionEmptyAlt">Click</butt>\
 								<button id="btnActionFill" class="btnActionEmptyAlt">Fill</butt>\
-								<button id="btnActionObserve" class="btnActionEmptyAlt">Observe</button>\
+								<button id="btnActionObserve" class="btnActionEmptyAlt">Look</button>\
 							</div>\
 						</div>\
 						<button class="btnActionEmpty">Element</button>\
 						<button class="btnActionEmptyAlt">Params</button>\
 					</div>\
-					<button id="btnConfirmTest" class="btnActionFullAlt">Confirm</button>\
+					<button id="btnConfirmTest" class="btnActionFullAlt">+</button>\
+					<div id="testList"></div>\
 				</div>\
 			</div>\
 		</div>\
@@ -67,71 +68,114 @@ function initialiseTestMenu(contain, menuIframe)
 
 
 	function innerPageScript(document){
-		let testInput = {}
-
+		let _testInput = {
+			"action": null,
+			"element": null,
+			"params": {}
+		}
+	
+		let _testsQueue = []
+	
+		//menu to create tests
+		let testInput = new Proxy(_testInput, {
+			set: function (target, key, value) {
+				console.log("has changed")
+				if (key === "action"){
+					if (value === null)
+						document.getElementById("data-dropdown-button").innerHTML = "Action"
+					else
+						document.getElementById("data-dropdown-button").innerHTML = value
+				}
+				target[key] = value
+			}
+		})
+	
+		//queue of registered tests
+		let testsQueue = new Proxy(_testsQueue, {
+			set: function (target, key, value) {
+				if (key == "length")
+					return true
+				console.log("testqueue has changed", key, value)
+				target.push(value)
+				const testList = document.getElementById("testList")
+				newTestAppend(testList, value)
+				return true
+			}
+		})
+	
 		drawerSystemInit()
-		inputingForm()
 		testConfigInput()
 	
+		
+		function newTestAppend(parentNode, test){
+			const testElement = document.createElement("div")
+			testElement.className = "newTestInput"
 	
+			const actionBtn = document.createElement("button")
+			actionBtn.className = "btnActionFull"
+			if (test.action != null)
+				actionBtn.innerHTML = test.action
+			else
+				actionBtn.innerHTML = "Action"
 	
+			const elementBtn = document.createElement("button")
+			elementBtn.className = "btnActionEmpty"
+			if (test.element != null)
+				elementBtn.innerHTML = test.element
+			else
+				elementBtn.innerHTML = "Element"
+	
+			const paramsBtn = document.createElement("button")
+			paramsBtn.className = "btnActionEmptyAlt"
+			//todo
+			paramsBtn.innerHTML = "Params"
+	
+			testElement.appendChild(actionBtn)
+			testElement.appendChild(elementBtn)
+			testElement.appendChild(paramsBtn)
+			parentNode.appendChild(testElement)
+	
+		}
+	
+		//system for the buttons for creation of the tests (related to #newTestInput)
 		function testConfigInput() {
 			document.getElementById("btnConfirmTest").addEventListener("click", (e) => {
-				console.log(testInput)
+				console.log(_testInput)
+				testsQueue.push(structuredClone(_testInput))
+				testInput.action = null
+				testInput.element = null
+				testInput.params = {}
+				console.log(_testsQueue)
 			})
 			document.getElementById("btnActionClick").addEventListener("click", (e) => {
-				testInput.action = "click"
+				testInput.action = "Click"
 			})
 			document.getElementById("btnActionFill").addEventListener("click", (e) => {
-				testInput.action = "fill"
+				testInput.action = "Fill"
 			})
 			document.getElementById("btnActionObserve").addEventListener("click", (e) => {
-				testInput.action = "observe"
+				testInput.action = "Look"
 			})
 		}
 	
+		//initialize the animation of the drawer with id #data-dropdown
 		function drawerSystemInit() {
 			document.addEventListener('click', e => {
-				const isDropdownButton = e.target.matches('[data-dropdown-button')
-				if (!isDropdownButton && e.target.closest("[data-dropdown]") != null) return 
+				const isDropdownButton = e.target.matches('#data-dropdown-button')
+				if (!isDropdownButton && e.target.closest("#data-dropdown") != null && !e.target.matches("button"))
+					return
 				
 				let currentDropdown
 				if (isDropdownButton) {
-					currentDropdown = e.target.closest('[data-dropdown]')
+					currentDropdown = e.target.closest('#data-dropdown')
 					currentDropdown.classList.toggle('active')
 				}
 				
-				document.querySelectorAll("[data-dropdown].active").forEach(dropdown => {
+				document.querySelectorAll("#data-dropdown.active").forEach(dropdown => {
 					if (dropdown !== currentDropdown)
 					dropdown.classList.remove('active')
 				})
 			})
-		}
-	
-		function inputingForm() {
-			const inputForm = document.getElementById('testInput')
-			document.getElementById('newTestInput').onsubmit = function(e) {
-				e.preventDefault();
-				const newTest = document.createElement('div');
-				newTest.className = 'test';
-	
-				const infoTest = document.createElement('input');
-				infoTest.className = 'text';
-				infoTest.value = inputForm.value
-	
-				const deleteBtn = document.createElement('button');
-				deleteBtn.className = 'buttonDelete';
-				deleteBtn.innerHTML = 'Delete';
-				deleteBtn.addEventListener('click', function(e) {
-					console.log('deleteBtn clicked');
-					document.getElementsByClassName('listTests')[0].removeChild(newTest)
-				})
-	
-				document.getElementsByClassName('listTests')[0].appendChild(newTest);
-				newTest.appendChild(infoTest)
-				newTest.appendChild(deleteBtn)
-				inputForm.value = ''
-			}
 		}
 	}
 

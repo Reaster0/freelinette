@@ -9,7 +9,7 @@
 <body>
 	<div id="glassMenu" class="glass">
 		<div class="menuBackground">
-			<div class="listTests">
+			<div id="testInterface">
 				<div id="newTestInput" class="newTestInput">
 					<div id="data-dropdown" class="dropDown">
 						<button id="data-dropdown-button" class="btnActionFull">Action</button>
@@ -20,23 +20,27 @@
 						</div>
 					</div>
 					<button class="btnActionEmpty">Element</button>
-					<button class="btnActionEmptyAlt">Params</button>
+					<button id="data-dropdown-button" class="btnActionEmptyAlt">Params</button>
 				</div>
-				<button id="btnConfirmTest" class="btnActionFullAlt">Confirm</button>
+				<button id="btnConfirmTest" class="btnActionFullAlt">+</button>
+				<div id="testList"></div>
 			</div>
 		</div>
-	</div>	
+	</div>
 </body>
 
 <script>
 	let _testInput = {
 		"action": null,
 		"element": null,
-		"params": {}
+		"params": {
+			"name": null,
+			"value": null}
 	}
 
-	let _testsQueue = []
+	let testsQueue = []
 
+	//menu to create tests
 	let testInput = new Proxy(_testInput, {
 		set: function (target, key, value) {
 			console.log("has changed")
@@ -46,34 +50,70 @@
 				else
 					document.getElementById("data-dropdown-button").innerHTML = value
 			}
+			if (key === "params") {
+				if (value.name === null)
+					document.getElementById("data-dropdown-button").innerHTML = "Params"
+				else
+					document.getElementById("data-dropdown-button").innerHTML = value.name
+			}
 			target[key] = value
 		}
 	})
 
-	let testsQueue = new Proxy(_testsQueue, {
-		set: function (target, key, value) {
-			if (key == "length")
-				return true
-			console.log("testqueue has changed", key, value)
-			target.push(value)
-			return true
-		}
-	})
-
 	drawerSystemInit()
-	inputingForm()
 	testConfigInput()
 
-	
+	//append a new test in the dom
+	function newTestAppend(parentNode, test, id){
+		const testElement = document.createElement("div")
+		testElement.className = "newTestInput"
+		testElement.attributes.number = id
 
+		const actionBtn = document.createElement("button")
+		actionBtn.className = "btnActionFull deButtoned"
+		if (test.action != null)
+			actionBtn.innerHTML = test.action
+		else
+			actionBtn.innerHTML = "Action"
+
+		const elementBtn = document.createElement("button")
+		elementBtn.className = "btnActionEmpty deButtoned"
+		if (test.element != null)
+			elementBtn.innerHTML = test.element
+		else
+			elementBtn.innerHTML = "Element"
+
+		const paramsBtn = document.createElement("button")
+		paramsBtn.className = "btnActionEmptyAlt deButtoned"
+		//todo
+		paramsBtn.innerHTML = "Params"
+
+		const deleteBtn = document.createElement("button")
+		deleteBtn.className = "buttonDelete"
+		deleteBtn.innerHTML = "X"
+		deleteBtn.onclick = function(){
+			testsQueue.splice(testElement.attributes.number, 1)
+			parentNode.innerHTML = ""
+			for (let key in testsQueue)
+				newTestAppend(parentNode, testsQueue[key], key)
+		}
+
+		testElement.appendChild(actionBtn)
+		testElement.appendChild(elementBtn)
+		testElement.appendChild(paramsBtn)
+		testElement.appendChild(deleteBtn)
+		parentNode.appendChild(testElement)
+
+	}
+
+	//system for the buttons for creation of the tests (related to #newTestInput)
 	function testConfigInput() {
 		document.getElementById("btnConfirmTest").addEventListener("click", (e) => {
-			console.log(_testInput)
 			testsQueue.push(structuredClone(_testInput))
+			newTestAppend(document.getElementById("testList"), structuredClone(_testInput), testsQueue.length - 1)
 			testInput.action = null
 			testInput.element = null
 			testInput.params = {}
-			console.log(_testsQueue)
 		})
 		document.getElementById("btnActionClick").addEventListener("click", (e) => {
 			testInput.action = "Click"
@@ -86,6 +126,7 @@
 		})
 	}
 
+	//initialize the animation of the drawer with id #data-dropdown
 	function drawerSystemInit() {
 		document.addEventListener('click', e => {
 			const isDropdownButton = e.target.matches('#data-dropdown-button')
@@ -103,32 +144,6 @@
 				dropdown.classList.remove('active')
 			})
 		})
-	}
-
-	function inputingForm() {
-		const inputForm = document.getElementById('testInput')
-		document.getElementById('newTestInput').onsubmit = function(e) {
-			e.preventDefault();
-			const newTest = document.createElement('div');
-			newTest.className = 'test';
-
-			const infoTest = document.createElement('input');
-			infoTest.className = 'text';
-			infoTest.value = inputForm.value
-
-			const deleteBtn = document.createElement('button');
-			deleteBtn.className = 'buttonDelete';
-			deleteBtn.innerHTML = 'Delete';
-			deleteBtn.addEventListener('click', function(e) {
-				console.log('deleteBtn clicked');
-				document.getElementsByClassName('listTests')[0].removeChild(newTest)
-			})
-
-			document.getElementsByClassName('listTests')[0].appendChild(newTest);
-			newTest.appendChild(infoTest)
-			newTest.appendChild(deleteBtn)
-			inputForm.value = ''
-		}
 	}
 </script>
 
