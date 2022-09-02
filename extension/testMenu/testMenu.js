@@ -45,7 +45,7 @@ function initialiseTestMenu(contain, menuIframe)
 				<div id="testInterface">\
 					<div id="newTestInput" class="newTestInput">\
 						<div id="data-dropdown" class="dropDown">\
-							<button id="data-dropdown-button" class="btnActionFull">Action</button>\
+							<button id="action-dropdown-button" class="btnActionFull">Action</button>\
 							<div class="dropDownMenu">\
 								<button id="btnActionClick" class="btnActionEmptyAlt">Click</butt>\
 								<button id="btnActionFill" class="btnActionEmptyAlt">Fill</butt>\
@@ -71,10 +71,12 @@ function initialiseTestMenu(contain, menuIframe)
 		let _testInput = {
 			"action": null,
 			"element": null,
-			"params": {}
+			"params": {
+				"name": null,
+				"value": null}
 		}
 	
-		let _testsQueue = []
+		let testsQueue = []
 	
 		//menu to create tests
 		let testInput = new Proxy(_testInput, {
@@ -82,57 +84,62 @@ function initialiseTestMenu(contain, menuIframe)
 				console.log("has changed")
 				if (key === "action"){
 					if (value === null)
-						document.getElementById("data-dropdown-button").innerHTML = "Action"
+						document.getElementById("action-dropdown-button").innerHTML = "Action"
 					else
-						document.getElementById("data-dropdown-button").innerHTML = value
-				}
+						document.getElementById("action-dropdown-button").innerHTML = value
+					}
+				// if (key === "params") {
+				// 	if (value.name === null)
+				// 		document.getElementById("data-dropdown-button").innerHTML = "Params"
+				// 	else
+				// 		document.getElementById("data-dropdown-button").innerHTML = value.name
+				// }
 				target[key] = value
-			}
-		})
-	
-		//queue of registered tests
-		let testsQueue = new Proxy(_testsQueue, {
-			set: function (target, key, value) {
-				if (key == "length")
-					return true
-				console.log("testqueue has changed", key, value)
-				target.push(value)
-				const testList = document.getElementById("testList")
-				newTestAppend(testList, value)
-				return true
 			}
 		})
 	
 		drawerSystemInit()
 		testConfigInput()
 	
-		
-		function newTestAppend(parentNode, test){
+		//append a new test in the dom
+		function newTestAppend(parentNode, test, id){
 			const testElement = document.createElement("div")
 			testElement.className = "newTestInput"
+			testElement.attributes.number = id
 	
 			const actionBtn = document.createElement("button")
-			actionBtn.className = "btnActionFull"
+			actionBtn.className = "btnActionFull deButtoned"
 			if (test.action != null)
 				actionBtn.innerHTML = test.action
 			else
 				actionBtn.innerHTML = "Action"
 	
 			const elementBtn = document.createElement("button")
-			elementBtn.className = "btnActionEmpty"
+			elementBtn.className = "btnActionEmpty deButtoned"
 			if (test.element != null)
 				elementBtn.innerHTML = test.element
 			else
 				elementBtn.innerHTML = "Element"
 	
 			const paramsBtn = document.createElement("button")
-			paramsBtn.className = "btnActionEmptyAlt"
+			paramsBtn.className = "btnActionEmptyAlt deButtoned"
 			//todo
 			paramsBtn.innerHTML = "Params"
+	
+			const deleteBtn = document.createElement("button")
+			deleteBtn.className = "buttonDelete"
+			deleteBtn.innerHTML = "X"
+			deleteBtn.onclick = function(){
+				testsQueue.splice(testElement.attributes.number, 1)
+				parentNode.innerHTML = ""
+				for (let key in testsQueue)
+					newTestAppend(parentNode, testsQueue[key], key)
+			}
 	
 			testElement.appendChild(actionBtn)
 			testElement.appendChild(elementBtn)
 			testElement.appendChild(paramsBtn)
+			testElement.appendChild(deleteBtn)
 			parentNode.appendChild(testElement)
 	
 		}
@@ -140,12 +147,14 @@ function initialiseTestMenu(contain, menuIframe)
 		//system for the buttons for creation of the tests (related to #newTestInput)
 		function testConfigInput() {
 			document.getElementById("btnConfirmTest").addEventListener("click", (e) => {
-				console.log(_testInput)
 				testsQueue.push(structuredClone(_testInput))
+				newTestAppend(document.getElementById("testList"), structuredClone(_testInput), testsQueue.length - 1)
 				testInput.action = null
 				testInput.element = null
-				testInput.params = {}
-				console.log(_testsQueue)
+				testInput.params = {
+					"name": null,
+					"value": null}
+				console.log(testsQueue)
 			})
 			document.getElementById("btnActionClick").addEventListener("click", (e) => {
 				testInput.action = "Click"
@@ -161,7 +170,7 @@ function initialiseTestMenu(contain, menuIframe)
 		//initialize the animation of the drawer with id #data-dropdown
 		function drawerSystemInit() {
 			document.addEventListener('click', e => {
-				const isDropdownButton = e.target.matches('#data-dropdown-button')
+				const isDropdownButton = e.target.matches('#action-dropdown-button')
 				if (!isDropdownButton && e.target.closest("#data-dropdown") != null && !e.target.matches("button"))
 					return
 				

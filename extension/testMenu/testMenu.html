@@ -113,7 +113,10 @@
 			newTestAppend(document.getElementById("testList"), structuredClone(_testInput), testsQueue.length - 1)
 			testInput.action = null
 			testInput.element = null
-			testInput.params = {}
+			testInput.params = {
+					"name": null,
+					"value": null
+				}
 		})
 		document.getElementById("btnActionClick").addEventListener("click", (e) => {
 			testInput.action = "Click"
