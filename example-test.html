@@ -17,6 +17,9 @@
 			top: 5%;
 			left: 45%;
 		}
+		.saint-hover{
+			outline: deeppink dashed 2px !important;
+		}
 	</style>
 </head>
 
@@ -26,8 +29,38 @@
 		<!-- <div class="glass"></div> -->
 	</section>
 	<div class="contain">
+		<h1>this is a text</h1>
+		<button> and this is a button</button>
 		<iframe src="/home/earnaud/Work/freelinette/extension/testMenu/testMenu.html" frameborder="0" class="menuIframe"></iframe>
 	</div>
 </body>
+<script>
+	document.querySelector("button").addEventListener("click", function(e){
+		console.log("click")
+		console.log(listELfor(e))
+	})
 
+	document.querySelector("body").addEventListener("mouseover", (e) => {
+		console.log(e.x, e.y)
+		clearHighlight()
+		console.log(e.target)
+
+		let elem = document.elementFromPoint(e.x, e.y)
+		elem.classList.add("saint-hover")
+
+
+
+		function clearHighlight() {
+			document.querySelectorAll(".saint-hover").forEach(e => {
+				e.classList.remove("saint-hover")
+			})
+		}
+	})
+
+	document.querySelector("body").addEventListener("click", (e) => {
+
+		let elem = document.elementFromPoint(e.x, e.y)
+		//console.log(elem)
+	})
+</script>
 </html>
