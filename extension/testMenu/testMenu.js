@@ -68,7 +68,7 @@ function initialiseTestMenu(contain, menuIframe)
 								<button id="btnActionObserve" class="btnActionEmptyAlt">Look</button>\
 							</div>\
 						</div>\
-						<button id="elementPickerBtn" class="btnActionEmpty">Element</button>\
+						<button id="elementPickerBtn" style="overflow-x: hidden;" class="btnActionEmpty">Element</button>\
 						<button class="btnActionEmptyAlt">Params</button>\
 					</div>\
 					<button id="btnConfirmTest" class="btnActionFullAlt">+</button>\
@@ -86,7 +86,10 @@ function initialiseTestMenu(contain, menuIframe)
 	function innerPageScript(document){
 		let _testInput = {
 			"action": null,
-			"element": null,
+			"element": {
+				"selector": null,
+				"path": null,
+			},
 			"params": {
 				"name": null,
 				"value": null}
@@ -104,12 +107,12 @@ function initialiseTestMenu(contain, menuIframe)
 					else
 						document.getElementById("action-dropdown-button").innerHTML = value
 					}
-				// if (key === "params") {
-				// 	if (value.name === null)
-				// 		document.getElementById("data-dropdown-button").innerHTML = "Params"
-				// 	else
-				// 		document.getElementById("data-dropdown-button").innerHTML = value.name
-				// }
+				if (key === "element") {
+					if (value.selector === null)
+						document.getElementById("elementPickerBtn").innerHTML = "Element"
+					else
+						document.getElementById("elementPickerBtn").innerHTML = value.selector
+				}
 				target[key] = value
 			}
 		})
@@ -134,8 +137,9 @@ function initialiseTestMenu(contain, menuIframe)
 	
 			const elementBtn = document.createElement("button")
 			elementBtn.className = "btnActionEmpty deButtoned"
-			if (test.element != null)
-				elementBtn.innerHTML = test.element
+			elementBtn.style = "overflow-x: hidden; max-width: 30%;"
+			if (test.element.selector != null)
+				elementBtn.innerHTML = test.element.selector
 			else
 				elementBtn.innerHTML = "Element"
 	
@@ -168,7 +172,10 @@ function initialiseTestMenu(contain, menuIframe)
 				testsQueue.push(structuredClone(_testInput))
 				newTestAppend(document.getElementById("testList"), structuredClone(_testInput), testsQueue.length - 1)
 				testInput.action = null
-				testInput.element = null
+				testInput.element = {
+					"selector": null,
+					"path": null,
+				}
 				testInput.params = {
 					"name": null,
 					"value": null}
@@ -196,10 +203,11 @@ function initialiseTestMenu(contain, menuIframe)
 			})
 
 			elementBtn.addEventListener("elemInspector", (e) => {
-				
-				//console.log(getCSSSelector(e.detail))
+				testInput.element = {
+					"selector": getCSSSelector(e.detail),
+					"path": getCSSPath(e.detail)
+				}
 				console.log(getCSSPath(e.detail))
-
 			})
 
 		}
@@ -321,7 +329,7 @@ function getCSSPath(el) {
 	return path.join(" > ")
 }
 
-//function to get the css selector of an element with it's classes and id
+//get the css selector of an element with it's classes and id
 function getCSSSelector(el) {
 	let selector = ""
 	if (el.id) {

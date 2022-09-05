@@ -148,6 +148,8 @@ input, button {
 	border-radius: 15px;
 	padding: 0.5rem;
 	border: 5px solid var(--crimson);
+	white-space: nowrap;
+	overflow-x: hidden;
 }
 
 .btnActionEmpty {
@@ -159,6 +161,7 @@ input, button {
 	font-size: 120%;
 	/* font-size: 1.5rem; */
 	border: 5px solid var(--blue-yonder);
+	white-space: nowrap;
 }
 
 .btnActionFullAlt {
@@ -173,6 +176,7 @@ input, button {
 	font-size: 120%;
 	/* font-size: 1.5rem; */
 	border: 5px solid var(--light);	
+	white-space: nowrap;
 }
 
 .btnActionEmptyAlt{
@@ -184,6 +188,7 @@ input, button {
 	font-size: 120%;
 	/* font-size: 1.5rem; */
 	border: 5px solid var(--light);
+	white-space: nowrap;
 }
 
 
