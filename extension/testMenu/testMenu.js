@@ -1,6 +1,22 @@
 
 console.log('testMenu launched')
 
+const injectStyle = document.createElement('style')
+injectStyle.innerHTML = '\
+	.saintHover {\
+		outline: deeppink dashed 2px !important;\
+	}\
+	.saintPickerOverlay{\
+		position: fixed;\
+		top: 0;\
+		left: 0;\
+		width: 100%;\
+		height: 100%;\
+		z-index: 2147483646;\
+		cursor: pointer;\
+	}'
+document.head.appendChild(injectStyle)
+
 let contain = document.createElement('div')
 
 let menuIframe = document.createElement('iframe')
@@ -13,7 +29,7 @@ menuIframe.style.width = '400px'
 menuIframe.id = 'menuIframe'
 
 
-contain.style.zIndex = '4200000'
+contain.style.zIndex = '2147483647'
 contain.style.position = 'absolute'
 contain.style.top = '40%'
 contain.style.left = '20%'
@@ -52,7 +68,7 @@ function initialiseTestMenu(contain, menuIframe)
 								<button id="btnActionObserve" class="btnActionEmptyAlt">Look</button>\
 							</div>\
 						</div>\
-						<button class="btnActionEmpty">Element</button>\
+						<button id="elementPickerBtn" class="btnActionEmpty">Element</button>\
 						<button class="btnActionEmptyAlt">Params</button>\
 					</div>\
 					<button id="btnConfirmTest" class="btnActionFullAlt">+</button>\
@@ -100,6 +116,8 @@ function initialiseTestMenu(contain, menuIframe)
 	
 		drawerSystemInit()
 		testConfigInput()
+		ElementPickerInit()
+
 	
 		//append a new test in the dom
 		function newTestAppend(parentNode, test, id){
@@ -166,6 +184,25 @@ function initialiseTestMenu(contain, menuIframe)
 				testInput.action = "Look"
 			})
 		}
+
+		//initialize the Element button
+		function ElementPickerInit(){
+			const elementBtn = document.getElementById("elementPickerBtn")
+			console.log("element picker init", elementBtn)
+
+			elementBtn.addEventListener("click", (e) => {
+				saintPickerInit()
+				console.log("element picker")
+			})
+
+			elementBtn.addEventListener("elemInspector", (e) => {
+				console.log("machinchose", e.detail)
+				//testInput.element = e.detail
+				console.log(e.detail)
+				e.detail.innerHTML = "machinchose"
+			})
+
+		}
 	
 		//initialize the animation of the drawer with id #data-dropdown
 		function drawerSystemInit() {
@@ -218,5 +255,38 @@ function initialiseTestMenu(contain, menuIframe)
 			elmnt.style.left = pageX + parseInt(style.left) - initialMousePos.x + menuPosBackup.x + 'px'
 			elmnt.style.top = pageY + parseInt(style.top) - initialMousePos.y + menuPosBackup.y + 'px'
 		}
+	}
+}
+
+function saintPickerInit(){
+	
+	const saintPicker = document.createElement("div")
+	saintPicker.className = "saintPickerOverlay"
+	
+	document.querySelector("body").appendChild(saintPicker)
+	
+	saintPicker.addEventListener("mousemove", (e) => {
+		clearHighlight()
+		e.target.style.zIndex = -2147483646
+		let elem = document.elementFromPoint(e.x, e.y)
+		e.target.style.zIndex = 2147483646
+		elem.classList.add("saintHover")
+	})
+
+	saintPicker.addEventListener("click", (e) => {
+		e.target.style.zIndex = -2147483646
+		let elem = document.elementFromPoint(e.x, e.y)
+		console.log(elem)
+		e.target.style.zIndex = 2147483646
+		clearHighlight()
+		document.querySelector(".saintPickerOverlay").remove()
+		menuIframe.contentDocument.getElementsByTagName('body')[0]
+		.querySelector("#elementPickerBtn").dispatchEvent(new CustomEvent("elemInspector", {detail: elem}))
+	})
+
+	function clearHighlight() {
+		document.querySelectorAll(".saintHover").forEach(e => {
+			e.classList.remove("saintHover")
+		})
 	}
 }
