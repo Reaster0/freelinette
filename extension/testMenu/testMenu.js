@@ -196,10 +196,10 @@ function initialiseTestMenu(contain, menuIframe)
 			})
 
 			elementBtn.addEventListener("elemInspector", (e) => {
-				console.log("machinchose", e.detail)
-				//testInput.element = e.detail
-				console.log(e.detail)
-				e.detail.innerHTML = "machinchose"
+				
+				//console.log(getCSSSelector(e.detail))
+				console.log(getCSSPath(e.detail))
+
 			})
 
 		}
@@ -276,7 +276,6 @@ function saintPickerInit(){
 	saintPicker.addEventListener("click", (e) => {
 		e.target.style.zIndex = -2147483646
 		let elem = document.elementFromPoint(e.x, e.y)
-		console.log(elem)
 		e.target.style.zIndex = 2147483646
 		clearHighlight()
 		document.querySelector(".saintPickerOverlay").remove()
@@ -289,4 +288,28 @@ function saintPickerInit(){
 			e.classList.remove("saintHover")
 		})
 	}
+}
+
+function getCSSPath(el) {
+	let path = []
+
+	while (el.nodeType === Node.ELEMENT_NODE) {
+		let selector = el.nodeName.toLowerCase()
+		if (el.id) {
+			selector += '#' + el.id
+			path.unshift(selector)
+			break
+		} else {
+			let sib = el, nth = 1
+			while (sib = sib.previousElementSibling) {
+				if (sib.nodeName.toLowerCase() == selector)
+					nth++
+			}
+			if (nth != 1)
+				selector += ":nth-of-type("+nth+")"
+		}
+		path.unshift(selector)
+		el = el.parentNode
+	}
+	return path.join(" > ")
 }
