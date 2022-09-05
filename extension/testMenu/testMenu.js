@@ -294,22 +294,52 @@ function getCSSPath(el) {
 	let path = []
 
 	while (el.nodeType === Node.ELEMENT_NODE) {
-		let selector = el.nodeName.toLowerCase()
-		if (el.id) {
-			selector += '#' + el.id
-			path.unshift(selector)
-			break
-		} else {
-			let sib = el, nth = 1
-			while (sib = sib.previousElementSibling) {
-				if (sib.nodeName.toLowerCase() == selector)
-					nth++
-			}
-			if (nth != 1)
-				selector += ":nth-of-type("+nth+")"
-		}
+
+		// V1
+		//let selector = el.nodeName.toLowerCase()
+		// if (el.id) {
+		// 	selector += '#' + el.id
+		// 	path.unshift(selector)
+		// 	break
+		// } else {
+		// 	let sib = el, nth = 1
+		// 	while (sib = sib.previousElementSibling) {
+		// 		if (sib.nodeName.toLowerCase() == selector)
+		// 			nth++
+		// 	}
+		// 	if (nth != 1)
+		// 		selector += ":nth-of-type("+nth+")"
+		// }
+		// path.unshift(selector)
+		// el = el.parentNode
+
+		//V2
+		const selector = getCSSSelector(el)
 		path.unshift(selector)
 		el = el.parentNode
 	}
 	return path.join(" > ")
+}
+
+//function to get the css selector of an element with it's classes and id
+function getCSSSelector(el) {
+	let selector = ""
+	if (el.id) {
+		selector += "#" + el.id
+	} else {
+		let classes = el.className.split(" ")
+		classes.forEach(c => {
+			if (c != "")
+				selector += "." + c
+		})
+		selector = el.nodeName.toLowerCase() + selector
+		let sib = el, nth = 1
+		while (sib = sib.previousElementSibling) {
+			if (sib.nodeName.toLowerCase() == selector)
+				nth++
+		}
+		if (nth != 1)
+			selector += ":nth-of-type("+nth+")"
+	}
+	return selector
 }
