@@ -16,16 +16,11 @@
 			top: 5%;
 			left: 45%;
 		}
-		/* .saint-hover{
-			outline: deeppink dashed 2px !important;
-		} */
 	</style>
 </head>
 
 <body>
 	<section>
-		<!-- <h2>this is a simple page</h2> -->
-		<!-- <div class="glass"></div> -->
 	</section>
 	<div class="contain mix">
 		<h1>this is a text
@@ -36,60 +31,11 @@
 		<button> and this is a button</button>
 		<!-- <iframe src="/home/earnaud/Work/freelinette/extension/testMenu/testMenu.html" frameborder="0" class="menuIframe"></iframe> -->
 	</div>
-	<!-- <div class="saint-pickerOverlay"></div> -->
 </body>
 <script>
 	document.querySelector("button").addEventListener("click", function(e){
 		console.log("click")
+		e.target.style.backgroundColor = "red"
 	})
-
-	// document.querySelector("body").addEventListener("mouseover", (e) => {
-	// 	console.log(e.x, e.y)
-	// 	clearHighlight()
-	// 	console.log(e.target)
-
-	// 	let elem = document.elementFromPoint(e.x, e.y)
-	// 	elem.classList.add("saint-hover")
-
-
-
-	// 	function clearHighlight() {
-	// 		document.querySelectorAll(".saint-hover").forEach(e => {
-	// 			e.classList.remove("saint-hover")
-	// 		})
-	// 	}
-	// })
-
-	// document.querySelector("body").addEventListener("click", (e) => {
-
-	// 	let elem = document.elementFromPoint(e.x, e.y)
-	// 	//console.log(elem)
-	// })
-
-	// document.querySelector(".saint-pickerOverlay").addEventListener("mousemove", (e) => {
-	// 	console.log(e.x, e.y)
-	// 	clearHighlight()
-	// 	e.target.style.zIndex = -420
-	// 	let elem = document.elementFromPoint(e.x, e.y)
-	// 	e.target.style.zIndex = 420
-	// 	//console.log(elem)
-	// 	elem.classList.add("saint-hover")
-
-
-	// 	function clearHighlight() {
-	// 		document.querySelectorAll(".saint-hover").forEach(e => {
-	// 			e.classList.remove("saint-hover")
-	// 		})
-	// 	}
-	// })
-
-	// document.querySelector(".saint-pickerOverlay").addEventListener("click", (e) => {
-	// 	console.log("overlay")
-	// 	e.target.style.zIndex = -420
-	// 	let elem = document.elementFromPoint(e.x, e.y)
-	// 	console.log(elem)
-	// 	e.target.style.zIndex = 420
-	// })
-
 </script>
 </html>

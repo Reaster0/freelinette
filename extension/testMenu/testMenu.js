@@ -1,4 +1,3 @@
-
 console.log('testMenu launched')
 
 const injectStyle = document.createElement('style')
@@ -30,7 +29,7 @@ menuIframe.id = 'menuIframe'
 
 
 contain.style.zIndex = '2147483647'
-contain.style.position = 'absolute'
+contain.style.position = 'fixed'
 contain.style.top = '40%'
 contain.style.left = '20%'
 contain.id = 'menu_contain'
@@ -124,7 +123,7 @@ function initialiseTestMenu(contain, menuIframe)
 	
 		drawerSystemInit()
 		actionBtnInit()
-		ElementPickerInit()
+		elementPickerInit()
 		addNewTestBtnInit()
 
 	
@@ -209,7 +208,7 @@ function initialiseTestMenu(contain, menuIframe)
 		}
 
 		//initialize the Element button
-		function ElementPickerInit(){
+		function elementPickerInit(){
 			const elementBtn = document.getElementById("elementPickerBtn")
 			console.log("element picker init", elementBtn)
 
