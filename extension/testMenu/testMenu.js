@@ -71,7 +71,7 @@ function initialiseTestMenu(contain, menuIframe)
 						<button id="elementPickerBtn" style="overflow-x: hidden;" class="btnActionEmpty">Element</button>\
 						<button class="btnActionEmptyAlt">Params</button>\
 					</div>\
-					<button id="btnConfirmTest" class="btnActionFullAlt">+</button>\
+					<button id="btnConfirmTest" class="btnActionFullAlt deButtoned">+</button>\
 					<div id="testList"></div>\
 				</div>\
 			</div>\
@@ -114,16 +114,27 @@ function initialiseTestMenu(contain, menuIframe)
 						document.getElementById("elementPickerBtn").innerHTML = value.selector
 				}
 				target[key] = value
+
+				if (target.action != null && target.element.selector != null){
+					document.getElementById("btnConfirmTest").disabled = false
+					document.getElementById("btnConfirmTest").className = "btnActionFullAlt"
+				}
 			}
 		})
 	
 		drawerSystemInit()
-		testConfigInput()
+		actionBtnInit()
 		ElementPickerInit()
+		addNewTestBtnInit()
 
 	
 		//append a new test in the dom
 		function newTestAppend(parentNode, test, id){
+			const addBtn = document.getElementById("btnConfirmTest")
+			addBtn.disabled = true
+			document.getElementById("btnConfirmTest").className = "btnActionFullAlt deButtoned"
+
+
 			const testElement = document.createElement("div")
 			testElement.className = "newTestInput"
 			testElement.attributes.number = id
@@ -163,12 +174,24 @@ function initialiseTestMenu(contain, menuIframe)
 			testElement.appendChild(paramsBtn)
 			testElement.appendChild(deleteBtn)
 			parentNode.appendChild(testElement)
-	
 		}
 	
-		//system for the buttons for creation of the tests (related to #newTestInput)
-		function testConfigInput() {
-			document.getElementById("btnConfirmTest").addEventListener("click", (e) => {
+		//system for the action buttons for creation of the tests (related to #newTestInput)
+		function actionBtnInit() {
+			document.getElementById("btnActionClick").addEventListener("click", (e) => {
+				testInput.action = "Click"
+			})
+			document.getElementById("btnActionFill").addEventListener("click", (e) => {
+				testInput.action = "Fill"
+			})
+			document.getElementById("btnActionObserve").addEventListener("click", (e) => {
+				testInput.action = "Look"
+			})
+		}
+
+		//init for the button to add new tests
+		function addNewTestBtnInit(){
+			document.getElementById("btnConfirmTest").addEventListener("click", () => {
 				testsQueue.push(structuredClone(_testInput))
 				newTestAppend(document.getElementById("testList"), structuredClone(_testInput), testsQueue.length - 1)
 				testInput.action = null
@@ -181,15 +204,8 @@ function initialiseTestMenu(contain, menuIframe)
 					"value": null}
 				console.log(testsQueue)
 			})
-			document.getElementById("btnActionClick").addEventListener("click", (e) => {
-				testInput.action = "Click"
-			})
-			document.getElementById("btnActionFill").addEventListener("click", (e) => {
-				testInput.action = "Fill"
-			})
-			document.getElementById("btnActionObserve").addEventListener("click", (e) => {
-				testInput.action = "Look"
-			})
+			document.getElementById("btnConfirmTest").disabled = true
+			document.getElementById("btnConfirmTest").className = "btnActionFullAlt deButtoned"
 		}
 
 		//initialize the Element button
