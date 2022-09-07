@@ -1,7 +1,8 @@
 import { dragElement, getCSSPath, getCSSSelector } from "../utils.js"
+import htmlPage from "../testMenu.html"
+import cssPage from "../testMenu.css"
 
 export function injectHtml(document){
-
 	const injectStyle = document.createElement('style')
 	injectStyle.innerHTML = '\
 		.saintHover {\
@@ -43,38 +44,12 @@ export function injectHtml(document){
 
 	function initialiseTestMenu(contain, menuIframe, pageDocument)
 	{
-		let head = menuIframe.contentDocument.getElementsByTagName('head')[0]
-		let body = menuIframe.contentDocument.getElementsByTagName('body')[0]
+		menuIframe.contentDocument.head.innerHTML = `<meta charset="utf-8">`
+		menuIframe.contentDocument.body.innerHTML = htmlPage
+		const stylesheet = menuIframe.contentDocument.createElement('style')
+		stylesheet.innerHTML = cssPage
+		menuIframe.contentDocument.head.appendChild(stylesheet)
 		
-		head.innerHTML = '\
-		<meta charset="utf-8">\
-		<link rel="stylesheet" href="./extension/testMenu/testMenu.css"\
-		<style>\
-		</style>'
-		body.innerHTML = '\
-		<body>\
-			<div id="glassMenu" class="glass">\
-				<div class="menuBackground">\
-					<div id="testInterface">\
-						<div id="newTestInput" class="newTestInput">\
-							<div id="data-dropdown" class="dropDown">\
-								<button id="action-dropdown-button" class="btnActionFull">Action</button>\
-								<div class="dropDownMenu">\
-									<button id="btnActionClick" class="btnActionEmptyAlt">Click</butt>\
-									<button id="btnActionFill" class="btnActionEmptyAlt">Fill</butt>\
-									<button id="btnActionObserve" class="btnActionEmptyAlt">Look</button>\
-								</div>\
-							</div>\
-							<button id="elementPickerBtn" style="overflow-x: hidden;" class="btnActionEmpty">Element</button>\
-							<button class="btnActionEmptyAlt">Params</button>\
-						</div>\
-						<button id="btnConfirmTest" class="btnActionFullAlt deButtoned">+</button>\
-						<div id="testList"></div>\
-					</div>\
-				</div>\
-			</div>\
-		</body>'
-
 		dragElement(contain);
 		innerPageScript(menuIframe.contentDocument)
 

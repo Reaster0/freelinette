@@ -8,4 +8,13 @@ module.exports = {
 	},
 	mode: 'production',
 	watch: true,
+	module: {
+		rules: [
+			{
+				test: /\.(html|css)$/i,
+				//use: 'raw-loader', //V4
+				type: 'asset/source', //V5
+			},
+		]
+	}
 }
