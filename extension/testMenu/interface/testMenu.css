@@ -44,7 +44,7 @@ section h2
 	height: 100%;
 	/* box-shadow: 0 25px 40px rgba(0, 0, 0, 0.8); */
 	background: transparent;
-	backdrop-filter: blur(10px);
+	backdrop-filter: blur(20px);
 	transition: 0.2s;
 }
 

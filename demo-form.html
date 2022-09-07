@@ -22,7 +22,7 @@
 
         
         <div class="btn-block">
-          <button type="submit" id="submit-btn">Create character</button>
+          <button id="submit-btn">Create character</button>
         </div>
 
       </form>
@@ -36,9 +36,7 @@
 
 
 	  document.getElementById("submit-btn").addEventListener("click", function(e){
-		console.log(name.value)
-		console.log(project.value)
-		console.log(team.value)
+		e.preventDefault()
 
 		const result = document.createElement("h1")
 		result.innerHTML = "Name: " + name.value + " Project: " + project.value + " Team: " + team.value

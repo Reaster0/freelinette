@@ -1,22 +1,22 @@
 import { dragElement, getCSSPath, getCSSSelector } from "../utils.js"
-import htmlPage from "../testMenu.html"
-import cssPage from "../testMenu.css"
+import htmlPage from "./testMenu.html"
+import cssPage from "./testMenu.css"
 
 export function injectHtml(document){
 	const injectStyle = document.createElement('style')
-	injectStyle.innerHTML = '\
-		.saintHover {\
-			outline: deeppink dashed 2px !important;\
-		}\
-		.saintPickerOverlay{\
-			position: fixed;\
-			top: 0;\
-			left: 0;\
-			width: 100%;\
-			height: 100%;\
-			z-index: 2147483646;\
-			cursor: pointer;\
-		}'
+	injectStyle.innerHTML = `
+		.saintHover {
+			outline: deeppink dashed 2px !important;
+		}
+		.saintPickerOverlay{
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 2147483646;
+			cursor: pointer;
+		}`
 	document.head.appendChild(injectStyle)
 
 	let menuIframe = document.createElement('iframe')
@@ -95,6 +95,7 @@ export function injectHtml(document){
 		
 			drawerSystemInit()
 			actionBtnInit()
+			paramsBtnInit()
 			elementPickerInit()
 			addNewTestBtnInit()
 
@@ -149,15 +150,22 @@ export function injectHtml(document){
 		
 			//system for the action buttons for creation of the tests (related to #newTestInput)
 			function actionBtnInit() {
-				document.getElementById("btnActionClick").addEventListener("click", (e) => {
+				document.getElementById("btnActionClick").addEventListener("click", () => {
 					testInput.action = "Click"
 				})
-				document.getElementById("btnActionFill").addEventListener("click", (e) => {
+				document.getElementById("btnActionFill").addEventListener("click", () => {
 					testInput.action = "Fill"
 				})
-				document.getElementById("btnActionObserve").addEventListener("click", (e) => {
+				document.getElementById("btnActionObserve").addEventListener("click", () => {
 					testInput.action = "Look"
 				})
+			}
+
+			function paramsBtnInit() {
+				// document.getElementById("btnParamFill").addEventListener("click", () => {
+				// 	testInput.params.name = "Type"
+				// 	testInput.params.value = null
+				// })
 			}
 
 			//init for the button to add new tests
@@ -201,17 +209,19 @@ export function injectHtml(document){
 			function drawerSystemInit() {
 				document.addEventListener('click', e => {
 					const isDropdownButton = e.target.matches('#action-dropdown-button')
-					if (!isDropdownButton && e.target.closest("#data-dropdown") != null && !e.target.matches("button"))
+					const isDropdownParamBtn = e.target.matches('#params-dropdown-button')
+					const isDropdownParamTypeBtn = e.target.matches('#btnParamType')
+					if (!isDropdownButton && !isDropdownParamBtn && !isDropdownParamTypeBtn && e.target.closest(".dropDown") != null && !e.target.matches("button"))
 						return
 					
 					let currentDropdown
-					if (isDropdownButton) {
-						currentDropdown = e.target.closest('#data-dropdown')
+					if (isDropdownButton || isDropdownParamBtn || isDropdownParamTypeBtn) {
+						currentDropdown = e.target.closest('.dropDown')
 						currentDropdown.classList.toggle('active')
 					}
 					
-					document.querySelectorAll("#data-dropdown.active").forEach(dropdown => {
-						if (dropdown !== currentDropdown)
+					document.querySelectorAll(".dropDown.active").forEach(dropdown => {
+						if (dropdown !== currentDropdown && !(dropdown.id == "paramsDropDownButton" && isDropdownParamTypeBtn))
 						dropdown.classList.remove('active')
 					})
 				})
