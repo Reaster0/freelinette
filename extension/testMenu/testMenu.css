@@ -26,14 +26,14 @@ section h2
 	text-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 } */
 
-@import url(‘https://fonts.googleapis.com/css?family=Roboto’);
+/* @import url(‘https://fonts.googleapis.com/css?family=Roboto’); */
 
-/* @font-face {
+@font-face {
     font-family: 'Roboto';
     src: url('../assets/Roboto-Bold.ttf'), url('../assets/Roboto-Medium.ttf') url('../assets/Roboto-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
-} */
+}
 
 .glass
 {
