@@ -96,7 +96,6 @@ export function injectHtml(document){
 			//menu to create tests
 			let testInput = new Proxy(_testInput, {
 				set: function (target, key, value) {
-					console.log("has changed")
 					if (key === "action"){
 						if (value === null)
 							document.getElementById("action-dropdown-button").innerHTML = "Action"
@@ -208,11 +207,9 @@ export function injectHtml(document){
 			//initialize the Element button
 			function elementPickerInit(){
 				const elementBtn = document.getElementById("elementPickerBtn")
-				console.log("element picker init", elementBtn)
 
 				elementBtn.addEventListener("click", (e) => {
 					saintPickerInit(pageDocument, menuIframe)
-					console.log("element picker")
 				})
 
 				elementBtn.addEventListener("elemInspector", (e) => {
@@ -220,7 +217,6 @@ export function injectHtml(document){
 						"selector": getCSSSelector(e.detail),
 						"path": getCSSPath(e.detail)
 					}
-					console.log("element picker event")
 					console.log(getCSSPath(e.detail))
 				})
 
@@ -253,9 +249,6 @@ function saintPickerInit(document, menuIframe){
 	
 	const saintPicker = document.createElement("div")
 	saintPicker.className = "saintPickerOverlay"
-	console.log('saintpicker init')
-	console.log(document.body)
-	
 	document.body.appendChild(saintPicker)
 	
 	saintPicker.addEventListener("mousemove", (e) => {
@@ -271,7 +264,6 @@ function saintPickerInit(document, menuIframe){
 		let elem = document.elementFromPoint(e.x, e.y)
 		e.target.style.zIndex = 2147483646
 		clearHighlight()
-		console.log('saintPickermove')
 		document.querySelector(".saintPickerOverlay").remove()
 		menuIframe.contentDocument.body
 		.querySelector("#elementPickerBtn").dispatchEvent(new CustomEvent("elemInspector", {detail: elem}))

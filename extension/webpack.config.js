@@ -7,11 +7,5 @@ module.exports = {
 		path: path.resolve(__dirname, 'testMenu/dist')
 	},
 	mode: 'production',
-
-	devServer: {
-		static: {
-			directory: path.join(__dirname, 'testMenu/dist'),
-		},
-		port: 42500,
-	}
+	watch: true,
 }
