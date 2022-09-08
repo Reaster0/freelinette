@@ -83,7 +83,12 @@ export function injectHtml(document){
 						else
 							document.getElementById("elementPickerBtn").innerHTML = value.selector
 					}
+					if (key === "params") {
+						if (!value.value)
+							document.getElementById("inputTypeParam").value = null
+					}
 					target[key] = value
+					//console.log("key: ", key, "value: ", value)
 
 					if (target.action != null && target.element.selector != null){
 						document.getElementById("btnConfirmTest").disabled = false
@@ -128,8 +133,11 @@ export function injectHtml(document){
 		
 				const paramsBtn = document.createElement("button")
 				paramsBtn.className = "btnActionEmptyAlt deButtoned"
-				//todo
-				paramsBtn.innerHTML = "Params"
+				paramsBtn.style = "overflow-x: scroll; max-width: 30%;"
+				if (test.params.name === null)
+					paramsBtn.innerHTML = "Params"
+				else
+					paramsBtn.innerHTML = test.params.name + ": " + test.params.value
 		
 				const deleteBtn = document.createElement("button")
 				deleteBtn.className = "buttonDelete"
@@ -162,17 +170,24 @@ export function injectHtml(document){
 			}
 
 			function paramsBtnInit() {
-				// document.getElementById("btnParamFill").addEventListener("click", () => {
-				// 	testInput.params.name = "Type"
-				// 	testInput.params.value = null
-				// })
+				document.getElementById("btnParamType").addEventListener("click", () => {
+					testInput.params.name = "Type"
+					testInput.params.value = null
+				})
 			}
 
 			//init for the button to add new tests
 			function addNewTestBtnInit(){
 				document.getElementById("btnConfirmTest").addEventListener("click", () => {
+					if(testInput.params.name == "Type")
+					testInput.params.value = document.getElementById("inputTypeParam").value
 					testsQueue.push(structuredClone(_testInput))
-					newTestAppend(document.getElementById("testList"), structuredClone(_testInput), testsQueue.length - 1)
+					try{
+						newTestAppend(document.getElementById("testList"), structuredClone(_testInput), testsQueue.length - 1)
+					}
+					catch(e){
+						console.log(e)
+					}
 					testInput.action = null
 					testInput.element = {
 						"selector": null,
@@ -180,7 +195,8 @@ export function injectHtml(document){
 					}
 					testInput.params = {
 						"name": null,
-						"value": null}
+						"value": null
+					}
 					console.log(testsQueue)
 				})
 				document.getElementById("btnConfirmTest").disabled = true

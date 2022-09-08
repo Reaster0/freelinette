@@ -198,7 +198,6 @@ input, button {
 	white-space: nowrap;
 }
 
-
 .buttonDelete:hover, .btnActionFull:hover, .btnActionEmpty:hover, .btnActionEmptyAlt:hover, .btnActionFullAlt:hover {
 	opacity: 0.6;
 }
@@ -234,4 +233,15 @@ input, button {
 	opacity: 1;
 	pointer-events: auto;
 	transform: translateY(0);
+}
+
+.fieldInput{
+	background-color: var(--light);
+	padding: 1rem;
+	font-family: Roboto;
+	border-radius: 1.5rem;
+	margin: 0;
+	width: 100%;
+	overflow-x: scroll; 
+	justify-content: space-around;
 }
