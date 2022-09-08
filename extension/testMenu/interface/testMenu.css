@@ -71,7 +71,8 @@ section h2
 	border-radius: 0.5rem;
 	margin: 0.5rem;
 	min-height: 92%;
-	justify-content: center;
+	flex-direction: column;
+	/* justify-content: center; */
 }
 
 .newTest {
@@ -210,6 +211,12 @@ input, button {
 .dropDown {
 	position: relative;
 }
+
+/* #buttonsContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+} */
 
 .dropDownMenu {
 	position: absolute;

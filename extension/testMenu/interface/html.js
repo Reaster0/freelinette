@@ -103,6 +103,17 @@ export function injectHtml(document){
 			paramsBtnInit()
 			elementPickerInit()
 			addNewTestBtnInit()
+			exportJSONBtnInit()
+
+
+			//init the button to export to JSON
+			function exportJSONBtnInit(){
+				document.getElementById("btnExportJSON").addEventListener("click", function(){
+					console.log(JSON.stringify(testsQueue))
+					const newTab = window.open("data:text/json," + encodeURIComponent(JSON.stringify(testsQueue, null, 2)), "_blank")
+					newTab.focus()
+				})
+			}
 
 		
 			//append a new test in the dom
