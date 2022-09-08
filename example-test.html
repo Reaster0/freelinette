@@ -12,9 +12,8 @@
 			width: 400px;
 		}
 		.contain{
-			z-index: 420;
 			position: absolute;
-			top: 10%;
+			top: 5%;
 			left: 45%;
 		}
 	</style>
@@ -22,12 +21,21 @@
 
 <body>
 	<section>
-		<!-- <h2>this is a simple page</h2> -->
-		<!-- <div class="glass"></div> -->
 	</section>
-	<div class="contain">
-		<iframe src="/home/earnaud/Work/freelinette/extension/testMenu/testMenu.html" frameborder="0" class="menuIframe"></iframe>
+	<div class="contain mix">
+		<h1>this is a text
+			<span class="saint-hover mdr beaucoup trop de texte">hover</span>
+		</h1>
+		<h1 class="lala">this is exactly the same</h1>
+		<h1 id="lmao">deuxieme</h1>
+		<button> and this is a button</button>
+		<!-- <iframe src="/home/earnaud/Work/freelinette/extension/testMenu/interface/testMenu.html" frameborder="0" class="menuIframe"></iframe> -->
 	</div>
 </body>
-
+<script>
+	document.querySelector("button").addEventListener("click", function(e){
+		console.log("click")
+		e.target.style.backgroundColor = "red"
+	})
+</script>
 </html>

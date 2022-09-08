@@ -1,10 +1,8 @@
-//browser.tabs.executeScript({file: "/content_scripts/picker.js"})
-
 console.log("popup launched")
 
 function injectMenu() {
 	let executeScript = browser.tabs.executeScript({
-		file: "../testMenu/testMenu.js"
+		file: "../testMenu/dist/testMenu-Build.js"
 	})
 	console.log("injectMenu launched in the popup")
 }

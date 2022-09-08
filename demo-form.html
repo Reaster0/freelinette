@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>avatar creation</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="demo-form.css">
+  </head>
+  <body>
+    <div class="testbox">
+
+      <form name="test" action="#"">
+        <h1>CREATE YOUR AVATAR</h1>
+
+        <h4>NAME<span> *</span></h4>
+        <input type="text" id="name" value="">
+
+        <h4>PROJECT<span> *</span></h4>
+		<input type="text" id="project" value="">
+
+        <h4>TEAM<span> *</span></h4>
+		<input type="text" id="team" value="">
+
+        
+        <div class="btn-block">
+          <button id="submit-btn">Create character</button>
+        </div>
+
+      </form>
+    </div>
+  </body>
+
+  <script>
+	  const name = document.getElementById("name")
+	 const project = document.getElementById("project") 
+	  const team = document.getElementById("team")
+
+
+	  document.getElementById("submit-btn").addEventListener("click", function(e){
+		e.preventDefault()
+
+		const result = document.createElement("h1")
+		result.innerHTML = "Name: " + name.value + " Project: " + project.value + " Team: " + team.value
+		document.body.appendChild(result)
+	})
+  </script>
+</html>
