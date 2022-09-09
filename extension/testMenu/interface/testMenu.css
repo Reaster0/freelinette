@@ -205,8 +205,8 @@ input, button {
 }
 
 #paramDropDownMenu {
-	left: -220%;
-	width: 320%;
+	left: -230px;
+	min-width: 300px;
 	align-items: flex-end;
 	gap: 20px;
 }

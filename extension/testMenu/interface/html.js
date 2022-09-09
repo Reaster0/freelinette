@@ -84,13 +84,13 @@ export function injectHtml(document){
 							document.getElementById("elementPickerBtn").innerHTML = value.selector
 					}
 					if (key === "params") {
+						console.log("params", value)
 						if (value.name === null)
-							document.getElementById("inputTypeParam").value = "Params"
+							document.getElementById("params-dropdown-button").innerHTML = "Params"
 						else
-							document.getElementById("inputTypeParam").value = value.name
+							document.getElementById("params-dropdown-button").innerHTML = value.name
 					}
 					target[key] = value
-					//console.log("key: ", key, "value: ", value)
 
 					if (target.action != null && target.element.selector != null){
 						document.getElementById("btnConfirmTest").disabled = false
@@ -184,14 +184,26 @@ export function injectHtml(document){
 			}
 
 			function paramsBtnInit() {
-				console.log("paramsBtnInit")
 				document.getElementById("btnParamType").addEventListener("click", () => {
 					console.log("btnParamType clicked")
 					testInput.params = {
 						name: "Type",
 						value: document.getElementById("inputTypeParam").value
 					}
-					console.log(_testInput)
+				})
+
+				document.getElementById("btnParamSelect").addEventListener("click", () => {
+					testInput.params = {
+						name: "Select",
+						value: null, //TODO: add the value of the select
+					}
+				})
+
+				document.getElementById("btnParamExist").addEventListener("click", () => {
+					testInput.params = {
+						name: "Exist",
+						value: null,
+					}
 				})
 			}
 
@@ -199,9 +211,6 @@ export function injectHtml(document){
 			function addNewTestBtnInit(){
 				document.getElementById("btnConfirmTest").addEventListener("click", () => {
 
-				// if(document.getElementById("inputTypeParam").value != null)
-				// 	testInput.params.value = document.getElementById("inputTypeParam").value
-					
 				testsQueue.push(structuredClone(_testInput))
 				newTestAppend(document.getElementById("testList"), structuredClone(_testInput), testsQueue.length - 1)
 				testInput.action = null
