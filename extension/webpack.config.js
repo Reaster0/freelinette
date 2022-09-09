@@ -16,5 +16,8 @@ module.exports = {
 				type: 'asset/source', //V5
 			},
 		]
-	}
+	},
+	optimization: {
+		minimize: false
+	 },
 }

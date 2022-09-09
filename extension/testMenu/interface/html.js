@@ -84,8 +84,10 @@ export function injectHtml(document){
 							document.getElementById("elementPickerBtn").innerHTML = value.selector
 					}
 					if (key === "params") {
-						if (!value.value)
-							document.getElementById("inputTypeParam").value = null
+						if (value.name === null)
+							document.getElementById("inputTypeParam").value = "Params"
+						else
+							document.getElementById("inputTypeParam").value = value.name
 					}
 					target[key] = value
 					//console.log("key: ", key, "value: ", value)
@@ -126,6 +128,7 @@ export function injectHtml(document){
 				const testElement = document.createElement("div")
 				testElement.className = "newTestInput"
 				testElement.attributes.number = id
+				testElement.style = "justify-content: space-between; gap: 2px;"
 		
 				const actionBtn = document.createElement("button")
 				actionBtn.className = "btnActionFull deButtoned"
@@ -181,34 +184,37 @@ export function injectHtml(document){
 			}
 
 			function paramsBtnInit() {
+				console.log("paramsBtnInit")
 				document.getElementById("btnParamType").addEventListener("click", () => {
-					testInput.params.name = "Type"
-					testInput.params.value = null
+					console.log("btnParamType clicked")
+					testInput.params = {
+						name: "Type",
+						value: document.getElementById("inputTypeParam").value
+					}
+					console.log(_testInput)
 				})
 			}
 
 			//init for the button to add new tests
 			function addNewTestBtnInit(){
 				document.getElementById("btnConfirmTest").addEventListener("click", () => {
-					if(testInput.params.name == "Type")
-					testInput.params.value = document.getElementById("inputTypeParam").value
-					testsQueue.push(structuredClone(_testInput))
-					try{
-						newTestAppend(document.getElementById("testList"), structuredClone(_testInput), testsQueue.length - 1)
-					}
-					catch(e){
-						console.log(e)
-					}
-					testInput.action = null
-					testInput.element = {
-						"selector": null,
-						"path": null,
-					}
-					testInput.params = {
-						"name": null,
-						"value": null
-					}
-					console.log(testsQueue)
+
+				// if(document.getElementById("inputTypeParam").value != null)
+				// 	testInput.params.value = document.getElementById("inputTypeParam").value
+					
+				testsQueue.push(structuredClone(_testInput))
+				newTestAppend(document.getElementById("testList"), structuredClone(_testInput), testsQueue.length - 1)
+				testInput.action = null
+				testInput.element = {
+					"selector": null,
+					"path": null,
+				}
+				testInput.params = {
+					"name": null,
+					"value": null
+				}
+				document.getElementById("inputTypeParam").value = null
+				console.log(testsQueue)
 				})
 				document.getElementById("btnConfirmTest").disabled = true
 				document.getElementById("btnConfirmTest").className = "btnActionFullAlt deButtoned"
@@ -237,18 +243,17 @@ export function injectHtml(document){
 				document.addEventListener('click', e => {
 					const isDropdownButton = e.target.matches('#action-dropdown-button')
 					const isDropdownParamBtn = e.target.matches('#params-dropdown-button')
-					const isDropdownParamTypeBtn = e.target.matches('#btnParamType')
-					if (!isDropdownButton && !isDropdownParamBtn && !isDropdownParamTypeBtn && e.target.closest(".dropDown") != null && !e.target.matches("button"))
+					if (!isDropdownButton && !isDropdownParamBtn && e.target.closest(".dropDown") != null && !e.target.matches("button"))
 						return
 					
 					let currentDropdown
-					if (isDropdownButton || isDropdownParamBtn || isDropdownParamTypeBtn) {
+					if (isDropdownButton || isDropdownParamBtn) {
 						currentDropdown = e.target.closest('.dropDown')
 						currentDropdown.classList.toggle('active')
 					}
 					
 					document.querySelectorAll(".dropDown.active").forEach(dropdown => {
-						if (dropdown !== currentDropdown && !(dropdown.id == "paramsDropDownButton" && isDropdownParamTypeBtn))
+						if (dropdown !== currentDropdown)
 						dropdown.classList.remove('active')
 					})
 				})

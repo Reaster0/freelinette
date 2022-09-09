@@ -1,30 +1,3 @@
-/* *
-{
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-} */
-/* section
-{
-	position: relative;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	min-height: 100vh;
-	background-image: url(https://images.hdqwalls.com/download/macos-mojave-day-mode-stock-pb-1920x1080.jpg);
-	background-size: cover;
-	background-attachment: fixed;
-	background-size: cover;
-	overflow: hidden;
-}
-
-section h2
-{
-	font-size: 5em;
-	color: #fff;
-	pointer-events: none;
-	text-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-} */
 
 /* @import url(‘https://fonts.googleapis.com/css?family=Roboto’); */
 
@@ -87,7 +60,6 @@ input, button {
 }
 
 .newTestInput{
-	/* flex: 1 1 0%; */
 	background-color: var(--darker);
 	padding: 1rem;
 	border-radius: 1.5rem;
@@ -96,7 +68,7 @@ input, button {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
-	/* gap: 3px; */
+	gap: 1px;
 }
 
 .test {
@@ -126,6 +98,7 @@ input, button {
 	text-transform: uppercase;
 	color: crimson;
 	transition: 0.4s;
+	max-width: fit-content;
 }
 
 #testInterface {
@@ -141,6 +114,7 @@ input, button {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	margin-top: 10px;
 	gap: 10px;
 }
 
@@ -212,12 +186,6 @@ input, button {
 	position: relative;
 }
 
-/* #buttonsContainer {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-} */
-
 .dropDownMenu {
 	position: absolute;
 	left: 0;
@@ -236,6 +204,17 @@ input, button {
 	gap: 10px;
 }
 
+#paramDropDownMenu {
+	left: -220%;
+	width: 320%;
+	align-items: flex-end;
+	gap: 20px;
+}
+
+.dropDownMenu button {
+	max-width: 100px;
+}
+
 .dropDown.active > .dropDownMenu {
 	opacity: 1;
 	pointer-events: auto;
@@ -248,7 +227,8 @@ input, button {
 	font-family: Roboto;
 	border-radius: 1.5rem;
 	margin: 0;
-	width: 100%;
+	width: 72%;
 	overflow-x: scroll; 
 	justify-content: space-around;
+	/* display: block; */
 }
