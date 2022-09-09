@@ -84,7 +84,6 @@ export function injectHtml(document){
 							document.getElementById("elementPickerBtn").innerHTML = value.selector
 					}
 					if (key === "params") {
-						console.log("params", value)
 						if (value.name === null)
 							document.getElementById("params-dropdown-button").innerHTML = "Params"
 						else
@@ -192,7 +191,13 @@ export function injectHtml(document){
 					}
 				})
 
-				document.getElementById("btnParamSelect").addEventListener("click", () => {
+				document.getElementById("btnParamSelect").addEventListener("click", (e) => {
+					const select = pageDocument.querySelectorAll(testInput.element.path + " option")
+					console.log(select)
+					//working here
+					for (let i = 0; i < select.length; i++){
+						console.log(select[i].innerHTML)
+					}
 					testInput.params = {
 						name: "Select",
 						value: null, //TODO: add the value of the select
