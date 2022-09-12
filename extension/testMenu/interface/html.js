@@ -63,7 +63,8 @@ export function injectHtml(document){
 				},
 				"params": {
 					"name": null,
-					"value": null}
+					"value": null
+				}
 			}
 		
 			let testsQueue = []
@@ -83,12 +84,12 @@ export function injectHtml(document){
 						else
 							document.getElementById("elementPickerBtn").innerHTML = value.selector
 					}
-					if (key === "params") {
-						if (value.name === null)
-							document.getElementById("params-dropdown-button").innerHTML = "Params"
-						else
-							document.getElementById("params-dropdown-button").innerHTML = value.name
-					}
+					// if (key === "params") {
+					// 	if (value.name === null)
+					// 		document.getElementById("params-dropdown-button").innerHTML = "Params"
+					// 	else
+					// 		document.getElementById("params-dropdown-button").innerHTML = value.name
+					// }
 					target[key] = value
 
 					if (target.action != null && target.element.selector != null){
@@ -193,15 +194,29 @@ export function injectHtml(document){
 
 				document.getElementById("btnParamSelect").addEventListener("click", (e) => {
 					const select = pageDocument.querySelectorAll(testInput.element.path + " option")
-					console.log(select)
 					//working here
-					for (let i = 0; i < select.length; i++){
-						console.log(select[i].innerHTML)
+					console.log(e.target)
+					if (e.target.tagName != "OPTION"){
+						e.target.innerHTML = '<option selected value="" hidden disabled>Select</option>'
+						for (let i = 0; i < select.length; i++){
+							const option = document.createElement("option")
+							option.value = select[i].value
+							option.innerHTML = select[i].innerHTML
+							e.target.appendChild(option)
+						}
+						testInput.params = {
+							name: null,
+							value: null,
+						}
 					}
-					testInput.params = {
-						name: "Select",
-						value: null, //TODO: add the value of the select
-					}
+					else
+						testInput.params = {
+							name: "Select",
+							value: {
+								id: e.target.value,
+								text: e.target.innerHTML
+							}
+						}
 				})
 
 				document.getElementById("btnParamExist").addEventListener("click", () => {

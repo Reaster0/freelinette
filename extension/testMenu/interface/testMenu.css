@@ -52,7 +52,7 @@
 	display: flex;	
 }
 
-input, button {
+input, button, select {
 	appearance: none;
 	border: none;
 	outline: none;
