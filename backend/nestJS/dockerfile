@@ -1,0 +1,7 @@
+FROM alpine
+
+RUN apk update &&\
+	apk add npm &&\
+	apk add neofetch
+
+ENTRYPOINT [ "neofetch" ]
