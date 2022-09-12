@@ -78,18 +78,13 @@ export function injectHtml(document){
 						else
 							document.getElementById("action-dropdown-button").innerHTML = value
 						}
+						console.log("action set")
 					if (key === "element") {
 						if (value.selector === null)
 							document.getElementById("elementPickerBtn").innerHTML = "Element"
 						else
 							document.getElementById("elementPickerBtn").innerHTML = value.selector
 					}
-					// if (key === "params") {
-					// 	if (value.name === null)
-					// 		document.getElementById("params-dropdown-button").innerHTML = "Params"
-					// 	else
-					// 		document.getElementById("params-dropdown-button").innerHTML = value.name
-					// }
 					target[key] = value
 
 					if (target.action != null && target.element.selector != null){
@@ -208,12 +203,15 @@ export function injectHtml(document){
 			function actionBtnInit() {
 				document.getElementById("btnActionClick").addEventListener("click", () => {
 					testInput.action = "Click"
+					document.getElementById("btnParamSelect").innerHTML = '<option selected value="" hidden disabled>Select</option>'
 				})
 				document.getElementById("btnActionFill").addEventListener("click", () => {
 					testInput.action = "Fill"
+					document.getElementById("btnParamSelect").innerHTML = '<option selected value="" hidden disabled>Select</option>'
 				})
 				document.getElementById("btnActionObserve").addEventListener("click", () => {
 					testInput.action = "Look"
+					document.getElementById("btnParamSelect").innerHTML = '<option selected value="" hidden disabled>Select</option>'
 				})
 			}
 
@@ -230,10 +228,11 @@ export function injectHtml(document){
 				document.getElementById("btnParamSelect").addEventListener("click", (e) => {
 
 					const select = pageDocument.querySelectorAll(testInput.element.path + " option")
-					console.log(e.target)
+					console.log(select)
 					if (e.target.tagName != "OPTION"){
 						e.target.innerHTML = '<option selected value="" hidden disabled>Select</option>'
 						for (let i = 0; i < select.length; i++){
+							console.log("i add one option")
 							const option = document.createElement("option")
 							option.value = select[i].value
 							option.innerHTML = select[i].innerHTML
@@ -288,8 +287,9 @@ export function injectHtml(document){
 			function elementPickerInit(){
 				const elementBtn = document.getElementById("elementPickerBtn")
 
-				elementBtn.addEventListener("click", (e) => {
+				elementBtn.addEventListener("click", () => {
 					saintPickerInit(pageDocument, menuIframe)
+					document.getElementById("btnParamSelect").innerHTML = '<option selected value="" hidden disabled>Select</option>'
 				})
 
 				elementBtn.addEventListener("elemInspector", (e) => {
@@ -299,7 +299,6 @@ export function injectHtml(document){
 					}
 					console.log(getCSSPath(e.detail))
 				})
-
 			}
 		
 			//initialize the animation of the drawer with id #data-dropdown
