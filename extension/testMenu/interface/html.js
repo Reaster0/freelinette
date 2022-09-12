@@ -94,18 +94,49 @@ export function injectHtml(document){
 
 					if (target.action != null && target.element.selector != null){
 						document.getElementById("btnConfirmTest").disabled = false
+						document.getElementById("params-dropdown-button").disabled = false
+						document.getElementById("params-dropdown-button").classList.remove("deButtoned")
 						document.getElementById("btnConfirmTest").className = "btnActionFullAlt"
+						target.params = {
+							name: null,
+							value: null
+						}
+						toggleShowParams(target.action, menuIframe.contentDocument)
 					}
 					return Reflect.set(target, key, value)
 				}
 			})
-		
+
 			drawerSystemInit()
 			actionBtnInit()
 			paramsBtnInit()
 			elementPickerInit()
 			addNewTestBtnInit()
 			exportJSONBtnInit()
+
+			function toggleShowParams(action, iframeDocument){
+				console.log("toggleShowParams", action)
+
+				iframeDocument.getElementById("btnParamSelect").setAttribute("hidden", "true")
+				iframeDocument.getElementById("divTypeParam").setAttribute("hidden", "true")
+				iframeDocument.getElementById("btnParamExist").setAttribute("hidden", "true")
+				iframeDocument.getElementById("ParamDropDownMenu").style.left = null
+				if (action === "Click"){
+					console.log("show params click")
+					iframeDocument.getElementById("btnParamSelect").removeAttribute("hidden")
+					iframeDocument.getElementById("ParamDropDownMenu").style.left = null
+				}
+				else if (action === "Fill") {
+					console.log("show params fill")
+					iframeDocument.getElementById("divTypeParam").removeAttribute("hidden")
+					iframeDocument.getElementById("ParamDropDownMenu").style.left = "-210%"
+				}
+				else if (action === "Look") {
+					console.log("show params look")
+					iframeDocument.getElementById("btnParamExist").removeAttribute("hidden")
+					iframeDocument.getElementById("ParamDropDownMenu").style.left = null
+				}
+			}
 
 
 			//init the button to export to JSON
@@ -123,6 +154,9 @@ export function injectHtml(document){
 				const addBtn = document.getElementById("btnConfirmTest")
 				addBtn.disabled = true
 				document.getElementById("btnConfirmTest").className = "btnActionFullAlt deButtoned"
+				toggleShowParams(null, menuIframe.contentDocument)
+				document.getElementById("params-dropdown-button").disabled = true
+				document.getElementById("params-dropdown-button").classList.add("deButtoned")
 
 
 				const testElement = document.createElement("div")
@@ -184,8 +218,9 @@ export function injectHtml(document){
 			}
 
 			function paramsBtnInit() {
+				document.getElementById("params-dropdown-button").disabled = true
+
 				document.getElementById("btnParamType").addEventListener("click", () => {
-					console.log("btnParamType clicked")
 					testInput.params = {
 						name: "Type",
 						value: document.getElementById("inputTypeParam").value
@@ -193,8 +228,8 @@ export function injectHtml(document){
 				})
 
 				document.getElementById("btnParamSelect").addEventListener("click", (e) => {
+
 					const select = pageDocument.querySelectorAll(testInput.element.path + " option")
-					//working here
 					console.log(e.target)
 					if (e.target.tagName != "OPTION"){
 						e.target.innerHTML = '<option selected value="" hidden disabled>Select</option>'
