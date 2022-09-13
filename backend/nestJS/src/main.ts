@@ -14,10 +14,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
   app.useGlobalPipes(
-	new ValidationPipe({ whitelist: true, transform: true}));
-  app.useGlobalPipes(
-		new ParseArrayPipe({ items: testDto, whitelist: true })
-	);
+	new ValidationPipe({ whitelist: true, transform: true, forbidNonWhitelisted: true }));
 
   await app.listen(3000);
 }

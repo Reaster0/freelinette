@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "cypress": "^10.4.0"
+  },
+  "devDependencies": {
+    "@deploysentinel/cypress-recorder": "^0.1.0"
+  }
+}

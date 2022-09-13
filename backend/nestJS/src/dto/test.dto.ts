@@ -1,4 +1,6 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { INestApplication } from '@nestjs/common';
+import { Type } from 'class-transformer';
+import { IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
 
 
 class elementDto {
@@ -23,11 +25,17 @@ class ParamValueDto {
 class paramsDto {
 	
 	@IsOptional()
+	@IsString()
 	readonly name: string;
 	
 	@IsOptional()
-	readonly value: string | ParamValueDto;
-	
+	@IsString()
+	readonly value: string;
+
+	@IsOptional()
+	@ValidateNested({ each: true })
+	@Type(() => ParamValueDto)
+	readonly valueExtend: ParamValueDto;
 }
 
 
@@ -38,8 +46,12 @@ export class testDto {
 	readonly action: string;
 
 	@IsNotEmpty()
+	@ValidateNested({ each: true })
+	@Type(() => elementDto)
 	readonly element: elementDto;
 
 	@IsNotEmpty()
+	@ValidateNested({ each: true })
+	@Type(() => paramsDto)
 	readonly params: paramsDto;
 }
