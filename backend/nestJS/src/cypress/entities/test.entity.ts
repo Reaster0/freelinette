@@ -2,20 +2,20 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Test {
-	@PrimaryGeneratedColumn()
+	//@PrimaryGeneratedColumn()
 	id: number;
 
 
-	@Column('text')
+	//@Column('text')
 	action: string;
 
-	@Column()
+	//@Column()
 	element: {
 		selector: string;
 		path: string;
 	}
 
-	@Column()
+	//@Column()
 	params: {
 		name: string;
 		value: string;

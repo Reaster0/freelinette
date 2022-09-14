@@ -1,11 +1,11 @@
-import { testDto } from './../dto/test.dto';
+import { testDto } from './dto/test.dto';
 import { Injectable } from '@nestjs/common';
 import { exec, execSync } from "child_process";
 const fs = require('fs');
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 //import { v4 as uuid } from 'uuid';
-import { Test } from '../entities/test.entity';
+import { Test } from './entities/test.entity';
 
 @Injectable()
 export class CypressService {

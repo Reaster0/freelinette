@@ -1,7 +1,8 @@
+import { CypressModule } from './cypress/cypress.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CypressService } from './cypress/cypress.service';
+// import { CypressService } from './cypress/cypress.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
@@ -18,8 +19,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 		  synchronize: true, // Synch DB with entities each time we load the app
 		}),
 	  }),
+	  CypressModule
   ],
   controllers: [AppController],
-  providers: [AppService, CypressService],
+  providers: [AppService],
 })
 export class AppModule {}

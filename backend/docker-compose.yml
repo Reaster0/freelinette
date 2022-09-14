@@ -1,29 +1,36 @@
 version: '3'
 
 services:
-  # back:
-  #   build: .
-  #   ports:
-  #    - "3000:3000"
-  #   platform: "linux/amd64"
-    pgadmin:
-      container_name: pgadmin
-      image: dpage/pgadmin4
-      restart: always
-      ports:
-        - "5050:80"
-      environment:
-        PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-        PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+  back:
+    container_name: backNestJS
+    restart: always
+    build: ./nestJS
+    ports:
+     - "3000:3000"
+    platform: "linux/amd64"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
 
     
-    db:
-      container_name: db
-      image: postgres
-      restart: always
-      ports:
-        - "5432:5432"
-      environment:
-        POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-        POSTGRES_USER: ${DATABASE_USER}
-        POSTGRES_DB: ${DATABASE_NAME}
+  db:
+    container_name: db
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_DB: ${DATABASE_NAME}

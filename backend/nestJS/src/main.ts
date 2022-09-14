@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ParseArrayPipe, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { testDto } from './dto/test.dto';
+import { testDto } from './cypress/dto/test.dto';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

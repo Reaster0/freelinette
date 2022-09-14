@@ -4,4 +4,4 @@ RUN apk update &&\
 	apk add npm &&\
 	apk add neofetch
 
-ENTRYPOINT [ "neofetch" ]
+ENTRYPOINT [ "tail", "-f", "/dev/null" ]
