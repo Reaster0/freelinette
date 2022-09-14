@@ -2,17 +2,15 @@ import { testDto } from './dto/test.dto';
 import { Injectable } from '@nestjs/common';
 import { exec, execSync } from "child_process";
 const fs = require('fs');
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-//import { v4 as uuid } from 'uuid';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { Test } from './entities/test.entity';
 
 @Injectable()
 export class CypressService {
 	constructor(
-		@InjectRepository(Test)
-		private testRepository: Repository<Test>,
-	) {}
+		@InjectModel(Test.name) private readonly testModel: Model<Test>,
+	) {} 
 
 	async testOutput(): Promise<string> {
 		let result: string;
@@ -25,13 +23,20 @@ export class CypressService {
 		return result;
 	}
 
-	storeTest(test: testDto): void {
-		const tempy = {
-			id: 420,
-			...test
-		}
-		this.testRepository.save(tempy);
+	findAll() {
+		return this.testModel.find().exec();
 	}
+
+	findOne(id: string) {
+		const test = this.testModel.findOne({ id: id }).exec();
+		return test;
+	}
+
+	createNewTest(test: testDto) {
+		const newTest = new this.testModel(test);
+		newTest.save();
+	}
+	
 
 	launchTest(): void {
 	// 	exec('pwd;', { cwd: "../cypress-runtime"},  ((error, stdout, stderr) => {

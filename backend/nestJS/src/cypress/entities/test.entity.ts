@@ -1,21 +1,18 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
+@Schema()
+export class Test extends Document {
 
-@Entity()
-export class Test {
-	//@PrimaryGeneratedColumn()
-	id: number;
-
-
-	//@Column('text')
+	@Prop(String)
 	action: string;
 
-	//@Column()
+	@Prop({type: {selector: String, path: String}})
 	element: {
 		selector: string;
 		path: string;
 	}
 
-	//@Column()
+	@Prop({ type: {name: String, value: String, valueExtend: {id: String, text: String}}})
 	params: {
 		name: string;
 		value: string;
@@ -26,3 +23,6 @@ export class Test {
 	}
 
 }
+
+
+export const TestSchema = SchemaFactory.createForClass(Test);

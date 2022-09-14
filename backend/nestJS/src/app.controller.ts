@@ -6,19 +6,17 @@ import { AppService } from './app.service';
 @Controller()
 export class AppController {
 	constructor(
-		private readonly appService: AppService,
 		private readonly cypressService: CypressService) { }
-
-	@Get()
-	getHello(): string {
-		return this.appService.getHello();
-	}
 
 
 	@Post('testExec')
 	testExec(@Body(new ParseArrayPipe({ items: testDto, whitelist: true, forbidNonWhitelisted: true })) testDto: testDto[]): testDto[] {
-		this.cypressService.storeTest(testDto[0]);
+		this.cypressService.createNewTest(testDto[0]);
 		return testDto;
+	}
+	@Get('testExec')
+	getALLTests(): any {
+		return this.cypressService.findAll()
 	}
 
 	@Get('output')
@@ -27,8 +25,9 @@ export class AppController {
 	}
 
 	@Get('launch')
-	launch(): void {
+	async launch(): Promise<string> {
 		this.cypressService.launchTest();
+		return await this.cypressService.testOutput();
 	}
 
 }

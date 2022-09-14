@@ -13,24 +13,33 @@ services:
     volumes:
       - .:/app
 
-  pgadmin:
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    restart: always
-    ports:
-      - "5050:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+  # pgadmin:
+  #   container_name: pgadmin
+  #   image: dpage/pgadmin4
+  #   restart: always
+  #   ports:
+  #     - "5050:80"
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+  #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
 
     
   db:
     container_name: db
-    image: postgres
+    image: mongo
     restart: always
     ports:
-      - "5432:5432"
+      - "27017:27017"
     environment:
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_DB: ${DATABASE_NAME}
+      - MONGODB_DATABASE=${DATABASE_NAME}
+      # - MONGODB_USERNAME=${DATABASE_USER}
+      # - MONGODB_PASSWORD=${DATABASE_PASSWORD}
+
+    # image: postgres
+    # restart: always
+    # ports:
+    #   - "5432:5432"
+    # environment:
+    #   POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    #   POSTGRES_USER: ${DATABASE_USER}
+    #   POSTGRES_DB: ${DATABASE_NAME}
