@@ -17,12 +17,18 @@ export class AppController {
 
 	@Post('testExec')
 	testExec(@Body(new ParseArrayPipe({ items: testDto, whitelist: true, forbidNonWhitelisted: true })) testDto: testDto[]): testDto[] {
+		this.cypressService.storeTest(testDto[0]);
 		return testDto;
 	}
 
+	@Get('output')
+	async getOutput(): Promise<string> {
+		return await this.cypressService.testOutput();
+	}
+
 	@Get('launch')
-	async launch(): Promise<void> {
-		return this.cypressService.launchTest();
+	launch(): void {
+		this.cypressService.launchTest();
 	}
 
 }

@@ -18,7 +18,7 @@
 
 
   demo tests
-    ✓ login user (1046ms)
+    ✓ login user (1135ms)
 
 
   1 passing (2s)
@@ -34,7 +34,7 @@
   │ Skipped:      0                                                                                │
   │ Screenshots:  0                                                                                │
   │ Video:        true                                                                             │
-  │ Duration:     1 second                                                                         │
+  │ Duration:     2 seconds                                                                        │
   │ Spec Ran:     spec.cy.js                                                                       │
   └────────────────────────────────────────────────────────────────────────────────────────────────┘
 
@@ -53,7 +53,7 @@
 
        Spec                                              Tests  Passing  Failing  Pending  Skipped  
   ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
-  │ ✔  spec.cy.js                               00:01        1        1        -        -        - │
+  │ ✔  spec.cy.js                               00:02        1        1        -        -        - │
   └────────────────────────────────────────────────────────────────────────────────────────────────┘
-    ✔  All specs passed!                        00:01        1        1        -        -        -  
+    ✔  All specs passed!                        00:02        1        1        -        -        -  
 
