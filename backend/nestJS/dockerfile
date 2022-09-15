@@ -8,5 +8,6 @@ RUN apt update &&\
 
 COPY docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
+RUN chown root.root -R /root
 
 ENTRYPOINT sh docker-entrypoint.sh

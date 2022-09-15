@@ -52,10 +52,10 @@ export class CypressService {
 
 		try{
 			console.log("the test has started")
-			execSync('./node_modules/.bin/cypress run --browser chrome > output.txt', { cwd: "../cypress-runtime"});
+			execSync('./node_modules/.bin/cypress run 2>&1 > output.txt', { cwd: "../cypress-runtime"});
 			console.log("test success")
 		} catch (e) {
-			console.log("the test failed")
+			console.log(e)
 		}
 	}
 }

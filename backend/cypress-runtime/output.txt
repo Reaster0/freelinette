@@ -5,8 +5,8 @@
 
   ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
   │ Cypress:        10.4.0                                                                         │
-  │ Browser:        Chrome 105 (headless)                                                          │
-  │ Node Version:   v16.15.1 (/usr/local/bin/node)                                                 │
+  │ Browser:        Electron 102 (headless)                                                        │
+  │ Node Version:   v12.22.9 (/usr/bin/node)                                                       │
   │ Specs:          1 found (spec.cy.js)                                                           │
   │ Searched:       cypress/e2e/**/*.cy.{js,jsx,ts,tsx}                                            │
   └────────────────────────────────────────────────────────────────────────────────────────────────┘
@@ -18,7 +18,7 @@
 
 
   demo tests
-    ✓ login user (1099ms)
+    ✓ login user (1140ms)
 
 
   1 passing (2s)
@@ -42,8 +42,7 @@
   (Video)
 
   -  Started processing:  Compressing to 32 CRF                                                     
-  -  Finished processing: /home/earnaud/Work/freelinette/backend/cypress-runtime/cypr    (0 seconds)
-                          ess/videos/spec.cy.js.mp4                                                 
+  -  Finished processing: /app/cypress-runtime/cypress/videos/spec.cy.js.mp4             (0 seconds)
 
 
 ================================================================================
