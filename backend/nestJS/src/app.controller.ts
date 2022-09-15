@@ -1,7 +1,6 @@
 import { CypressService } from './cypress/cypress.service';
 import { testDto } from './cypress/dto/test.dto';
 import { Controller, Get, Post, Body, ParseArrayPipe } from '@nestjs/common';
-import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
