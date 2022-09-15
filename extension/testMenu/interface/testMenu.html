@@ -22,22 +22,24 @@
 					</div>
 					<button id="elementPickerBtn" style="overflow-x: hidden;" class="btnActionEmpty">Element</button>
 					<div id="paramsDropDownButton" class="dropDown">
-						<button id="params-dropdown-button" class="btnActionEmptyAlt">Params</button>
-						<div class="dropDownMenu">
-							<div id="typeParamDropDown" class="dropDown">
+						<button id="params-dropdown-button" class="btnActionEmptyAlt deButtoned">Params</button>
+						<div id="ParamDropDownMenu" class="dropDownMenu">
+							<div id="divTypeParam" hidden style="flex-direction: row;">
+								<input id="inputTypeParam" class="fieldInput"></input>
 								<button id="btnParamType" class="btnActionEmptyAlt">Type</button>
-								<div class="dropDownMenu" style="left: -300%; width: 400%;">
-									<input id="inputTypeParam" class="fieldInput"></input>
-								</div>
 							</div>
+							<select name="Select" id="btnParamSelect" hidden class="btnActionEmptyAlt" style="max-width: 95px;">Select</select>
+								<button id="btnParamExist" hidden class="btnActionEmptyAlt">Exist</button>
 						</div>
 					</div>
-					<!-- <button class="btnActionEmptyAlt">Params</button> -->
 				</div>
-				<button id="btnConfirmTest" class="btnActionFullAlt deButtoned">+</button>
+				<div>
+					<button id="btnConfirmTest" class="btnActionFullAlt deButtoned" style="width: 75%;">+</button>
+					<button id="btnExportJSON" class="btnActionEmptyAlt">JSON</button>
+				</div>
+			</div>
 				<div id="testList"></div>
 			</div>
-		</div>
 	</div>
 </body>
 

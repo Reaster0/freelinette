@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  back:
+    container_name: backNestJS
+    restart: always
+    build: ./nestJS
+    ports:
+     - "3000:3000"
+    platform: "linux/amd64"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    
+  db:
+    container_name: db
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGODB_DATABASE=${DATABASE_NAME}
+      # - MONGODB_USERNAME=${DATABASE_USER}
+      # - MONGODB_PASSWORD=${DATABASE_PASSWORD}

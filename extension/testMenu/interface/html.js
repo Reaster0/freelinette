@@ -1,4 +1,5 @@
-import { dragElement, getCSSPath, getCSSSelector } from "../utils.js"
+import { dragElement } from "../utils.js"
+import { drawerSystemInit, toggleShowParams, actionBtnInit, paramsBtnInit, exportJSONBtnInit, addNewTestBtnInit, elementPickerInit } from "./initItem.js"
 import htmlPage from "./testMenu.html"
 import cssPage from "./testMenu.css"
 
@@ -63,7 +64,8 @@ export function injectHtml(document){
 				},
 				"params": {
 					"name": null,
-					"value": null}
+					"value": null
+				}
 			}
 		
 			let testsQueue = []
@@ -77,202 +79,36 @@ export function injectHtml(document){
 						else
 							document.getElementById("action-dropdown-button").innerHTML = value
 						}
+						console.log("action set")
 					if (key === "element") {
 						if (value.selector === null)
 							document.getElementById("elementPickerBtn").innerHTML = "Element"
 						else
 							document.getElementById("elementPickerBtn").innerHTML = value.selector
 					}
-					if (key === "params") {
-						if (!value.value)
-							document.getElementById("inputTypeParam").value = null
-					}
 					target[key] = value
-					//console.log("key: ", key, "value: ", value)
 
 					if (target.action != null && target.element.selector != null){
 						document.getElementById("btnConfirmTest").disabled = false
+						document.getElementById("params-dropdown-button").disabled = false
+						document.getElementById("params-dropdown-button").classList.remove("deButtoned")
 						document.getElementById("btnConfirmTest").className = "btnActionFullAlt"
+						target.params = {
+							name: null,
+							value: null
+						}
+						toggleShowParams(target.action, menuIframe.contentDocument)
 					}
 					return Reflect.set(target, key, value)
 				}
 			})
-		
-			drawerSystemInit()
-			actionBtnInit()
-			paramsBtnInit()
-			elementPickerInit()
-			addNewTestBtnInit()
 
-		
-			//append a new test in the dom
-			function newTestAppend(parentNode, test, id){
-				const addBtn = document.getElementById("btnConfirmTest")
-				addBtn.disabled = true
-				document.getElementById("btnConfirmTest").className = "btnActionFullAlt deButtoned"
-
-
-				const testElement = document.createElement("div")
-				testElement.className = "newTestInput"
-				testElement.attributes.number = id
-		
-				const actionBtn = document.createElement("button")
-				actionBtn.className = "btnActionFull deButtoned"
-				if (test.action != null)
-					actionBtn.innerHTML = test.action
-				else
-					actionBtn.innerHTML = "Action"
-		
-				const elementBtn = document.createElement("button")
-				elementBtn.className = "btnActionEmpty deButtoned"
-				elementBtn.style = "overflow-x: hidden; max-width: 30%;"
-				if (test.element.selector != null)
-					elementBtn.innerHTML = test.element.selector
-				else
-					elementBtn.innerHTML = "Element"
-		
-				const paramsBtn = document.createElement("button")
-				paramsBtn.className = "btnActionEmptyAlt deButtoned"
-				paramsBtn.style = "overflow-x: scroll; max-width: 30%;"
-				if (test.params.name === null)
-					paramsBtn.innerHTML = "Params"
-				else
-					paramsBtn.innerHTML = test.params.name + ": " + test.params.value
-		
-				const deleteBtn = document.createElement("button")
-				deleteBtn.className = "buttonDelete"
-				deleteBtn.innerHTML = "X"
-				deleteBtn.onclick = function(){
-					testsQueue.splice(testElement.attributes.number, 1)
-					parentNode.innerHTML = ""
-					for (let key in testsQueue)
-						newTestAppend(parentNode, testsQueue[key], key)
-				}
-		
-				testElement.appendChild(actionBtn)
-				testElement.appendChild(elementBtn)
-				testElement.appendChild(paramsBtn)
-				testElement.appendChild(deleteBtn)
-				parentNode.appendChild(testElement)
-			}
-		
-			//system for the action buttons for creation of the tests (related to #newTestInput)
-			function actionBtnInit() {
-				document.getElementById("btnActionClick").addEventListener("click", () => {
-					testInput.action = "Click"
-				})
-				document.getElementById("btnActionFill").addEventListener("click", () => {
-					testInput.action = "Fill"
-				})
-				document.getElementById("btnActionObserve").addEventListener("click", () => {
-					testInput.action = "Look"
-				})
-			}
-
-			function paramsBtnInit() {
-				document.getElementById("btnParamType").addEventListener("click", () => {
-					testInput.params.name = "Type"
-					testInput.params.value = null
-				})
-			}
-
-			//init for the button to add new tests
-			function addNewTestBtnInit(){
-				document.getElementById("btnConfirmTest").addEventListener("click", () => {
-					if(testInput.params.name == "Type")
-					testInput.params.value = document.getElementById("inputTypeParam").value
-					testsQueue.push(structuredClone(_testInput))
-					try{
-						newTestAppend(document.getElementById("testList"), structuredClone(_testInput), testsQueue.length - 1)
-					}
-					catch(e){
-						console.log(e)
-					}
-					testInput.action = null
-					testInput.element = {
-						"selector": null,
-						"path": null,
-					}
-					testInput.params = {
-						"name": null,
-						"value": null
-					}
-					console.log(testsQueue)
-				})
-				document.getElementById("btnConfirmTest").disabled = true
-				document.getElementById("btnConfirmTest").className = "btnActionFullAlt deButtoned"
-			}
-
-			//initialize the Element button
-			function elementPickerInit(){
-				const elementBtn = document.getElementById("elementPickerBtn")
-
-				elementBtn.addEventListener("click", (e) => {
-					saintPickerInit(pageDocument, menuIframe)
-				})
-
-				elementBtn.addEventListener("elemInspector", (e) => {
-					testInput.element = {
-						"selector": getCSSSelector(e.detail),
-						"path": getCSSPath(e.detail)
-					}
-					console.log(getCSSPath(e.detail))
-				})
-
-			}
-		
-			//initialize the animation of the drawer with id #data-dropdown
-			function drawerSystemInit() {
-				document.addEventListener('click', e => {
-					const isDropdownButton = e.target.matches('#action-dropdown-button')
-					const isDropdownParamBtn = e.target.matches('#params-dropdown-button')
-					const isDropdownParamTypeBtn = e.target.matches('#btnParamType')
-					if (!isDropdownButton && !isDropdownParamBtn && !isDropdownParamTypeBtn && e.target.closest(".dropDown") != null && !e.target.matches("button"))
-						return
-					
-					let currentDropdown
-					if (isDropdownButton || isDropdownParamBtn || isDropdownParamTypeBtn) {
-						currentDropdown = e.target.closest('.dropDown')
-						currentDropdown.classList.toggle('active')
-					}
-					
-					document.querySelectorAll(".dropDown.active").forEach(dropdown => {
-						if (dropdown !== currentDropdown && !(dropdown.id == "paramsDropDownButton" && isDropdownParamTypeBtn))
-						dropdown.classList.remove('active')
-					})
-				})
-			}
+			drawerSystemInit(document)
+			actionBtnInit(testInput, document)
+			paramsBtnInit(document, pageDocument, testInput)
+			elementPickerInit(document, testInput, pageDocument)
+			addNewTestBtnInit(document, testsQueue, testInput, _testInput)
+			exportJSONBtnInit(document, testsQueue)
 		}
-	}
-}
-
-function saintPickerInit(document, menuIframe){
-	
-	const saintPicker = document.createElement("div")
-	saintPicker.className = "saintPickerOverlay"
-	document.body.appendChild(saintPicker)
-	
-	saintPicker.addEventListener("mousemove", (e) => {
-		clearHighlight()
-		e.target.style.zIndex = -2147483646
-		let elem = document.elementFromPoint(e.x, e.y)
-		e.target.style.zIndex = 2147483646
-		elem.classList.add("saintHover")
-	})
-	
-	saintPicker.addEventListener("click", (e) => {
-		e.target.style.zIndex = -2147483646
-		let elem = document.elementFromPoint(e.x, e.y)
-		e.target.style.zIndex = 2147483646
-		clearHighlight()
-		document.querySelector(".saintPickerOverlay").remove()
-		menuIframe.contentDocument.body
-		.querySelector("#elementPickerBtn").dispatchEvent(new CustomEvent("elemInspector", {detail: elem}))
-	})
-	
-	function clearHighlight() {
-		document.querySelectorAll(".saintHover").forEach(e => {
-			e.classList.remove("saintHover")
-		})
 	}
 }
