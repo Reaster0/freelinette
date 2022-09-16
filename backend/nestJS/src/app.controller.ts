@@ -8,12 +8,12 @@ export class AppController {
 		private readonly cypressService: CypressService) { }
 
 
-	@Post('testExec')
+	@Post('testList')
 	testExec(@Body(new ParseArrayPipe({ items: testDto, whitelist: true, forbidNonWhitelisted: true })) testDto: testDto[]): testDto[] {
-		this.cypressService.createNewTest(testDto[0]);
+		this.cypressService.createNewTest(testDto);
 		return testDto;
 	}
-	@Get('testExec')
+	@Get('testList')
 	getALLTests(): any {
 		return this.cypressService.findAll()
 	}

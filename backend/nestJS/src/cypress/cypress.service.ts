@@ -32,8 +32,13 @@ export class CypressService {
 		return test;
 	}
 
-	createNewTest(test: testDto) {
-		const newTest = new this.testModel(test);
+	createNewTest(testo: testDto[]) {
+		const mdr = {
+			name: "test ID",
+			test: testo
+		}
+		console.log("mdr =" , mdr)
+		const newTest = new this.testModel(mdr);
 		newTest.save();
 	}
 	
@@ -52,7 +57,7 @@ export class CypressService {
 
 		try{
 			console.log("the test has started")
-			execSync('./node_modules/.bin/cypress run 2>&1 > output.txt', { cwd: "../cypress-runtime"});
+			execSync('export CYPRESS_CACHE_FOLDER=/lol/.cache; ./node_modules/.bin/cypress run 2>&1 > output.txt', { cwd: "../cypress-runtime"});
 			console.log("test success")
 		} catch (e) {
 			console.log(e)
