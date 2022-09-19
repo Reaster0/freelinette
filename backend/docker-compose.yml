@@ -7,7 +7,6 @@ services:
     build: ./nestJS
     ports:
      - "3000:3000"
-    # platform: "linux/amd64"
     env_file:
       - .env
     volumes:
@@ -21,6 +20,7 @@ services:
       - "27017:27017"
     environment:
       - MONGODB_DATABASE=${DATABASE_NAME}
+
       # - MONGODB_USERNAME=${DATABASE_USER}
       # - MONGODB_PASSWORD=${DATABASE_PASSWORD}
 
