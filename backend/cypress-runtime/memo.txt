@@ -1,2 +1,0 @@
-./node_modules/.bin/cypress run --browser chrome|firefox
-./node_modules/.bin/cypress open

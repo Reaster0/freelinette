@@ -24,9 +24,10 @@ export class AppController {
 	}
 
 	@Get('launch')
-	async launch(): Promise<string> {
+	launch(): string {
 		this.cypressService.launchTest();
-		return await this.cypressService.testOutput();
+		return "testLaunched";
+		//return await this.cypressService.testOutput();
 	}
 
 }

@@ -1,6 +1,6 @@
 import { testDto } from './dto/test.dto';
 import { Injectable } from '@nestjs/common';
-import { exec, execSync } from "child_process";
+import { exec, execSync, spawn, fork } from "child_process";
 const fs = require('fs');
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -44,23 +44,24 @@ export class CypressService {
 	
 
 	launchTest(): void {
-	// 	exec('pwd;', { cwd: "../cypress-runtime"},  ((error, stdout, stderr) => {
-	// 		if (error) {
-	// 			return (`error: ${error.message}`);
-	// 		}
-	// 		if (stderr) {
-	// 			return (`stderr: ${stderr}`);
-	// 		}
-	// 		return (`stdout: ${stdout}`);
-	// 	}));
+
+		exec('./exec.sh', { cwd: "../cypress-runtime"},  ((error, stdout, stderr) => {
+			if (error) {
+				console.log(`error: ${error.message}`);
+			}
+			if (stderr) {
+				console.log(`stderr: ${stderr}`);
+			}
+			console.log(`stdout: ${stdout}`);
+		}));
 
 
-		try{
-			console.log("the test has started")
-			execSync('export CYPRESS_CACHE_FOLDER=/lol/.cache; ./node_modules/.bin/cypress run 2>&1 > output.txt', { cwd: "../cypress-runtime"});
-			console.log("test success")
-		} catch (e) {
-			console.log(e)
-		}
+		// try{
+		// 	console.log("the test has started")
+		// 	execSync('export CYPRESS_CACHE_FOLDER=/cypress/.cache; ./node_modules/.bin/cypress run 2>&1 > output.txt', { cwd: "../cypress-runtime"});
+		// 	console.log("test success")
+		// } catch (e) {
+		// 	console.log(e)
+		// }
 	}
 }

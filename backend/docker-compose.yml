@@ -2,16 +2,16 @@ version: '3'
 
 services:
   back:
-    container_name: backNestJS
+    container_name: back-nestJS
     restart: always
     build: ./nestJS
     ports:
      - "3000:3000"
-    platform: "linux/amd64"
+    # platform: "linux/amd64"
     env_file:
       - .env
     volumes:
-      - .:/app
+      - ./nestJS:/app/nestJS
     
   db:
     container_name: db
@@ -23,3 +23,11 @@ services:
       - MONGODB_DATABASE=${DATABASE_NAME}
       # - MONGODB_USERNAME=${DATABASE_USER}
       # - MONGODB_PASSWORD=${DATABASE_PASSWORD}
+
+  cgi-cypress:
+    container_name: cgi-cypress
+    build: ./CGI-Cypress
+    restart: always
+    working_dir: /
+    volumes:
+      - ./cypress:/app/cypress
