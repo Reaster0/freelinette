@@ -11,6 +11,7 @@ services:
       - .env
     volumes:
       - ./nestJS:/app/nestJS
+      - ./cypress:/app/cypress
     
   db:
     container_name: db
@@ -24,10 +25,10 @@ services:
       # - MONGODB_USERNAME=${DATABASE_USER}
       # - MONGODB_PASSWORD=${DATABASE_PASSWORD}
 
-  cgi-cypress:
-    container_name: cgi-cypress
-    build: ./CGI-Cypress
-    restart: always
-    working_dir: /
-    volumes:
-      - ./cypress:/app/cypress
+  # cgi-cypress:
+  #   container_name: cgi-cypress
+  #   build: ./CGI-Cypress
+  #   restart: always
+  #   working_dir: /
+  #   volumes:
+  #     - ./cypress:/app/cypress

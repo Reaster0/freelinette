@@ -2,14 +2,17 @@ import { testDto } from './dto/test.dto';
 import { Injectable } from '@nestjs/common';
 import { exec, execSync, spawn, fork } from "child_process";
 const fs = require('fs');
+import { HttpService } from '@nestjs/axios';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Test } from './entities/test.entity';
+const cypress = require('cypress');
 
 @Injectable()
 export class CypressService {
 	constructor(
-		@InjectModel(Test.name) private readonly testModel: Model<Test>,
+		@InjectModel(Test.name) private readonly testModel: Model<Test>,	
+		private readonly httpService: HttpService,
 	) {} 
 
 	async testOutput(): Promise<string> {
@@ -43,25 +46,18 @@ export class CypressService {
 	}
 	
 
-	launchTest(): void {
-
-		exec('./exec.sh', { cwd: "../cypress-runtime"},  ((error, stdout, stderr) => {
-			if (error) {
-				console.log(`error: ${error.message}`);
+	launchTest(): string {
+		return cypress.run({
+			spec: './cypress/e2e/1234-test.cy.js',
+			reporter: 'junit',
+			browser: 'electron',
+			config: {
+				video: true,
 			}
-			if (stderr) {
-				console.log(`stderr: ${stderr}`);
-			}
-			console.log(`stdout: ${stdout}`);
-		}));
-
-
-		// try{
-		// 	console.log("the test has started")
-		// 	execSync('export CYPRESS_CACHE_FOLDER=/cypress/.cache; ./node_modules/.bin/cypress run 2>&1 > output.txt', { cwd: "../cypress-runtime"});
-		// 	console.log("test success")
-		// } catch (e) {
-		// 	console.log(e)
-		// }
+		})
+		.then((res) => {
+			console.log(res);
+			return "mdr";
+		})
 	}
 }

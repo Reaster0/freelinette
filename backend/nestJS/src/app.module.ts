@@ -1,4 +1,4 @@
-import { CypressModule } from './cypress/cypress.module';
+import { CypressModule } from './cypress-module/cypress.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { MongooseModule } from '@nestjs/mongoose';

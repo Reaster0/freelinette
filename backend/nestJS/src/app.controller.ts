@@ -1,5 +1,5 @@
-import { CypressService } from './cypress/cypress.service';
-import { testDto } from './cypress/dto/test.dto';
+import { CypressService } from './cypress-module/cypress.service';
+import { testDto } from './cypress-module/dto/test.dto';
 import { Controller, Get, Post, Body, ParseArrayPipe } from '@nestjs/common';
 
 @Controller()
@@ -25,9 +25,8 @@ export class AppController {
 
 	@Get('launch')
 	launch(): string {
-		this.cypressService.launchTest();
-		return "testLaunched";
-		//return await this.cypressService.testOutput();
+		return this.cypressService.launchTest();
+		//return "testLaunched";
 	}
 
 }
