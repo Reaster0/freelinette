@@ -5,7 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
-	MongooseModule.forRoot('mongodb://db:27017/mongo'),
+	MongooseModule.forRoot(`mongodb://${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`),
 	CypressModule
   ],
   controllers: [AppController],

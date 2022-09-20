@@ -2,7 +2,6 @@ import { testDto } from './dto/test.dto';
 import { Injectable } from '@nestjs/common';
 import { exec, execSync, spawn, fork } from "child_process";
 const fs = require('fs');
-import { HttpService } from '@nestjs/axios';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Test } from './entities/test.entity';
@@ -11,8 +10,7 @@ const cypress = require('cypress');
 @Injectable()
 export class CypressService {
 	constructor(
-		@InjectModel(Test.name) private readonly testModel: Model<Test>,	
-		private readonly httpService: HttpService,
+		@InjectModel('testlist') private readonly testModel: Model<Test>,
 	) {} 
 
 	async testOutput(): Promise<string> {
@@ -35,14 +33,15 @@ export class CypressService {
 		return test;
 	}
 
-	createNewTest(testo: testDto[]) {
-		const mdr = {
+	async createNewTest(testo: testDto[]) {
+		const setTest = {
 			name: "test ID",
 			test: testo
 		}
-		console.log("mdr =" , mdr)
-		const newTest = new this.testModel(mdr);
-		newTest.save();
+		console.log("mdr =" , setTest)
+		const newTest = new this.testModel(setTest);
+		const result = await newTest.save();
+		return result
 	}
 	
 
@@ -52,7 +51,7 @@ export class CypressService {
 			reporter: 'junit',
 			browser: 'electron',
 			config: {
-				video: true,
+				video: false,
 			}
 		})
 		.then((res) => {

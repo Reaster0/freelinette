@@ -9,9 +9,8 @@ export class AppController {
 
 
 	@Post('testList')
-	testExec(@Body(new ParseArrayPipe({ items: testDto, whitelist: true, forbidNonWhitelisted: true })) testDto: testDto[]): testDto[] {
-		this.cypressService.createNewTest(testDto);
-		return testDto;
+	async testExec(@Body(new ParseArrayPipe({ items: testDto, whitelist: true, forbidNonWhitelisted: true })) testDto: testDto[]) {
+		return await this.cypressService.createNewTest(testDto);
 	}
 	@Get('testList')
 	getALLTests(): any {
