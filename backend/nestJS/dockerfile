@@ -6,9 +6,6 @@ RUN apt update &&\
 RUN npm install -g n npm@latest &&\
 	n latest
 
-# RUN /app/cypress-runtime/node_modules/.bin/cypress install
-
-
 COPY docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
 

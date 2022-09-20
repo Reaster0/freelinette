@@ -11,7 +11,7 @@ services:
       - .env
     volumes:
       - ./nestJS:/app/nestJS
-      - ./cypress:/app/cypress
+      - ./cypress:/app/nestJS/cypress
     
   db:
     container_name: db

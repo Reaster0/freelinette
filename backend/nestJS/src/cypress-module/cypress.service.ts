@@ -4,7 +4,7 @@ import { exec, execSync, spawn, fork } from "child_process";
 const fs = require('fs');
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Test } from './entities/test.entity';
+import { Test, TestStep } from './entities/test.entity';
 const cypress = require('cypress');
 
 @Injectable()
@@ -28,27 +28,31 @@ export class CypressService {
 		return this.testModel.find().exec();
 	}
 
-	findOne(id: string) {
-		const test = this.testModel.findOne({ id: id }).exec();
-		return test;
+	async findOne(name: string): Promise<Test> {
+		return await this.testModel.findOne({ name : name }).exec();
+	}
+
+
+	async deleteOne(name: string): Promise<Test> {
+		return await this.testModel.findOneAndDelete({ name : name }).exec();
 	}
 
 	async createNewTest(testo: testDto[]) {
 		const setTest = {
-			name: "test ID",
+			name: "test name placeholder",
 			test: testo
 		}
-		console.log("mdr =" , setTest)
+		console.log("setTest =" , setTest)
 		const newTest = new this.testModel(setTest);
 		const result = await newTest.save();
 		return result
 	}
 	
 
-	launchTest(): string {
+	launchTest(name: string): string {
 		return cypress.run({
-			spec: './cypress/e2e/1234-test.cy.js',
-			reporter: 'junit',
+			spec: `./cypress/e2e/${name}.cy.js`,
+			screeshot: true,
 			browser: 'electron',
 			config: {
 				video: false,
@@ -56,7 +60,7 @@ export class CypressService {
 		})
 		.then((res) => {
 			console.log(res);
-			return "mdr";
+			return res;
 		})
 	}
 }

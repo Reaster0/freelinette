@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { CypressService } from './cypress.service';
 import { Test, TestSchema } from './entities/test.entity';
 //import { HttpModule } from '@nestjs/axios';
+import { CypressController } from './cypress.controller';
 
 
 @Module({
@@ -21,6 +22,7 @@ import { Test, TestSchema } from './entities/test.entity';
 		])
 	],
 	exports: [CypressService],
-	providers: [CypressService]
+	providers: [CypressService],
+	controllers: [CypressController]
 })
 export class CypressModule {}

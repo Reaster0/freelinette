@@ -1,7 +1,8 @@
 #!/bin/bash
 cd /app/nestJS
 chmod -R 777 /root
-# RUN npm install -g n npm@latest &&\
-# 	n latest
+npm install
+./node_modules/.bin/cypress install
+chmod -R 777 /root
 npm run start:dev
 #tail -f /dev/null
