@@ -53,13 +53,14 @@ export class CypressService {
 		return cypress.run({
 			spec: `./cypress/e2e/${name}.cy.js`,
 			screeshot: true,
-			browser: 'electron',
+			quiet: true,
+			browser: 'chrome',
 			config: {
 				video: false,
 			}
 		})
 		.then((res) => {
-			console.log(res);
+			//console.log(res);
 			return res;
 		})
 	}
