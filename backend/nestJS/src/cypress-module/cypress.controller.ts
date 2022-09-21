@@ -10,20 +10,16 @@ export class CypressController {
 		private readonly cypressService: CypressService) { }
 
 
-	
-@Get()
-async findAll() {
-  throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-}
-
-
 	@Post('testList')
 	async testExec(
 		@Query('token') token: string,
 		@Body(new ParseArrayPipe({ items: testDto, whitelist: true, forbidNonWhitelisted: true })) testDto: testDto[]) {
-		
-			return await this.cypressService.createNewTest(testDto);
+			if (!await this.cypressService.userAuth(token))
+				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
+
+			return await this.cypressService.createNewTest(testDto, token);
 	}
+
 	@Get('testList')
 	async getALLTests(
 		@Query('token') token : string): Promise<any> {

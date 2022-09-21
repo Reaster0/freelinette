@@ -1,10 +1,10 @@
-import { testDto } from './dto/test.dto';
+import { testDto} from './dto/test.dto';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { exec, execSync, spawn, fork } from "child_process";
 const fs = require('fs');
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Test, User} from './entities/test.entity';
+import mongoose, { Model } from 'mongoose';
+import { Test, User, TestSchema } from './entities/test.entity';
 import { randomUUID } from 'crypto';
 const cypress = require('cypress');
 
@@ -38,20 +38,34 @@ export class CypressService {
 		return await this.testModel.findOne({ token : token, 'tests.name' : name }).exec();
 	}
 
+	async findUserById(id: string): Promise<User> {
+		return await this.userModel.findOne({id : id}).exec();
+	}
+
 
 	async deleteTestByName(name: string, token : string): Promise<Test> {
 		return await this.testModel.findOneAndDelete({ token : token, 'tests.name' : name }).exec();
 	}
 
-	async createNewTest(testo: testDto[]) {
-		const setTest = {
-			name: randomUUID,
-			test: testo
-		}
-		console.log("setTest =" , setTest)
-		const newTest = new this.testModel(setTest);
-		const result = await newTest.save();
-		return result
+	async createNewTest(testo: testDto[], token: string) {
+		const user = await this.findUserById(token);
+		
+		const test = new this.testModel({
+			name: randomUUID(),
+			test: [],
+		})
+		//test.save();
+		//console.log("i've found a test=", test)
+		return test;
+		// const setTest = {
+		// 	name: randomUUID(),
+		// 	test: testo
+		// }
+		//user.tests.push(arrayTestDto2Test(testo));
+		//console.log("setTest =" , setTest)
+		//const newTest = new this.testModel(setTest);
+		//const result = await newTest.save();
+		//return result
 	}
 	
 

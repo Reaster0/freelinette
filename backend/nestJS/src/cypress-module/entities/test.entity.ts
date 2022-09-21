@@ -1,7 +1,9 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { testDto } from '../dto/test.dto';
 
-class TestStep extends Document {
+@Schema()
+export class TestStep extends Document {
 
 	@Prop(String)
 	action: string;
