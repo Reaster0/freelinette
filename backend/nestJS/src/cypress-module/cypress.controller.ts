@@ -1,8 +1,7 @@
-
 import { Test } from './entities/test.entity';
 import { CypressService } from './cypress.service';
 import { testDto } from './dto/test.dto';
-import { Controller, Get, Post, Body, ParseArrayPipe, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, ParseArrayPipe, Param, Delete, UseGuards, Query, HttpException, HttpStatus } from '@nestjs/common';
 
 
 @Controller('cypress')
@@ -11,28 +10,56 @@ export class CypressController {
 		private readonly cypressService: CypressService) { }
 
 
+	
+@Get()
+async findAll() {
+  throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+}
+
+
 	@Post('testList')
-	async testExec(@Body(new ParseArrayPipe({ items: testDto, whitelist: true, forbidNonWhitelisted: true })) testDto: testDto[]) {
-		return await this.cypressService.createNewTest(testDto);
+	async testExec(
+		@Query('token') token: string,
+		@Body(new ParseArrayPipe({ items: testDto, whitelist: true, forbidNonWhitelisted: true })) testDto: testDto[]) {
+		
+			return await this.cypressService.createNewTest(testDto);
 	}
 	@Get('testList')
-	getALLTests(): any {
-		return this.cypressService.findAll()
+	async getALLTests(
+		@Query('token') token : string): Promise<any> {
+			if (!await this.cypressService.userAuth(token))
+				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
+			
+			return this.cypressService.findAllTests()
 	}
 
 	@Get('testList/:name')
-	async getOutput(@Param() params): Promise<Test> {
-		return this.cypressService.findOne(params.name);
+	async getOutput(
+		@Query('token') token: string,
+		@Param('name') name: string): Promise<Test> {
+			if (!await this.cypressService.userAuth(token))
+				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
+
+			return this.cypressService.findTestByName(name, token);
 	}
 
 	@Delete('testList/:name')
-	async deleteTest(@Param() params): Promise<Test> {
-		return this.cypressService.deleteOne(params.name);
+	async deleteTest(
+		@Query('token') token: string,
+		@Param('name') name: string): Promise<Test> {
+			if (!await this.cypressService.userAuth(token))
+				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
+		
+			return this.cypressService.deleteTestByName(name, token);
 	}
 
 	@Get('launch/:name')
-	launch(@Param() params): string {
-		return this.cypressService.launchTest(params.name);
-		//return "testLaunched";
+	async launch(
+		@Query('token') token: string,
+		@Param('name') name: string): Promise<string> {
+			if (!await this.cypressService.userAuth(token))
+				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
+		
+			return this.cypressService.launchTest(name);
 	}
 }

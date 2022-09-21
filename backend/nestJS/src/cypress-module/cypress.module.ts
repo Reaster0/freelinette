@@ -1,9 +1,10 @@
 import { MongooseModule } from '@nestjs/mongoose';
 import { Module } from '@nestjs/common';
 import { CypressService } from './cypress.service';
-import { Test, TestSchema } from './entities/test.entity';
+import { UserSchema } from './entities/test.entity';
 //import { HttpModule } from '@nestjs/axios';
 import { CypressController } from './cypress.controller';
+import { User } from './entities/test.entity';
 
 
 @Module({
@@ -16,8 +17,8 @@ import { CypressController } from './cypress.controller';
 		MongooseModule.forFeature([
 			{
 				name: 'testlist',
-				//name: Test.name,
-				schema: TestSchema,
+				//name: User.name,
+				schema: UserSchema,
 			}
 		])
 	],

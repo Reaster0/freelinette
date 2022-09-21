@@ -1,17 +1,23 @@
 import { testDto } from './dto/test.dto';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { exec, execSync, spawn, fork } from "child_process";
 const fs = require('fs');
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Test, TestStep } from './entities/test.entity';
+import { Test, User} from './entities/test.entity';
+import { randomUUID } from 'crypto';
 const cypress = require('cypress');
 
 @Injectable()
 export class CypressService {
 	constructor(
 		@InjectModel('testlist') private readonly testModel: Model<Test>,
-	) {} 
+		@InjectModel('testlist') private readonly userModel: Model<User>,	
+	) {}
+
+	async userAuth(token: string): Promise<Boolean> {
+		return await this.userModel.findOne({id : token}).exec()? true : false;
+	}
 
 	async testOutput(): Promise<string> {
 		let result: string;
@@ -24,22 +30,22 @@ export class CypressService {
 		return result;
 	}
 
-	findAll() {
-		return this.testModel.find().exec();
+	findAllTests() {
+		return this.testModel.find({ 'tests.name': String}).exec();
 	}
 
-	async findOne(name: string): Promise<Test> {
-		return await this.testModel.findOne({ name : name }).exec();
+	async findTestByName(name: string, token : string): Promise<Test> {
+		return await this.testModel.findOne({ token : token, 'tests.name' : name }).exec();
 	}
 
 
-	async deleteOne(name: string): Promise<Test> {
-		return await this.testModel.findOneAndDelete({ name : name }).exec();
+	async deleteTestByName(name: string, token : string): Promise<Test> {
+		return await this.testModel.findOneAndDelete({ token : token, 'tests.name' : name }).exec();
 	}
 
 	async createNewTest(testo: testDto[]) {
 		const setTest = {
-			name: "test name placeholder",
+			name: randomUUID,
 			test: testo
 		}
 		console.log("setTest =" , setTest)
