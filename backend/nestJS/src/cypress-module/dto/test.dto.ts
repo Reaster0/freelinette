@@ -56,24 +56,14 @@ export class testDto {
 	readonly params: paramsDto;
 }
 
-// export function testDto2TestStep(test: testDto): TestStep {
-// 	const result = new TestStep(test);
-// 	result.action = test.action;
-// 	result.element.selector = test.element.selector;
-// 	result.element.path = test.element.path;
-// 	result.params.name = test.params.name;
-// 	result.params.value = test.params.value;
-// 	if (test.params.valueExtend) {
-// 		result.params.valueExtend.id = test.params.valueExtend.id;
-// 		result.params.valueExtend.text = test.params.valueExtend.text;
-// 	}
-// 	return result;
-// }
+export function testDto2TestStep(test: testDto): TestStep {
+	const result = new TestStep();
+	result.action = test.action;
+	result.element = test.element;
+	result.params = test.params;
+	return result;
+}
 
-// export function arrayTestDto2Test(tests: testDto[]): Test {
-// 	const result = new Test();
-// 	result.test = tests.map(test => testDto2TestStep(test));
-
-// 	return result;
-	
-// }
+export function arrayTestDto2Test(tests: testDto[]): TestStep[] {
+	return tests.map(test => testDto2TestStep(test));
+}

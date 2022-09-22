@@ -1,4 +1,3 @@
-import { Test } from './entities/test.entity';
 import { CypressService } from './cypress.service';
 import { testDto } from './dto/test.dto';
 import { Controller, Get, Post, Body, ParseArrayPipe, Param, Delete, UseGuards, Query, HttpException, HttpStatus } from '@nestjs/common';
@@ -29,25 +28,25 @@ export class CypressController {
 			return this.cypressService.findAllTests()
 	}
 
-	@Get('testList/:name')
-	async getOutput(
-		@Query('token') token: string,
-		@Param('name') name: string): Promise<Test> {
-			if (!await this.cypressService.userAuth(token))
-				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
+	// @Get('testList/:name')
+	// async getOutput(
+	// 	@Query('token') token: string,
+	// 	@Param('name') name: string): Promise<Test> {
+	// 		if (!await this.cypressService.userAuth(token))
+	// 			throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
 
-			return this.cypressService.findTestByName(name, token);
-	}
+	// 		return this.cypressService.findTestByName(name, token);
+	// }
 
-	@Delete('testList/:name')
-	async deleteTest(
-		@Query('token') token: string,
-		@Param('name') name: string): Promise<Test> {
-			if (!await this.cypressService.userAuth(token))
-				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
+	// @Delete('testList/:name')
+	// async deleteTest(
+	// 	@Query('token') token: string,
+	// 	@Param('name') name: string): Promise<Test> {
+	// 		if (!await this.cypressService.userAuth(token))
+	// 			throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
 		
-			return this.cypressService.deleteTestByName(name, token);
-	}
+	// 		return this.cypressService.deleteTestByName(name, token);
+	// }
 
 	@Get('launch/:name')
 	async launch(

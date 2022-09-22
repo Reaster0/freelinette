@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 import { testDto } from '../dto/test.dto';
 
 @Schema()
-export class TestStep extends Document {
+export class TestStep {
 
 	@Prop(String)
 	action: string;
@@ -27,7 +27,7 @@ export class TestStep extends Document {
 }
 
 @Schema()
-export class Test extends Document {
+export class Test {
 
 	@Prop(String)
 	name: string;
@@ -46,5 +46,5 @@ export class User extends Document {
 	tests: Test[];
 }
 
-export const TestSchema = SchemaFactory.createForClass(Test);
+//export const TestSchema = SchemaFactory.createForClass(Test);
 export const UserSchema = SchemaFactory.createForClass(User);
