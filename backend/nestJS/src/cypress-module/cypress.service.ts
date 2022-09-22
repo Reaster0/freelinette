@@ -19,37 +19,38 @@ export class CypressService {
 		return await this.userModel.findOne({id : token}).exec()? true : false;
 	}
 
-	async testOutput(): Promise<string> {
-		let result: string;
-		try {
-		result = fs.readFileSync('../cypress-runtime/output.txt', 'utf8');
-		} catch (e) {
-			result = "error reading result file";
-			console.log(e)
-		}
-		return result;
+	// async testOutput(): Promise<string> {
+	// 	let result: string;
+	// 	try {
+	// 	result = fs.readFileSync('../cypress-runtime/output.txt', 'utf8');
+	// 	} catch (e) {
+	// 		result = "error reading result file";
+	// 		console.log(e)
+	// 	}
+	// 	return result;
+	// }
+
+	async findAllTests(token : string) {
+		return (await this.findUserById(token)).tests;
 	}
 
-	findAllTests() {
-		//return this.testModel.find({ 'tests.name': String}).exec();
-	}
-
-	async findTestByName(name: string, token : string) {
-		//return await this.testModel.findOne({ token : token, 'tests.name' : name }).exec();
+	async findTestByName(name: string, token : string): Promise<any> {
+		const user = await this.findUserById(token);
+		return user.tests.find((test) => test.name === name);
 	}
 
 	async findUserById(id: string): Promise<User> {
 		return await this.userModel.findOne({id : id}).exec();
 	}
 
-
 	async deleteTestByName(name: string, token : string) {
-		//return await this.userModel.findOneAndDelete({ id : token, 'tests.name' : name }).exec();
+		const user = await this.findUserById(token);
+		return await user.update({$pull: {tests: {name: name}}}).exec();
 	}
 
 	async createNewTest(testo: testDto[], token: string): Promise<User> {
 		const user = await this.findUserById(token);
-		user.tests.push({name: randomUUID(), test: arrayTestDto2Test(testo)});
+		user.tests.push({name: "anome", test: arrayTestDto2Test(testo)});
 		return user.save();
 	}
 	
