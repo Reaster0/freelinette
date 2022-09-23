@@ -18,7 +18,7 @@ export function srlEnd(): string {
 export function srlNewStep(test: testDto): string {
 	let result = "";
 	result += srlTarget(test.element);
-	result += srlAction(test.action);
+	result += srlAction(test.action, test.params);
 	result += srlParams(test.params);
 	result += "\n";
 
@@ -29,9 +29,9 @@ function srlTarget(target: elementDto): string {
 	return `\t\tcy.get('${target.path}')`;
 }
 
-function srlAction(action: string): string {
+function srlAction(action: string, params: paramsDto): string {
 	let result = "";
-	if (action === "Click")
+	if (action === "Click" && params.name != "Select")
 		result = ".click";
 	else if (action === "Fill")
 		result = `.type`;
@@ -46,8 +46,9 @@ function srlParams(params: paramsDto): string {
 		result = `("${params.value}")`;
 	else if (params.name === "Exist")
 		result = "";
-	else if (params.name === "contain")
+	else if (params.name === "Contain")
 		result = `.should('contain', '${params.value}')`;
-	
+	else if (params.name === "Select")
+		result = `.select('${params.valueExtend.text}', ${params.valueExtend.id})`;
 	return result;
 }
