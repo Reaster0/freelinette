@@ -7,6 +7,7 @@ import mongoose, { Model } from 'mongoose';
 import { Test, User } from './entities/test.entity';
 import { randomUUID } from 'crypto';
 const cypress = require('cypress');
+import { srlNewStep, srlInit, srlEnd } from './serializer';
 
 @Injectable()
 export class CypressService {
@@ -18,17 +19,6 @@ export class CypressService {
 	async userAuth(token: string): Promise<Boolean> {
 		return await this.userModel.findOne({id : token}).exec()? true : false;
 	}
-
-	// async testOutput(): Promise<string> {
-	// 	let result: string;
-	// 	try {
-	// 	result = fs.readFileSync('../cypress-runtime/output.txt', 'utf8');
-	// 	} catch (e) {
-	// 		result = "error reading result file";
-	// 		console.log(e)
-	// 	}
-	// 	return result;
-	// }
 
 	async findAllTests(token : string) {
 		return (await this.findUserById(token)).tests;
@@ -70,4 +60,36 @@ export class CypressService {
 			return res;
 		})
 	}
+
+	serializer(tests: testDto[]) : string {
+		let result = srlInit("osef", "http://172.17.0.1:5501/demo-form.html");
+
+		tests.forEach((test) => {
+				result += srlNewStep(test)
+		})
+
+		result += srlEnd();
+
+		try {
+			fs.writeFileSync(`./cypress/e2e/${randomUUID()}.cy.js`, result);
+		}
+		catch (err) {
+			console.log(err);
+			throw new HttpException("Error while writing testFile", 500);
+		}
+
+		return result;
+	}
+
+
+	// async testOutput(): Promise<string> {
+	// 	let result: string;
+	// 	try {
+	// 	result = fs.readFileSync('../cypress-runtime/output.txt', 'utf8');
+	// 	} catch (e) {
+	// 		result = "error reading result file";
+	// 		console.log(e)
+	// 	}
+	// 	return result;
+	// }
 }

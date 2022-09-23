@@ -20,6 +20,16 @@ export class CypressController {
 			return await this.cypressService.createNewTest(testDto, token);
 	}
 
+	@Post('serializer')
+	async serializer(
+		@Query('token') token: string,
+		@Body(new ParseArrayPipe({ items: testDto, whitelist: true, forbidNonWhitelisted: true })) testDto: testDto[]) {
+			if (!await this.cypressService.userAuth(token))
+				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
+			
+			return this.cypressService.serializer(testDto);		
+	}
+
 	@Get('testList')
 	async getALLTests(
 		@Query('token') token : string): Promise<Test[]> {

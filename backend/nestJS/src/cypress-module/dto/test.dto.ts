@@ -3,7 +3,7 @@ import { Type } from 'class-transformer';
 import { IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
 import { Test, TestStep } from '../entities/test.entity';
 
-class elementDto {
+export class elementDto {
 	@IsString()
 	@IsNotEmpty()
 	 readonly selector: string;
@@ -13,7 +13,7 @@ class elementDto {
 	readonly path: string;
 }
 
-class ParamValueDto {
+export class ParamValueDto {
 	@IsString()
 	@IsNotEmpty()
 	readonly id: string;
@@ -22,7 +22,7 @@ class ParamValueDto {
 	readonly text: string;
 }
 
-class paramsDto {
+export class paramsDto {
 	
 	@IsOptional()
 	@IsString()
