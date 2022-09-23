@@ -32,6 +32,9 @@ export class Test {
 	@Prop(String)
 	name: string;
 
+	@Prop(String)
+	website: string;
+
 	@Prop([TestStep])
 	test: TestStep[];
 }

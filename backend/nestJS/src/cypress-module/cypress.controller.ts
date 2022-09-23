@@ -1,7 +1,7 @@
 import { TestStep } from './entities/test.entity';
 import { CypressService } from './cypress.service';
-import { testDto } from './dto/test.dto';
-import { Controller, Get, Post, Body, ParseArrayPipe, Param, Delete, UseGuards, Query, HttpException, HttpStatus } from '@nestjs/common';
+import { testDto, testBundleDto } from './dto/test.dto';
+import { Controller, Get, Post, Body, ParseArrayPipe, Param, Delete, UseGuards, Query, HttpException, HttpStatus, ValidationPipe } from '@nestjs/common';
 import { Test } from './entities/test.entity';
 
 @Controller('cypress')
@@ -11,23 +11,25 @@ export class CypressController {
 
 
 	@Post('testList')
-	async testExec(
+	async testList(
 		@Query('token') token: string,
-		@Body(new ParseArrayPipe({ items: testDto, whitelist: true, forbidNonWhitelisted: true })) testDto: testDto[]) {
+		@Body() testDto: testBundleDto) {
 			if (!await this.cypressService.userAuth(token))
 				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
 
 			return await this.cypressService.createNewTest(testDto, token);
 	}
 
-	@Post('serializer')
+	@Post('serializer/:name')
 	async serializer(
 		@Query('token') token: string,
-		@Body(new ParseArrayPipe({ items: testDto, whitelist: true, forbidNonWhitelisted: true })) testDto: testDto[]) {
+		@Param('name') name: string) {
 			if (!await this.cypressService.userAuth(token))
 				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
-			
-			return this.cypressService.serializer(testDto);		
+			const testFind = await this.cypressService.findTestByName(name, token);
+			if (!testFind)
+				throw new HttpException('Test not found', 404);
+			return this.cypressService.serializer(testFind);		
 	}
 
 	@Get('testList')
@@ -66,6 +68,6 @@ export class CypressController {
 			if (!await this.cypressService.userAuth(token))
 				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
 		
-			return this.cypressService.launchTest(name);
+			return this.cypressService.launchTest(name, token);
 	}
 }
