@@ -1,8 +1,7 @@
-import { MongooseModule, Schema } from '@nestjs/mongoose';
+import { MongooseModule } from '@nestjs/mongoose';
 import { Module } from '@nestjs/common';
 import { CypressService } from './cypress.service';
 import { UserSchema } from './entities/test.entity';
-//import { HttpModule } from '@nestjs/axios';
 import { CypressController } from './cypress.controller';
 import { User } from './entities/test.entity';
 

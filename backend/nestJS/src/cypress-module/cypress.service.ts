@@ -1,14 +1,11 @@
-import { arrayTestDto2Test, testBundleDto, testBundleDto2Test, testDto} from './dto/test.dto';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { exec, execSync, spawn, fork } from "child_process";
+import { testBundleDto, testBundleDto2Test} from './dto/test.dto';
+import { HttpException, Injectable } from '@nestjs/common';
 const fs = require('fs');
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { Test, User } from './entities/test.entity';
-import { randomUUID } from 'crypto';
 const cypress = require('cypress');
 import { srlNewStep, srlInit, srlEnd } from './serializer';
-import { StringMatcher } from 'cypress/types/net-stubbing';
 
 @Injectable()
 export class CypressService {
@@ -46,7 +43,7 @@ export class CypressService {
 	}
 	
 
-	async launchTest(name: string, token : string): Promise<string> {
+	async launchTest(name: string, token : string): Promise<any> {
 		const testFind = await this.findTestByName(name, token);
 		if (!testFind)
 			throw new HttpException('Test not found', 404);
@@ -63,9 +60,23 @@ export class CypressService {
 			
 		})
 		.then((res) => {
-			//console.log(res);
+			this.cleanupSerialize(name);
+			try{
+				fs.renameSync(`./cypress/screenshots/${name}.cy.js/Cypress test -- ${name} (failed).png`, `./cypress/screen/${token}.${name}.png`);}
+			catch {console.log("no Screenshots");}
+
+			return {
+				status: res.totalFailed === 0 ? "success" : "failed",
+				totalTests: res.totalTests,
+				totalFailed: res.totalFailed,
+				totalPassed: res.totalPassed,
+				startedAt: res.startedAt,
+				finishedAt: res.finishedAt,
+				duration: res.duration,
+			}
 			return res;
 		})
+
 	}
 
 	serializer(testInput: Test) : string {
@@ -84,5 +95,15 @@ export class CypressService {
 		}
 
 		return result;
+	}
+
+	cleanupSerialize(name: string) {
+		try{
+			fs.unlinkSync(`./cypress/e2e/${name}.cy.js`);
+		}
+		catch (err) {
+			console.log(err);
+			throw new HttpException("Error while deleting testFile", 500);
+		}
 	}
 }

@@ -20,17 +20,17 @@ export class CypressController {
 			return await this.cypressService.createNewTest(testDto, token);
 	}
 
-	@Post('serializer/:name')
-	async serializer(
-		@Query('token') token: string,
-		@Param('name') name: string) {
-			if (!await this.cypressService.userAuth(token))
-				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
-			const testFind = await this.cypressService.findTestByName(name, token);
-			if (!testFind)
-				throw new HttpException('Test not found', 404);
-			return this.cypressService.serializer(testFind);		
-	}
+	// @Post('serializer/:name')
+	// async serializer(
+	// 	@Query('token') token: string,
+	// 	@Param('name') name: string) {
+	// 		if (!await this.cypressService.userAuth(token))
+	// 			throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
+	// 		const testFind = await this.cypressService.findTestByName(name, token);
+	// 		if (!testFind)
+	// 			throw new HttpException('Test not found', 404);
+	// 		return this.cypressService.serializer(testFind);		
+	// }
 
 	@Get('testList')
 	async getALLTests(
