@@ -1,7 +1,7 @@
 import { TestStep } from './entities/test.entity';
 import { CypressService } from './cypress.service';
 import { testDto, testBundleDto } from './dto/test.dto';
-import { Controller, Get, Post, Body, ParseArrayPipe, Param, Delete, UseGuards, Query, HttpException, HttpStatus, ValidationPipe, Res } from '@nestjs/common';
+import { Headers ,Controller, Get, Post, Body, ParseArrayPipe, Param, Delete, UseGuards, Query, HttpException, HttpStatus, ValidationPipe, Res } from '@nestjs/common';
 import { Test } from './entities/test.entity';
 const fs = require('fs');
 
@@ -13,7 +13,7 @@ export class CypressController {
 
 	@Post('testList')
 	async testList(
-		@Query('token') token: string,
+		@Headers('token') token: string,
 		@Body() testDto: testBundleDto) {
 			if (!await this.cypressService.userAuth(token))
 				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
@@ -35,7 +35,7 @@ export class CypressController {
 
 	@Get('testList')
 	async getALLTests(
-		@Query('token') token : string): Promise<Test[]> {
+		@Headers('token') token: string): Promise<Test[]> {
 			if (!await this.cypressService.userAuth(token))
 				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
 			
@@ -44,7 +44,7 @@ export class CypressController {
 
 	@Get('testList/:name')
 	async getOutput(
-		@Query('token') token: string,
+		@Headers('token') token: string,
 		@Param('name') name: string): Promise<any> {
 			if (!await this.cypressService.userAuth(token))
 				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
@@ -54,7 +54,7 @@ export class CypressController {
 
 	@Delete('testList/:name')
 	async deleteTest(
-		@Query('token') token: string,
+		@Headers('token') token: string,
 		@Param('name') name: string): Promise<any> {
 			if (!await this.cypressService.userAuth(token))
 				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
@@ -64,7 +64,7 @@ export class CypressController {
 
 	@Get('launch/:name')
 	async launch(
-		@Query('token') token: string,
+		@Headers('token') token: string,
 		@Param('name') name: string): Promise<string> {
 			if (!await this.cypressService.userAuth(token))
 				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
@@ -74,7 +74,7 @@ export class CypressController {
 
 	@Get('screen/:name')
 	async getImage(
-		@Query('token') token: string,
+		@Headers('token') token: string,
 		@Param('name') name: string,
 		@Res() res) {
 			if (!await this.cypressService.userAuth(token))

@@ -16,17 +16,21 @@ function init() {
 document.addEventListener('DOMContentLoaded', init)
 
 async function getAllTests() {
-	const testList = await fetch(`http://localhost:3000/cypress/testList?token=e3e0ad32-db66-43c1-9f5e-586ac4099acb`)
+	const testList = await fetch(`http://localhost:3000/cypress/testList?token=e3e0ad32-db66-43c1-9f5e-586ac4099acb`, {
+		method: 'GET',
+		headers: {
+			"token": "e3e0ad32-db66-43c1-9f5e-586ac4099acb"
+		}
+	})
 		.then(response => response.json())
 
 	for (const test in testList) {
 		const testAppend = document.createElement('div')
 		const testName = document.createElement('div')
 		const testPlay = document.createElement('img')
+		//const testPlay = document.createElement('div')
 		const testResult = document.createElement('img')
 		const testDelete = document.createElement('img')
-
-		let resultTest = {}
 
 		testAppend.className = 'testLayout'
 
@@ -35,9 +39,30 @@ async function getAllTests() {
 		testAppend.appendChild(testName)
 
 		
+		// testPlay.innerHTML = `
+		// <div class="loader">
+		// 	<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+		// 		width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+		// 		<rect x="0" y="10" width="4" height="10" fill="#333" opacity="0.2">
+		// 		<animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0s" dur="0.6s" repeatCount="indefinite" />
+		// 		<animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
+		// 		<animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
+		// 		</rect>
+		// 		<rect x="8" y="10" width="4" height="10" fill="#333"  opacity="0.2">
+		// 		<animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+		// 		<animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+		// 		<animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+		// 		</rect>
+		// 		<rect x="16" y="10" width="4" height="10" fill="#333"  opacity="0.2">
+		// 		<animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+		// 		<animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+		// 		<animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+		// 		</rect>
+		// 	</svg>
+		// </div>`
 		testPlay.src = "../icons/play-button.png"
 		testPlay.className = "btnTestTrigger"
-		testPlay.addEventListener('click', (event) => runTest(testList[test].name, resultTest, event))
+		testPlay.addEventListener('click', (event) => runTest(testList[test].name, event))
 		testAppend.appendChild(testPlay)
 
 		testResult.src = "../icons/test-neutral-white.png"
@@ -58,14 +83,47 @@ async function getAllTests() {
 
 async function runTest(name, resultTest, event) {
 	console.log("runTest launched in the popup with name " + name)
-	resultTest = await fetch(`http://localhost:3000/cypress/launch/${name}?token=e3e0ad32-db66-43c1-9f5e-586ac4099acb`, {
+	const beforeNode = event.target.previousSibling
+	document.removeChild(event.target)
+	const loader = document.createElement('div')
+	loader.className = "loader"
+	loader.innerHTML = `
+		<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+			width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+			<rect x="0" y="10" width="4" height="10" fill="#333" opacity="0.2">
+			<animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0s" dur="0.6s" repeatCount="indefinite" />
+			<animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
+			<animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
+			</rect>
+			<rect x="8" y="10" width="4" height="10" fill="#333"  opacity="0.2">
+			<animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+			<animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+			<animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+			</rect>
+			<rect x="16" y="10" width="4" height="10" fill="#333"  opacity="0.2">
+			<animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+			<animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+			<animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+			</rect>
+		</svg>`
+	beforeNode.appendChild(loader)
+
+	resultTest = await fetch(`http://localhost:3000/cypress/launch/${name}`, {
 		method: 'GET',
 		headers: {
 			"token": "e3e0ad32-db66-43c1-9f5e-586ac4099acb"
 		}
 	})
 	.then(response => response.json())
-	
+
+	document.removeChild(loader)
+	const buttonPlay = document.createElement('img')
+	buttonPlay.src = "../icons/play-button.png"
+	buttonPlay.className = "btnTestTrigger"
+	buttonPlay.addEventListener('click', (e) => runTest(name, e)) //working here
+	beforeNode.appendChild(buttonPlay)
+
+	const testResult = document.createElement('img')
 	if (resultTest.status === "success"){
 		event.target.nextSibling.src = "../icons/test-success.png"
 	}
@@ -78,19 +136,32 @@ async function runTest(name, resultTest, event) {
 	}
 }
 
-function showResult(event) {
-	if (event.target.fail === true) {
-		console.log("fail of the test")
-		window.open(`http://localhost:3000/cypress/screen/${event.target.testName}?token=e3e0ad32-db66-43c1-9f5e-586ac4099acb`)
-	}
-	else {
-		console.log("success of the test")
-	}
+async function showResult(event) {
+	if (event.target.fail === false) 
+		return
+
+	console.log("fail of the test")
+	const imgTest = await fetch(`http://localhost:3000/cypress/screen/${event.target.testName}`, {
+		method: 'GET',
+		headers: {
+			"token": "e3e0ad32-db66-43c1-9f5e-586ac4099acb"
+		}
+	})
+	.then(response => response.blob())
+	.then( blob => {
+			const url = URL.createObjectURL(blob)
+			const img = document.createElement('img')
+			img.src = url
+			return img
+		}
+	)
+	const newTab = window.open('')
+	newTab.document.body.appendChild(imgTest)
 }
 
 async function deleteTest(name, event) {
 	console.log("deleteTest" + name);
-	await fetch(`http://localhost:3000/cypress/testList/${name}?token=e3e0ad32-db66-43c1-9f5e-586ac4099acb`, {
+	await fetch(`http://localhost:3000/cypress/testList/${name}`, {
 		method: 'DELETE',
 		headers: {
 			"token": "e3e0ad32-db66-43c1-9f5e-586ac4099acb"

@@ -120,3 +120,18 @@ input, button, select {
 	width: 100%;
 }
 
+
+.loader{
+	margin: 0 0 2em;
+	height: 10px;
+	width: 15%;
+	text-align: center;
+	padding: 1em;
+	margin: 0 auto 1em;
+	display: inline-block;
+	/* vertical-align: top; */
+  }
+
+svg path, svg rect{
+  fill: var(--pink);
+}
