@@ -74,10 +74,28 @@ input, button, select {
 	border: 5px solid var(--light);
 	white-space: nowrap;
 	overflow-x: scroll;
+	width: 190px;
 }
 
-.btnTestTrigger {
+.buttonDelete {
 	cursor: pointer;
+	margin: 0 0.5rem;
+	font-size: 1.5rem;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: crimson;
+	transition: 0.4s;
+	max-width: fit-content;
+}
+
+.btnTestTrigger{
+	cursor: pointer;
+	width: 50px;
+	margin-left: 10px;
+}
+
+.testTrigger {
+	/* cursor: pointer; */
 	width: 50px;
 	margin-left: 10px;
 }
@@ -101,3 +119,4 @@ input, button, select {
 	margin-top: 10px;
 	width: 100%;
 }
+
