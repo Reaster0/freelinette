@@ -4,8 +4,9 @@
   "description": "need to run npm run build before importing the extension",
   "main": "null",
   "scripts": {
-    "build": "webpack",
-    "dev": "webpack serve"
+    "build-testMenu": "webpack --config webpack-testMenu.config.js",
+    "build-popup": "webpack --config webpack-popup.config.js",
+	"dev": "webpack serve"
   },
   "author": "earnaud",
   "license": "ISC",

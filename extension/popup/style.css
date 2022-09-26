@@ -1,13 +1,32 @@
+:root {
+	--dark: #374151;
+	--darker: #1f2937;
+	--darkest: #111827;
+	--grey: #6b7280;
+	--blue-yonder: #8EA4D2;
+	--light: #eee;
+	--pink: #ec4899;
+	--purple: #8b5cf6;
+	--crimson: #D72638;
+}
+
+input, button, select {
+	appearance: none;
+	border: none;
+	outline: none;
+	background: none;
+}
+
 .highlight{
     background: rgba(250, 200, 10, 0.5);
 }
 
-button {
+/* button {
     display: inline-block;
     width: 50px;
     height: 30px;
     margin: 1px;
-}
+} */
 
 .button_slick {
 	color: #FFF;
@@ -35,7 +54,50 @@ button {
 	src: url("../assets/Spotnik.ttf");
 }
 
+@font-face {
+	font-family: "Roboto";
+	src: url("..../assets/Roboto.ttf"), url('..../assets/Roboto-Medium.ttf') url('..../assets/Roboto-Regular.ttf') format('truetype');
+}
+
 .Spotnik{
 	font-family: "Spotnik";
 	font-size: 1m;
+}
+
+.btnActionEmptyAlt {
+	font-family: Roboto;
+	color: var(--light);
+	border-radius: 15px;
+	padding: 0.5rem;
+	font-size: 120%;
+	/* font-size: 1.5rem; */
+	border: 5px solid var(--light);
+	white-space: nowrap;
+	overflow-x: scroll;
+}
+
+.btnTestTrigger {
+	cursor: pointer;
+	width: 50px;
+	margin-left: 10px;
+}
+
+.btnTestTrigger:hover {
+	opacity: 0.6;
+}
+
+#listTests {
+	display: flex;
+	flex-direction: column;
+	/* justify-content: center; */
+	align-items: flex-start;
+}
+
+.testLayout {
+	display: flex;
+	flex-direction: row;
+	/* justify-content: space-between; */
+	align-items: center;
+	margin-top: 10px;
+	width: 100%;
 }
