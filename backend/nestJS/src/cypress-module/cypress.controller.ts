@@ -1,8 +1,9 @@
 import { TestStep } from './entities/test.entity';
 import { CypressService } from './cypress.service';
 import { testDto, testBundleDto } from './dto/test.dto';
-import { Controller, Get, Post, Body, ParseArrayPipe, Param, Delete, UseGuards, Query, HttpException, HttpStatus, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, ParseArrayPipe, Param, Delete, UseGuards, Query, HttpException, HttpStatus, ValidationPipe, Res } from '@nestjs/common';
 import { Test } from './entities/test.entity';
+const fs = require('fs');
 
 @Controller('cypress')
 export class CypressController {
@@ -69,5 +70,17 @@ export class CypressController {
 				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
 		
 			return this.cypressService.launchTest(name, token);
+	}
+
+	@Get('screen/:name')
+	async getImage(
+		@Query('token') token: string,
+		@Param('name') name: string,
+		@Res() res) {
+			if (!await this.cypressService.userAuth(token))
+				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
+			if (!fs.existsSync(`./cypress/screen/${token}.${name}.png`))
+				throw new HttpException('Image not found', 404);
+			res.sendFile(`${token}.${name}.png`, { root: './cypress/screen' });
 	}
 }
