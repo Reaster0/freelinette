@@ -1,6 +1,12 @@
 import { testDto, elementDto, paramsDto, ParamValueDto } from './dto/test.dto';
 
 export function srlInit(name: string, website: string): string {
+	//temp for testing
+	console.log("website ==", website);
+	if (website === "http://127.0.0.1:5501/demo-form.html")
+		website = "http://172.17.0.1:5501/demo-form.html"
+	//temp for testing
+
 	return `
 describe('Cypress test', function() {
 	it('${name}', function() {
