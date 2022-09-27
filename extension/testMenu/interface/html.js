@@ -1,5 +1,5 @@
 import { dragElement } from "../utils.js"
-import { drawerSystemInit, toggleShowParams, actionBtnInit, paramsBtnInit, exportJSONBtnInit, addNewTestBtnInit, elementPickerInit } from "./initItem.js"
+import { saveBtnInit, exitBtnInit, drawerSystemInit, toggleShowParams, actionBtnInit, paramsBtnInit, exportJSONBtnInit, addNewTestBtnInit, elementPickerInit } from "./initItem.js"
 import htmlPage from "./testMenu.html"
 import cssPage from "./testMenu.css"
 
@@ -64,11 +64,17 @@ export function injectHtml(document){
 				},
 				"params": {
 					"name": null,
-					"value": null
+					"value": null,
+					"valueExtend": null,
 				}
 			}
 		
 			let testsQueue = []
+			let currentTest = {
+				"name": crypto.randomUUID(),
+				"website": location.toString(),
+				"tests": testsQueue
+			}
 		
 			//menu to create tests
 			let testInput = new Proxy(_testInput, {
@@ -108,7 +114,9 @@ export function injectHtml(document){
 			paramsBtnInit(document, pageDocument, testInput)
 			elementPickerInit(document, testInput, pageDocument)
 			addNewTestBtnInit(document, testsQueue, testInput, _testInput)
-			exportJSONBtnInit(document, testsQueue)
+			exportJSONBtnInit(document, currentTest)
+			exitBtnInit(document)
+			saveBtnInit(document, currentTest)
 		}
 	}
 }

@@ -139,7 +139,8 @@ export function addNewTestBtnInit(document, testsQueue, testInput, _testInput){
 	}
 	testInput.params = {
 		"name": null,
-		"value": null
+		"value": null,
+		"valueExtend": null,
 	}
 	document.getElementById("inputTypeParam").value = null
 	console.log(testsQueue)
@@ -239,5 +240,29 @@ export function elementPickerInit(document, testInput, pageDocument){
 			"path": getCSSPath(e.detail)
 		}
 		console.log(getCSSPath(e.detail))
+	})
+}
+
+export function exitBtnInit(document) {
+	document.getElementById("btnExitTest").addEventListener("click", (e) => {
+		location.reload()
+	})
+}
+
+export function saveBtnInit(document, currentTest) {
+	document.getElementById("btnSaveTest").addEventListener("click", async (e) => {
+		const res = await fetch("http://localhost:3000/cypress/testList", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"token": "e3e0ad32-db66-43c1-9f5e-586ac4099acb",
+			},
+			body: JSON.stringify(currentTest)
+		}).then(res => res.json())
+
+		//TODO check the response in res
+
+		console.log(res)
+		location.reload()
 	})
 }

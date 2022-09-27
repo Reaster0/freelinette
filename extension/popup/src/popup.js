@@ -1,8 +1,9 @@
 console.log("popup launched")
 
 function injectMenu() {
-	browser.tabs.executeScript({
-		file: "../testMenu/dist/testMenu-Build.js"
+		browser.tabs.executeScript({
+		file: "../testMenu/dist/testMenu-Build.js",
+		//crossOriginIsolated: false,
 	})
 	console.log("injectMenu launched in the popup")
 }
