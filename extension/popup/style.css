@@ -122,12 +122,11 @@ input, button, select {
 
 
 .loader{
-	margin: 0 0 2em;
 	height: 10px;
 	width: 15%;
 	text-align: center;
-	padding: 1em;
-	margin: 0 auto 1em;
+	padding: 0.1em;
+	margin: 0 0 1em;
 	display: inline-block;
 	/* vertical-align: top; */
   }

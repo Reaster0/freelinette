@@ -28,7 +28,7 @@ async function getAllTests() {
 		const testAppend = document.createElement('div')
 		const testName = document.createElement('div')
 		const testPlay = document.createElement('img')
-		//const testPlay = document.createElement('div')
+		const testLoad = document.createElement('div')
 		const testResult = document.createElement('img')
 		const testDelete = document.createElement('img')
 
@@ -38,32 +38,33 @@ async function getAllTests() {
 		testName.textContent = testList[test].name
 		testAppend.appendChild(testName)
 
-		
-		// testPlay.innerHTML = `
-		// <div class="loader">
-		// 	<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-		// 		width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-		// 		<rect x="0" y="10" width="4" height="10" fill="#333" opacity="0.2">
-		// 		<animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0s" dur="0.6s" repeatCount="indefinite" />
-		// 		<animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
-		// 		<animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
-		// 		</rect>
-		// 		<rect x="8" y="10" width="4" height="10" fill="#333"  opacity="0.2">
-		// 		<animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
-		// 		<animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
-		// 		<animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
-		// 		</rect>
-		// 		<rect x="16" y="10" width="4" height="10" fill="#333"  opacity="0.2">
-		// 		<animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
-		// 		<animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
-		// 		<animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
-		// 		</rect>
-		// 	</svg>
-		// </div>`
 		testPlay.src = "../icons/play-button.png"
 		testPlay.className = "btnTestTrigger"
 		testPlay.addEventListener('click', (event) => runTest(testList[test].name, event))
 		testAppend.appendChild(testPlay)
+
+		testLoad.className = "loader"
+		testLoad.style.display = "none"
+		testLoad.innerHTML = `
+			<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+				width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+				<rect x="0" y="10" width="4" height="10" fill="#333" opacity="0.2">
+				<animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0s" dur="0.6s" repeatCount="indefinite" />
+				<animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
+				<animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
+				</rect>
+				<rect x="8" y="10" width="4" height="10" fill="#333"  opacity="0.2">
+				<animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+				<animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+				<animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+				</rect>
+				<rect x="16" y="10" width="4" height="10" fill="#333"  opacity="0.2">
+				<animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+				<animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+				<animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+				</rect>
+			</svg>`
+		testAppend.appendChild(testLoad)
 
 		testResult.src = "../icons/test-neutral-white.png"
 		testResult.className = "testTrigger"
@@ -81,34 +82,13 @@ async function getAllTests() {
 }
 
 
-async function runTest(name, resultTest, event) {
+async function runTest(name, event) {
 	console.log("runTest launched in the popup with name " + name)
-	const beforeNode = event.target.previousSibling
-	document.removeChild(event.target)
-	const loader = document.createElement('div')
-	loader.className = "loader"
-	loader.innerHTML = `
-		<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-			width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-			<rect x="0" y="10" width="4" height="10" fill="#333" opacity="0.2">
-			<animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0s" dur="0.6s" repeatCount="indefinite" />
-			<animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
-			<animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
-			</rect>
-			<rect x="8" y="10" width="4" height="10" fill="#333"  opacity="0.2">
-			<animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
-			<animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
-			<animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
-			</rect>
-			<rect x="16" y="10" width="4" height="10" fill="#333"  opacity="0.2">
-			<animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
-			<animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
-			<animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
-			</rect>
-		</svg>`
-	beforeNode.appendChild(loader)
+	
+	event.target.nextSibling.style.display = "block"
+	event.target.style.display = "none"
 
-	resultTest = await fetch(`http://localhost:3000/cypress/launch/${name}`, {
+	const resultTest = await fetch(`http://localhost:3000/cypress/launch/${name}`, {
 		method: 'GET',
 		headers: {
 			"token": "e3e0ad32-db66-43c1-9f5e-586ac4099acb"
@@ -116,23 +96,18 @@ async function runTest(name, resultTest, event) {
 	})
 	.then(response => response.json())
 
-	document.removeChild(loader)
-	const buttonPlay = document.createElement('img')
-	buttonPlay.src = "../icons/play-button.png"
-	buttonPlay.className = "btnTestTrigger"
-	buttonPlay.addEventListener('click', (e) => runTest(name, e)) //working here
-	beforeNode.appendChild(buttonPlay)
-
-	const testResult = document.createElement('img')
+	event.target.nextSibling.style.display = "none"
+	event.target.style.display = "block"
+	
 	if (resultTest.status === "success"){
-		event.target.nextSibling.src = "../icons/test-success.png"
+		event.target.nextSibling.nextSibling.src = "../icons/test-success.png"
 	}
 	else {
-		event.target.nextSibling.className = "btnTestTrigger"
-		event.target.nextSibling.src = "../icons/test-fail.png"
-		event.target.nextSibling.fail = true
-		event.target.nextSibling.testName = name
-		event.target.nextSibling.addEventListener('click', (event) => showResult(event))
+		event.target.nextSibling.nextSibling.className = "btnTestTrigger"
+		event.target.nextSibling.nextSibling.src = "../icons/test-fail.png"
+		event.target.nextSibling.nextSibling.fail = true
+		event.target.nextSibling.nextSibling.testName = name
+		event.target.nextSibling.nextSibling.addEventListener('click', (event) => showResult(event))
 	}
 }
 
@@ -148,7 +123,7 @@ async function showResult(event) {
 		}
 	})
 	.then(response => response.blob())
-	.then( blob => {
+	.then(blob => {
 			const url = URL.createObjectURL(blob)
 			const img = document.createElement('img')
 			img.src = url
