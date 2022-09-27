@@ -2,7 +2,7 @@ version: '3'
 
 services:
   back:
-    container_name: back-nestJS
+    container_name: freelinette-back
     restart: always
     build: ./nestJS
     ports:
@@ -14,7 +14,7 @@ services:
       - ./cypress:/app/nestJS/cypress
     
   db:
-    container_name: db
+    container_name: freelinette-db
     image: mongo
     restart: always
     ports:
