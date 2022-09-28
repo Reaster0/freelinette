@@ -15,13 +15,14 @@ async function openIncognito() {
 async function injectMenu() {
 
 	//check if the browser tabs is in incognito mode
-	await browser.tabs.query({active: true, currentWindow: true})
-	.then(async (tabs) => {
-		if (tabs[0].incognito)
-			console.log("incognito mode, all fine")
-		else
-			return await openIncognito()
-	})
+	// inspect the issue here with the cookies messages
+	// await browser.tabs.query({active: true, currentWindow: true})
+	// .then(async (tabs) => {
+	// 	if (tabs[0].incognito)
+	// 		console.log("incognito mode, all fine")
+	// 	else
+	// 		return await openIncognito()
+	// })
 	
 	browser.tabs.executeScript({
 		file: "../testMenu/dist/testMenu-Build.js",

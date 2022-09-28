@@ -55,7 +55,7 @@ export class CypressService {
 			quiet: true,
 			browser: 'chrome',
 			config: {
-				video: false,
+				video: true,
 			},
 			
 		})
