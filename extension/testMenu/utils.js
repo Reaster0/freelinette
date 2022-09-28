@@ -55,6 +55,8 @@ export function getCSSPath(el) {
 		//V2
 		const selector = getCSSSelector(el)
 		path.unshift(selector)
+		if (selector[0] === '#')
+			break
 		el = el.parentNode
 	}
 	return path.join(" > ")
