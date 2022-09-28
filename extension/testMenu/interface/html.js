@@ -65,7 +65,7 @@ export function injectHtml(document){
 				"params": {
 					"name": null,
 					"value": null,
-					"valueExtend": null,
+					"valueExtend": null
 				}
 			}
 		
@@ -101,7 +101,8 @@ export function injectHtml(document){
 						document.getElementById("btnConfirmTest").className = "btnActionFullAlt"
 						target.params = {
 							name: null,
-							value: null
+							value: null,
+							valueExtend: null,
 						}
 						toggleShowParams(target.action, menuIframe.contentDocument)
 					}

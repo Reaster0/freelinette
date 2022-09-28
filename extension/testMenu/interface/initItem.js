@@ -97,12 +97,14 @@ export function paramsBtnInit(document, pageDocument, testInput) {
 			testInput.params = {
 				name: null,
 				value: null,
+				valueExtend: null
 			}
 		}
 		else
 			testInput.params = {
 				name: "Select",
-				value: {
+				value: null,
+				valueExtend: {
 					id: e.target.value,
 					text: e.target.innerHTML
 				}
@@ -113,6 +115,7 @@ export function paramsBtnInit(document, pageDocument, testInput) {
 		testInput.params = {
 			name: "Exist",
 			value: null,
+			valueExtend: null
 		}
 	})
 }
