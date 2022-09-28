@@ -1,14 +1,36 @@
 console.log("popup launched")
 
-function injectMenu() {
-		browser.tabs.executeScript({
+async function openIncognito() {
+	const tabUrl = await browser.tabs.query({active: true, currentWindow: true})
+	.then((tabs) => {
+		return tabs[0].url
+	})
+
+	await browser.windows.create({
+		url: tabUrl,
+		incognito: true
+	})
+}
+
+async function injectMenu() {
+
+	//check if the browser tabs is in incognito mode
+	await browser.tabs.query({active: true, currentWindow: true})
+	.then(async (tabs) => {
+		if (tabs[0].incognito)
+			console.log("incognito mode, all fine")
+		else
+			return await openIncognito()
+	})
+	
+	browser.tabs.executeScript({
 		file: "../testMenu/dist/testMenu-Build.js",
-		//crossOriginIsolated: false,
 	})
 	console.log("injectMenu launched in the popup")
 }
 
 function init() {
+
 	document.getElementById('menu_injector').addEventListener('click', injectMenu)
 
 	getAllTests();

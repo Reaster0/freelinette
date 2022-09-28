@@ -65,8 +65,13 @@ export function getCSSSelector(el) {
 	let selector = ""
 	if (el.id) {
 		selector += "#" + el.id
-	} else {
-		let classes = el.className.split(" ")
+	}
+	else {
+		let classes
+		if (el.className.baseVal) //case of svg elements
+			classes = el.className.baseVal.split(" ")
+		else
+			classes = el.className.split(" ")
 		classes.forEach(c => {
 			if (c != "")
 				selector += "." + c
