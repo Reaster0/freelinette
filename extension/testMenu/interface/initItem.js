@@ -229,9 +229,12 @@ export function drawerSystemInit(document) {
 export function elementPickerInit(document, testInput, pageDocument){
 	const elementBtn = document.getElementById("elementPickerBtn")
 
-	elementBtn.addEventListener("click", () => {
+	elementBtn.addEventListener("click", (e) => {
+		if (e.target.using === true)
+			return
 		saintPickerInit(pageDocument, document)
 		document.getElementById("btnParamSelect").innerHTML = '<option selected value="" hidden disabled>Select</option>'
+		e.target.using = true;
 	})
 
 	elementBtn.addEventListener("elemInspector", (e) => {
@@ -240,6 +243,7 @@ export function elementPickerInit(document, testInput, pageDocument){
 			"path": getCSSPath(e.detail)
 		}
 		console.log(getCSSPath(e.detail))
+		e.target.using = false
 	})
 }
 
