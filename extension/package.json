@@ -6,6 +6,7 @@
   "scripts": {
     "build-testMenu": "webpack --config webpack-testMenu.config.js",
     "build-popup": "webpack --config webpack-popup.config.js",
+	"build": "webpack --config webpack-prod-popup.config.js; webpack --config webpack-prod-testMenu.config.js",
 	"dev": "webpack serve"
   },
   "author": "earnaud",
