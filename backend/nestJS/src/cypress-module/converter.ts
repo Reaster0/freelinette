@@ -21,7 +21,7 @@ export function srlEnd(): string {
 });`;
 }
 
-//the serializer start here and work like that:
+//the converter start here and work like that:
 // cy.get({test.element}).{test.action}({test.params})
 export function srlNewStep(test: testDto): string {
 	let result = "";
