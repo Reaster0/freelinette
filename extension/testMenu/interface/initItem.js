@@ -34,13 +34,13 @@ export function saintPickerInit(document, menuIframe){
 export function toggleShowParams(action, iframeDocument){
 	console.log("toggleShowParams", action)
 
-	iframeDocument.getElementById("btnParamSelect").setAttribute("hidden", "true")
+	iframeDocument.getElementById("divClickParam").setAttribute("hidden", "true")
 	iframeDocument.getElementById("divTypeParam").setAttribute("hidden", "true")
-	iframeDocument.getElementById("btnParamExist").setAttribute("hidden", "true")
+	iframeDocument.getElementById("divLookParam").setAttribute("hidden", "true")
 	iframeDocument.getElementById("ParamDropDownMenu").style.left = null
 	if (action === "Click"){
 		console.log("show params click")
-		iframeDocument.getElementById("btnParamSelect").removeAttribute("hidden")
+		iframeDocument.getElementById("divClickParam").removeAttribute("hidden")
 		iframeDocument.getElementById("ParamDropDownMenu").style.left = null
 	}
 	else if (action === "Fill") {
@@ -50,7 +50,7 @@ export function toggleShowParams(action, iframeDocument){
 	}
 	else if (action === "Look") {
 		console.log("show params look")
-		iframeDocument.getElementById("btnParamExist").removeAttribute("hidden")
+		iframeDocument.getElementById("divLookParam").removeAttribute("hidden")
 		iframeDocument.getElementById("ParamDropDownMenu").style.left = null
 	}
 }
@@ -96,8 +96,7 @@ export function paramsBtnInit(document, pageDocument, testInput) {
 			}
 			testInput.params = {
 				name: null,
-				value: null,
-				valueExtend: null
+				value: null
 			}
 		}
 		else
@@ -114,10 +113,11 @@ export function paramsBtnInit(document, pageDocument, testInput) {
 	document.getElementById("btnParamExist").addEventListener("click", () => {
 		testInput.params = {
 			name: "Exist",
-			value: null,
-			valueExtend: null
+			value: null
 		}
 	})
+
+	//write the should contain here
 }
 
 //init the button to export to JSON

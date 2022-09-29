@@ -27,12 +27,19 @@
 					<div id="paramsDropDownButton" class="dropDown">
 						<button id="params-dropdown-button" class="btnActionEmptyAlt deButtoned">Params</button>
 						<div id="ParamDropDownMenu" class="dropDownMenu">
+							<!-- params of fill -->
 							<div id="divTypeParam" hidden style="flex-direction: row;">
 								<input id="inputTypeParam" class="fieldInput"></input>
 								<button id="btnParamType" class="btnActionEmptyAlt">Type</button>
 							</div>
-							<select name="Select" id="btnParamSelect" hidden class="btnActionEmptyAlt" style="max-width: 95px;">Select</select>
-								<button id="btnParamExist" hidden class="btnActionEmptyAlt">Exist</button>
+							<!-- params of click -->
+							<div id="divClickParam" hidden>
+								<select name="Select" id="btnParamSelect" class="btnActionEmptyAlt" style="max-width: 95px;">Select</select>
+							</div>
+							<!-- params of look -->
+							<div id="divLookParam" hidden>
+								<button id="btnParamExist" class="btnActionEmptyAlt">Exist</button>
+							</div>
 						</div>
 					</div>
 				</div>
