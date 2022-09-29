@@ -21,6 +21,11 @@ services:
       - "27017:27017"
     environment:
       - MONGODB_DATABASE=${DATABASE_NAME}
+      # - MONGODB_INITDB_ROOT_USERNAME=${DATABASE_USER}
+      # - MONGODB_INITDB_ROOT_PASSWORD=${DATABASE_PASSWORD}
+    # volumes:
+      # - ./mongoDB/scripts/:/docker-entrypoint-initdb.d/
+      # - ./mongoDB/data:/data/db
 
       # - MONGODB_USERNAME=${DATABASE_USER}
       # - MONGODB_PASSWORD=${DATABASE_PASSWORD}

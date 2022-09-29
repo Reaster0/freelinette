@@ -21,6 +21,8 @@ export function srlEnd(): string {
 });`;
 }
 
+//the serializer start here and work like that:
+// cy.get({test.element}).{test.action}({test.params})
 export function srlNewStep(test: testDto): string {
 	let result = "";
 	result += srlTarget(test.element);
@@ -42,7 +44,7 @@ function srlAction(action: string, params: paramsDto): string {
 	else if (action === "Fill")
 		result = `.type`;
 	else if (action === "Look")
-		result = "";
+		result = ".should";
 	return result;
 }
 
@@ -51,9 +53,9 @@ function srlParams(params: paramsDto): string {
 	if (params.name === "Type")
 		result = `("${params.value}")`;
 	else if (params.name === "Exist")
-		result = "";
+		result = `('exist')`;
 	else if (params.name === "Contain")
-		result = `.should('contain', '${params.value}')`;
+		result = `('contain', '${params.value}')`;
 	else if (params.name === "Select")
 		result = `.select('${params.valueExtend.text}', ${params.valueExtend.id})`;
 	return result;
