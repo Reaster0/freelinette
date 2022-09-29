@@ -117,7 +117,16 @@ export function paramsBtnInit(document, pageDocument, testInput) {
 		}
 	})
 
-	//write the should contain here
+	document.getElementById("btnParamSimilar").addEventListener('click', () => {
+		testInput.params = {
+			name: "Similar",
+			value: null,
+			valueExtend: {
+				id: "contain",
+				text: pageDocument.querySelector(testInput.element.path).innerText
+			}
+		}
+	})
 }
 
 //init the button to export to JSON
