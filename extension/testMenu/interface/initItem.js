@@ -33,7 +33,7 @@ export function saintPickerInit(document, menuIframe){
 
 export function toggleShowParams(action, iframeDocument){
 	console.log("toggleShowParams", action)
-
+	
 	iframeDocument.getElementById("divClickParam").setAttribute("hidden", "true")
 	iframeDocument.getElementById("divTypeParam").setAttribute("hidden", "true")
 	iframeDocument.getElementById("divLookParam").setAttribute("hidden", "true")
