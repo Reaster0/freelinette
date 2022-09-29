@@ -54,8 +54,8 @@ function srlParams(params: paramsDto): string {
 		result = `("${params.value}")`;
 	else if (params.name === "Exist")
 		result = `('exist')`;
-	else if (params.name === "Contain")
-		result = `('contain', '${params.value}')`;
+	else if (params.name === "Similar")
+		result = `('contain', '${params.valueExtend.text}')`;
 	else if (params.name === "Select")
 		result = `.select('${params.valueExtend.text}', ${params.valueExtend.id})`;
 	return result;
