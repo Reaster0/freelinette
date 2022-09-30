@@ -319,3 +319,13 @@ export function multiPageinit(document, pageDocument, testQueue, window) {
 	// 	})
 	// })
 }
+
+export function replaceIframeWindowInit(window, browser, contain){
+	console.log("i'm in that function")
+	window.addEventListener("lol", (e) => {
+		console.log("im here")	
+	})
+	browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+		console.log("message = ", message)
+	})
+}

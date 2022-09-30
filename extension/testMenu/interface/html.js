@@ -1,5 +1,5 @@
 import { dragElement } from "../utils.js"
-import { saveBtnInit, exitBtnInit, drawerSystemInit, toggleShowParams, actionBtnInit, paramsBtnInit, exportJSONBtnInit, addNewTestBtnInit, elementPickerInit, multiPageinit } from "./initItem.js"
+import {replaceIframeWindowInit, saveBtnInit, exitBtnInit, drawerSystemInit, toggleShowParams, actionBtnInit, paramsBtnInit, exportJSONBtnInit, addNewTestBtnInit, elementPickerInit, multiPageinit } from "./initItem.js"
 import htmlPage from "./testMenu.html"
 import cssPage from "./testMenu.css"
 
@@ -34,6 +34,8 @@ export function injectHtml(document){
 	contain.style.top = '40%'
 	contain.style.left = '20%'
 	contain.id = 'menu_contain'
+
+	replaceIframeWindowInit(window , browser,contain)
 
 	contain.appendChild(menuIframe)
 	document.body.append(contain)
