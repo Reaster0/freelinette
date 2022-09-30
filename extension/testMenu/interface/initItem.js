@@ -1,4 +1,4 @@
-import { getCSSPath, getCSSSelector } from "../utils.js"
+import {sendToBackground, getCSSPath, getCSSSelector } from "../utils.js"
 
 export function saintPickerInit(document, menuIframe){
 	
@@ -259,9 +259,19 @@ export function elementPickerInit(document, testInput, pageDocument){
 	})
 }
 
-export function exitBtnInit(document) {
+export function exitBtnInit(document, pageDocument, testQueue) {
 	document.getElementById("btnExitTest").addEventListener("click", (e) => {
-		location.reload()
+		// const res = confirm("Are you sure you want to exit? All unsaved data will be lost.")
+		// if (res)
+		// 	location.reload()
+		console.log(sendToBackground({
+			event: "WindowReload",
+			test: testQueue,
+			position: {
+				x: pageDocument.getElementById("menu_contain").style.left,
+				y: pageDocument.getElementById("menu_contain").style.top
+			}
+		}))
 	})
 }
 
@@ -278,7 +288,34 @@ export function saveBtnInit(document, currentTest) {
 
 		//TODO check the response in res
 
+
 		console.log(res)
 		location.reload()
 	})
+}
+
+//this function set a event listener when the page is changed or reloaded and call the sendToBackground function
+export function multiPageinit(document, pageDocument, testQueue, window) {
+	console.log("mutliPageInit is here")
+	window.onbeforeunload = function(e) {
+		sendToBackground({
+			event: "WindowReload",
+			test: testQueue,
+			position: {
+				x: pageDocument.getElementById("menu_contain").style.left,
+				y: pageDocument.getElementById("menu_contain").style.top
+			}
+		})
+	}
+	// pageDocument.addEventListener("unload", (e) => {
+	// 	console.log("lmao")
+	// 	sendToBackground({
+	// 		event: "WindowReload",
+	// 		test: testQueue,
+	// 		position: {
+	// 			x: pageDocument.getElementById("menu_contain").style.left,
+	// 			y: pageDocument.getElementById("menu_contain").style.top
+	// 		}
+	// 	})
+	// })
 }

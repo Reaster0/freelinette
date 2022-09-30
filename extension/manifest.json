@@ -17,11 +17,11 @@
   },
 
   "background": {
-	"scripts": ["./background.js"]
+	"scripts": ["./background/background.js"]
   },
 
   "permissions": [
-    "activeTab",
+	"tabs",
 	"storage",
 	"<all_urls>"
   ],

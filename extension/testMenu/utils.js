@@ -89,3 +89,12 @@ export function getCSSSelector(el) {
 	}
 	return selector
 }
+
+export async function sendToBackground(message) {
+	try{
+		return await browser.runtime.sendMessage(message)
+	}
+	catch(e){
+		console.error(e)
+	}
+}

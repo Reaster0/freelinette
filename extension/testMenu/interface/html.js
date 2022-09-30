@@ -1,5 +1,5 @@
 import { dragElement } from "../utils.js"
-import { saveBtnInit, exitBtnInit, drawerSystemInit, toggleShowParams, actionBtnInit, paramsBtnInit, exportJSONBtnInit, addNewTestBtnInit, elementPickerInit } from "./initItem.js"
+import { saveBtnInit, exitBtnInit, drawerSystemInit, toggleShowParams, actionBtnInit, paramsBtnInit, exportJSONBtnInit, addNewTestBtnInit, elementPickerInit, multiPageinit } from "./initItem.js"
 import htmlPage from "./testMenu.html"
 import cssPage from "./testMenu.css"
 
@@ -37,7 +37,6 @@ export function injectHtml(document){
 
 	contain.appendChild(menuIframe)
 	document.body.append(contain)
-
 
 	menuIframe.onload = function () {
 		initialiseTestMenu(contain, menuIframe, document)
@@ -116,8 +115,9 @@ export function injectHtml(document){
 			elementPickerInit(document, testInput, pageDocument)
 			addNewTestBtnInit(document, testsQueue, testInput, _testInput)
 			exportJSONBtnInit(document, currentTest)
-			exitBtnInit(document)
+			exitBtnInit(document, pageDocument, testsQueue)
 			saveBtnInit(document, currentTest)
+			multiPageinit(document, pageDocument, testsQueue, window)
 		}
 	}
 }
