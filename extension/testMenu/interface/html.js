@@ -31,11 +31,9 @@ export function injectHtml(document){
 	let contain = document.createElement('div')
 	contain.style.zIndex = '2147483647'
 	contain.style.position = 'fixed'
-	contain.style.top = '40%'
-	contain.style.left = '20%'
+	// contain.style.top = '0'
+	// contain.style.left = '0'
 	contain.id = 'menu_contain'
-
-	replaceIframeWindowInit(window , browser,contain)
 
 	contain.appendChild(menuIframe)
 	document.body.append(contain)
@@ -117,9 +115,9 @@ export function injectHtml(document){
 			elementPickerInit(document, testInput, pageDocument)
 			addNewTestBtnInit(document, testsQueue, testInput, _testInput)
 			exportJSONBtnInit(document, currentTest)
-			exitBtnInit(document, pageDocument, testsQueue)
+			exitBtnInit(document)
 			saveBtnInit(document, currentTest)
-			multiPageinit(document, pageDocument, testsQueue, window)
+			multiPageinit(document, pageDocument, currentTest, window)
 		}
 	}
 }

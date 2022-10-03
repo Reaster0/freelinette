@@ -259,19 +259,13 @@ export function elementPickerInit(document, testInput, pageDocument){
 	})
 }
 
-export function exitBtnInit(document, pageDocument, testQueue) {
+export function exitBtnInit(document) {
 	document.getElementById("btnExitTest").addEventListener("click", (e) => {
-		// const res = confirm("Are you sure you want to exit? All unsaved data will be lost.")
-		// if (res)
-		// 	location.reload()
-		console.log(sendToBackground({
-			event: "WindowReload",
-			test: testQueue,
-			position: {
-				x: pageDocument.getElementById("menu_contain").style.left,
-				y: pageDocument.getElementById("menu_contain").style.top
-			}
-		}))
+		const res = confirm("Are you sure you want to remove the test creation? All unsaved data will be lost.")
+		if (res){
+			sendToBackground({event: "unRegisterTab"})
+			location.reload()
+		}
 	})
 }
 
@@ -295,37 +289,26 @@ export function saveBtnInit(document, currentTest) {
 }
 
 //this function set a event listener when the page is changed or reloaded and call the sendToBackground function
-export function multiPageinit(document, pageDocument, testQueue, window) {
+export function multiPageinit(document, pageDocument, currentTest, window) {
 	console.log("mutliPageInit is here")
+
+	sendToBackground({
+		event: "testMenuInit"
+	})
+	.then(res => {
+		console.log(res)
+		pageDocument.getElementById("menu_contain").style.left = res.x
+		pageDocument.getElementById("menu_contain").style.top = res.y
+	})
+
 	window.onbeforeunload = function(e) {
 		sendToBackground({
 			event: "WindowReload",
-			test: testQueue,
+			currentTest: currentTest,
 			position: {
 				x: pageDocument.getElementById("menu_contain").style.left,
 				y: pageDocument.getElementById("menu_contain").style.top
 			}
 		})
 	}
-	// pageDocument.addEventListener("unload", (e) => {
-	// 	console.log("lmao")
-	// 	sendToBackground({
-	// 		event: "WindowReload",
-	// 		test: testQueue,
-	// 		position: {
-	// 			x: pageDocument.getElementById("menu_contain").style.left,
-	// 			y: pageDocument.getElementById("menu_contain").style.top
-	// 		}
-	// 	})
-	// })
-}
-
-export function replaceIframeWindowInit(window, browser, contain){
-	console.log("i'm in that function")
-	window.addEventListener("lol", (e) => {
-		console.log("im here")	
-	})
-	browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
-		console.log("message = ", message)
-	})
 }
