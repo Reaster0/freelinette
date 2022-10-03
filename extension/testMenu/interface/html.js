@@ -1,5 +1,5 @@
-import { dragElement } from "../utils.js"
-import {replaceIframeWindowInit, saveBtnInit, exitBtnInit, drawerSystemInit, toggleShowParams, actionBtnInit, paramsBtnInit, exportJSONBtnInit, addNewTestBtnInit, elementPickerInit, multiPageinit } from "./initItem.js"
+import { dragElement, sendToBackground } from "../utils.js"
+import {syncDisplayTest, replaceIframeWindowInit, saveBtnInit, exitBtnInit, drawerSystemInit, toggleShowParams, actionBtnInit, paramsBtnInit, exportJSONBtnInit, addNewTestBtnInit, elementPickerInit, multiPageInit } from "./initItem.js"
 import htmlPage from "./testMenu.html"
 import cssPage from "./testMenu.css"
 
@@ -42,7 +42,7 @@ export function injectHtml(document){
 		initialiseTestMenu(contain, menuIframe, document)
 	}
 
-	function initialiseTestMenu(contain, menuIframe, pageDocument)
+	async function initialiseTestMenu(contain, menuIframe, pageDocument)
 	{
 		menuIframe.contentDocument.head.innerHTML = `<meta charset="utf-8">`
 		menuIframe.contentDocument.body.innerHTML = htmlPage
@@ -51,10 +51,10 @@ export function injectHtml(document){
 		menuIframe.contentDocument.head.appendChild(stylesheet)
 		
 		dragElement(contain);
-		innerPageScript(menuIframe.contentDocument)
+		await innerPageScript(menuIframe.contentDocument)
 
 
-		function innerPageScript(document){
+		async function innerPageScript(document){
 			let _testInput = {
 				"action": null,
 				"element": {
@@ -117,7 +117,7 @@ export function injectHtml(document){
 			exportJSONBtnInit(document, currentTest)
 			exitBtnInit(document)
 			saveBtnInit(document, currentTest)
-			multiPageinit(document, pageDocument, currentTest, window)
+			await multiPageInit(document, pageDocument, currentTest, window)
 		}
 	}
 }

@@ -138,12 +138,69 @@ export function exportJSONBtnInit(document, testsQueue){
 	})
 }
 
+//append a new test in the dom
+//is deprecated TODO: remove
+export function newTestAppend(document, parentNode, test, id){
+
+	const testElement = document.createElement("div")
+	testElement.className = "newTestInput"
+	testElement.attributes.number = id
+	testElement.style = "justify-content: space-between; gap: 2px;"
+
+	const actionBtn = document.createElement("button")
+	actionBtn.className = "btnActionFull deButtoned"
+	if (test.action != null)
+		actionBtn.innerHTML = test.action
+	else
+		actionBtn.innerHTML = "Action"
+
+	const elementBtn = document.createElement("button")
+	elementBtn.className = "btnActionEmpty deButtoned"
+	elementBtn.style = "overflow-x: hidden; max-width: 30%;"
+	if (test.element.selector != null)
+		elementBtn.innerHTML = test.element.selector
+	else
+		elementBtn.innerHTML = "Element"
+
+	const paramsBtn = document.createElement("button")
+	paramsBtn.className = "btnActionEmptyAlt deButtoned"
+	paramsBtn.style = "overflow-x: scroll; max-width: 30%;"
+	if (test.params.name === null)
+		paramsBtn.innerHTML = "Params"
+	else
+		paramsBtn.innerHTML = test.params.name + ": " + test.params.value
+
+	const deleteBtn = document.createElement("button")
+	deleteBtn.className = "buttonDelete"
+	deleteBtn.innerHTML = "X"
+	deleteBtn.onclick = function(){
+		testsQueue.splice(testElement.attributes.number, 1)
+		parentNode.innerHTML = ""
+		for (let key in testsQueue)
+			newTestAppend(parentNode, testsQueue[key], key)
+	}
+
+	testElement.appendChild(actionBtn)
+	testElement.appendChild(elementBtn)
+	testElement.appendChild(paramsBtn)
+	testElement.appendChild(deleteBtn)
+	parentNode.appendChild(testElement)
+}
+
 //init for the button to add new tests
 export function addNewTestBtnInit(document, testsQueue, testInput, _testInput){
 	document.getElementById("btnConfirmTest").addEventListener("click", () => {
 
 	testsQueue.push(structuredClone(_testInput))
-	newTestAppend(document.getElementById("testList"), structuredClone(_testInput), testsQueue.length - 1)
+	newTestAppend(document, document.getElementById("testList"), structuredClone(_testInput), testsQueue.length - 1)
+	
+	const addBtn = document.getElementById("btnConfirmTest")
+	addBtn.disabled = true
+	document.getElementById("btnConfirmTest").className = "btnActionFullAlt deButtoned"
+	toggleShowParams(null, document)
+	document.getElementById("params-dropdown-button").disabled = true
+	document.getElementById("params-dropdown-button").classList.add("deButtoned")
+	
 	testInput.action = null
 	testInput.element = {
 		"selector": null,
@@ -160,60 +217,7 @@ export function addNewTestBtnInit(document, testsQueue, testInput, _testInput){
 	document.getElementById("btnConfirmTest").disabled = true
 	document.getElementById("btnConfirmTest").className = "btnActionFullAlt deButtoned"
 
-	//append a new test in the dom
-	function newTestAppend(parentNode, test, id){
-		const addBtn = document.getElementById("btnConfirmTest")
-		addBtn.disabled = true
-		document.getElementById("btnConfirmTest").className = "btnActionFullAlt deButtoned"
-		toggleShowParams(null, document)
-		document.getElementById("params-dropdown-button").disabled = true
-		document.getElementById("params-dropdown-button").classList.add("deButtoned")
-
-
-		const testElement = document.createElement("div")
-		testElement.className = "newTestInput"
-		testElement.attributes.number = id
-		testElement.style = "justify-content: space-between; gap: 2px;"
-
-		const actionBtn = document.createElement("button")
-		actionBtn.className = "btnActionFull deButtoned"
-		if (test.action != null)
-			actionBtn.innerHTML = test.action
-		else
-			actionBtn.innerHTML = "Action"
-
-		const elementBtn = document.createElement("button")
-		elementBtn.className = "btnActionEmpty deButtoned"
-		elementBtn.style = "overflow-x: hidden; max-width: 30%;"
-		if (test.element.selector != null)
-			elementBtn.innerHTML = test.element.selector
-		else
-			elementBtn.innerHTML = "Element"
-
-		const paramsBtn = document.createElement("button")
-		paramsBtn.className = "btnActionEmptyAlt deButtoned"
-		paramsBtn.style = "overflow-x: scroll; max-width: 30%;"
-		if (test.params.name === null)
-			paramsBtn.innerHTML = "Params"
-		else
-			paramsBtn.innerHTML = test.params.name + ": " + test.params.value
-
-		const deleteBtn = document.createElement("button")
-		deleteBtn.className = "buttonDelete"
-		deleteBtn.innerHTML = "X"
-		deleteBtn.onclick = function(){
-			testsQueue.splice(testElement.attributes.number, 1)
-			parentNode.innerHTML = ""
-			for (let key in testsQueue)
-				newTestAppend(parentNode, testsQueue[key], key)
-		}
-
-		testElement.appendChild(actionBtn)
-		testElement.appendChild(elementBtn)
-		testElement.appendChild(paramsBtn)
-		testElement.appendChild(deleteBtn)
-		parentNode.appendChild(testElement)
-	}
+	
 }
 
 //initialize the animation of the drawer with id #data-dropdown
@@ -261,11 +265,11 @@ export function elementPickerInit(document, testInput, pageDocument){
 
 export function exitBtnInit(document) {
 	document.getElementById("btnExitTest").addEventListener("click", (e) => {
-		const res = confirm("Are you sure you want to remove the test creation? All unsaved data will be lost.")
-		if (res){
+		//const res = confirm("Are you sure you want to remove the test creation? All unsaved data will be lost.")
+		// if (res){
 			sendToBackground({event: "unRegisterTab"})
 			location.reload()
-		}
+		// }
 	})
 }
 
@@ -289,19 +293,26 @@ export function saveBtnInit(document, currentTest) {
 }
 
 //this function set a event listener when the page is changed or reloaded and call the sendToBackground function
-export function multiPageinit(document, pageDocument, currentTest, window) {
-	console.log("mutliPageInit is here")
+export async function multiPageInit(document, pageDocument, currentTest, window) {
 
-	sendToBackground({
+	await sendToBackground({
 		event: "testMenuInit"
 	})
 	.then(res => {
-		console.log(res)
 		pageDocument.getElementById("menu_contain").style.left = res.x
 		pageDocument.getElementById("menu_contain").style.top = res.y
+		console.log("receiving backup: " + JSON.stringify(res.currentTest))
+		if (res.currentTest.tests != null)
+		{
+			console.log("i enter here and i shouldnt")
+			currentTest.name = res.currentTest.name
+			currentTest.website = res.currentTest.website
+			currentTest.tests = res.currentTest.tests
+			syncDisplayTest(document, currentTest.tests)
+		}
 	})
 
-	window.onbeforeunload = function(e) {
+	window.onbeforeunload = function() {
 		sendToBackground({
 			event: "WindowReload",
 			currentTest: currentTest,
@@ -310,5 +321,14 @@ export function multiPageinit(document, pageDocument, currentTest, window) {
 				y: pageDocument.getElementById("menu_contain").style.top
 			}
 		})
+	}
+}
+//sync the display of tests with the testsQueue
+export function syncDisplayTest(document, testsQueue) {
+	document.getElementById("testList").innerHTML = ""
+	console.log("syncDisplayTest: init ", testsQueue)
+	for(let key in testsQueue){
+		console.log(testsQueue[key])
+		newTestAppend(document, document.getElementById("testList"), structuredClone(testsQueue[key]), key)
 	}
 }

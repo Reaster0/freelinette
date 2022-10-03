@@ -15,7 +15,8 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 	//need to register the id of the tab that host the test menu
 	if (message.event === "testMenuInit") {
 		registeredTabId = sender.tab.id
-		console.log("registeredTabId = ", registeredTabId)
+		console.log("testMenuInit:")
+		console.log(currentTest)
 		sendResponse({
 			x: position.x,
 			y: position.y,
@@ -29,6 +30,7 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 	}
 
 	if (message.event === "WindowReload"){
+		console.log("WindowReload", message.currentTest, message.position)
 		currentTest = message.currentTest
 		position = message.position
 
