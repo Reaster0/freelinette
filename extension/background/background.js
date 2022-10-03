@@ -37,7 +37,7 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 		browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
 			if (tab.status === "complete" && tab.active && tab.id === registeredTabId) {
-				//console.log("i'll relaunch and tabId = ", tabId)
+				console.log("i'll relaunch and tabId = ", tabId)
 				//console.log("changeInfo = " ,changeInfo)
 				//console.log("tab = ", tab)
 				browser.tabs.executeScript(tabId, {

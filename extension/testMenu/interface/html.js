@@ -31,8 +31,8 @@ export function injectHtml(document){
 	let contain = document.createElement('div')
 	contain.style.zIndex = '2147483647'
 	contain.style.position = 'fixed'
-	// contain.style.top = '0'
-	// contain.style.left = '0'
+	contain.style.top = '0'
+	contain.style.left = '0'
 	contain.id = 'menu_contain'
 
 	contain.appendChild(menuIframe)
@@ -113,9 +113,9 @@ export function injectHtml(document){
 			actionBtnInit(testInput, document)
 			paramsBtnInit(document, pageDocument, testInput)
 			elementPickerInit(document, testInput, pageDocument)
-			addNewTestBtnInit(document, testsQueue, testInput, _testInput)
+			addNewTestBtnInit(document, testsQueue, testInput, _testInput, currentTest)
 			exportJSONBtnInit(document, currentTest)
-			exitBtnInit(document)
+			exitBtnInit(document, window)
 			saveBtnInit(document, currentTest)
 			await multiPageInit(document, pageDocument, currentTest, window)
 		}

@@ -188,10 +188,11 @@ export function newTestAppend(document, parentNode, test, id){
 }
 
 //init for the button to add new tests
-export function addNewTestBtnInit(document, testsQueue, testInput, _testInput){
+export function addNewTestBtnInit(document, testsQueue, testInput, _testInput, currentTest){
 	document.getElementById("btnConfirmTest").addEventListener("click", () => {
 
 	testsQueue.push(structuredClone(_testInput))
+	window.localStorage.setItem("currentTest", JSON.stringify(currentTest))
 	newTestAppend(document, document.getElementById("testList"), structuredClone(_testInput), testsQueue.length - 1)
 	
 	const addBtn = document.getElementById("btnConfirmTest")
@@ -263,10 +264,13 @@ export function elementPickerInit(document, testInput, pageDocument){
 	})
 }
 
-export function exitBtnInit(document) {
+export function exitBtnInit(document, window) {
 	document.getElementById("btnExitTest").addEventListener("click", (e) => {
 		//const res = confirm("Are you sure you want to remove the test creation? All unsaved data will be lost.")
 		// if (res){
+			window.localStorage.removeItem("currentTest")
+			window.localStorage.removeItem("testMenuPosX")
+			window.localStorage.removeItem("testMenuPosY")
 			sendToBackground({event: "unRegisterTab"})
 			location.reload()
 		// }
@@ -275,6 +279,10 @@ export function exitBtnInit(document) {
 
 export function saveBtnInit(document, currentTest) {
 	document.getElementById("btnSaveTest").addEventListener("click", async (e) => {
+		const resName = prompt("Insert the name of the test")
+		if (!resName)
+			alert("The test was not saved")
+		currentTest.name = resName
 		const res = await fetch("http://localhost:3000/cypress/testList", {
 			method: "POST",
 			headers: {
@@ -287,7 +295,7 @@ export function saveBtnInit(document, currentTest) {
 		//TODO check the response in res
 
 
-		console.log(res)
+		console.log(resName)
 		location.reload()
 	})
 }
@@ -295,25 +303,38 @@ export function saveBtnInit(document, currentTest) {
 //this function set a event listener when the page is changed or reloaded and call the sendToBackground function
 export async function multiPageInit(document, pageDocument, currentTest, window) {
 
+	console.log("multiPageInit: ", window.localStorage.getItem("currentTest"))
+	if (window.localStorage.getItem("currentTest") != null){
+		console.log("multiPageInit: i have a currentTest")
+		const tempTest = JSON.parse(window.localStorage.getItem("currentTest"))
+		currentTest.name = tempTest.name
+		currentTest.website = tempTest.website
+		currentTest.tests = tempTest.tests
+		syncDisplayTest(document, currentTest.tests)
+	}
+
 	await sendToBackground({
 		event: "testMenuInit"
 	})
 	.then(res => {
 		pageDocument.getElementById("menu_contain").style.left = res.x
 		pageDocument.getElementById("menu_contain").style.top = res.y
-		console.log("receiving backup: " + JSON.stringify(res.currentTest))
-		if (res.currentTest.tests != null)
-		{
-			console.log("i enter here and i shouldnt")
-			currentTest.name = res.currentTest.name
-			currentTest.website = res.currentTest.website
-			currentTest.tests = res.currentTest.tests
-			syncDisplayTest(document, currentTest.tests)
-		}
 	})
+	// 	//console.log("receiving backup: " + JSON.stringify(res.currentTest))
+	// 	if (res.currentTest.tests != null)
+	// 	{
+	// 		currentTest.name = res.currentTest.name
+	// 		currentTest.website = res.currentTest.website
+	// 		currentTest.tests = res.currentTest.tests
+	// 		syncDisplayTest(document, currentTest.tests)
+	// 	}
+	// })
 
-	window.onbeforeunload = function() {
-		sendToBackground({
+	window.onbeforeunload = async function() {
+		//window.localStorage.setItem("testMenuPosX", pageDocument.getElementById("menu_contain").style.left)
+		//window.localStorage.setItem("testMenuPosY", pageDocument.getElementById("menu_contain").style.top)
+		// window.localStorage.setItem("currentTest", JSON.stringify(currentTest))
+		await sendToBackground({
 			event: "WindowReload",
 			currentTest: currentTest,
 			position: {
@@ -322,6 +343,7 @@ export async function multiPageInit(document, pageDocument, currentTest, window)
 			}
 		})
 	}
+
 }
 //sync the display of tests with the testsQueue
 export function syncDisplayTest(document, testsQueue) {
