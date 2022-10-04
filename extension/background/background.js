@@ -2,7 +2,7 @@ console.log("mdrbackground")
 
 let registeredTabId = null
 
-let currentTest = {}
+let currentTest = null
 let position = {
 	x: 0,
 	y: 0
@@ -24,6 +24,22 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 		})
 	}
 
+	if (message.event === "saveBundleTest"){
+		console.log("saveBundleTest")
+		currentTest = message.test
+	}
+	
+	if (message.event === "saveNewTest") {
+		console.log("saveNewTest")
+		console.log(message)
+		currentTest.tests.push(structuredClone(message.test))
+	}
+
+	if (message.event === "deleteTest") {
+		console.log("deleting: ", message.index)
+		currentTest.tests.splice(message.index, 1)	
+	}
+
 	if (message.event === "unRegisterTab") {
 		registeredTabId = null
 		console.log("un registeredTabId = ", registeredTabId)
@@ -31,7 +47,7 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 	if (message.event === "WindowReload"){
 		console.log("WindowReload", message.currentTest, message.position)
-		currentTest = message.currentTest
+		//currentTest = message.currentTest
 		position = message.position
 
 		browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {

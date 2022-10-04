@@ -177,7 +177,8 @@ export function newTestAppend(document, parentNode, test, id, currentTest){
 		// console.log("deleting testQueue")
 		// console.log(currentTest.tests)
 		currentTest.tests.splice(testElement.attributes.number, 1)
-		window.localStorage.setItem("currentTest", JSON.stringify(currentTest))
+		sendToBackground({event: "deleteTest", index: testElement.attributes.number})
+		//window.localStorage.setItem("currentTest", JSON.stringify(currentTest))
 		parentNode.innerHTML = ""
 		for (let key in currentTest.tests)
 			newTestAppend(document, parentNode, currentTest.tests[key], key, currentTest)
@@ -195,7 +196,8 @@ export function addNewTestBtnInit(document, testInput, _testInput, currentTest){
 	document.getElementById("btnConfirmTest").addEventListener("click", () => {
 
 	currentTest.tests.push(structuredClone(_testInput))
-	window.localStorage.setItem("currentTest", JSON.stringify(currentTest))
+	sendToBackground({event: "saveNewTest", test: _testInput})
+	//window.localStorage.setItem("currentTest", JSON.stringify(currentTest))
 	newTestAppend(document, document.getElementById("testList"), structuredClone(_testInput), currentTest.tests.length - 1, currentTest)
 	
 	const addBtn = document.getElementById("btnConfirmTest")
@@ -276,7 +278,10 @@ export function exitBtnInit(document, window) {
 	document.getElementById("btnExitTest").addEventListener("click", (e) => {
 		//const res = confirm("Are you sure you want to remove the test creation? All unsaved data will be lost.")
 		// if (res){
-			window.localStorage.removeItem("currentTest")
+
+			//window.localStorage.removeItem("currentTest")
+			sendToBackground({event: "saveBundleTest", test: null})
+			
 			//window.localStorage.removeItem("testMenuPosX")
 			//window.localStorage.removeItem("testMenuPosY")
 			sendToBackground({event: "unRegisterTab"})
@@ -311,35 +316,27 @@ export function saveBtnInit(document, currentTest) {
 //this function set a event listener when the page is changed or reloaded and call the sendToBackground function
 export async function multiPageInit(document, pageDocument, currentTest, window) {
 
-	console.log("multiPageInit: ", window.localStorage.getItem("currentTest"))
-	if (window.localStorage.getItem("currentTest") != null){
+	console.log("multiPageInit: ")
+
+	const res = await sendToBackground({event: "testMenuInit"})
+
+	pageDocument.getElementById("menu_contain").style.left = res.x
+	pageDocument.getElementById("menu_contain").style.top = res.y
+
+	if (res.currentTest != null){
 		console.log("multiPageInit: i have a currentTest")
-		const tempTest = JSON.parse(window.localStorage.getItem("currentTest"))
-		currentTest.name = tempTest.name
-		currentTest.website = tempTest.website
-		currentTest.tests = tempTest.tests
+		//const tempTest = JSON.parse(window.localStorage.getItem("currentTest"))
+		currentTest.name = res.currentTest.name
+		currentTest.website = res.currentTest.website
+		currentTest.tests = res.currentTest.tests
 		syncDisplayTest(document, currentTest)
 	}
-
-	await sendToBackground({
-		event: "testMenuInit"
-	})
-	.then(res => {
-		pageDocument.getElementById("menu_contain").style.left = res.x
-		pageDocument.getElementById("menu_contain").style.top = res.y
-	})
-	// 	//console.log("receiving backup: " + JSON.stringify(res.currentTest))
-	// 	if (res.currentTest.tests != null)
-	// 	{
-	// 		currentTest.name = res.currentTest.name
-	// 		currentTest.website = res.currentTest.website
-	// 		currentTest.tests = res.currentTest.tests
-	// 		syncDisplayTest(document, currentTest.tests)
-	// 	}
-	// })
+	else {
+		sendToBackground({event: "saveBundleTest", test: currentTest})
+	}
 
 	window.onbeforeunload = function() {
-		//put an await here trigger a message
+		//put an await here trigger a message :/
 		sendToBackground({
 			event: "WindowReload",
 			currentTest: currentTest,
