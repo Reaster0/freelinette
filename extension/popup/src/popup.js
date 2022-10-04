@@ -1,16 +1,16 @@
 console.log("popup launched")
 
-async function openIncognito() {
-	const tabUrl = await browser.tabs.query({active: true, currentWindow: true})
-	.then((tabs) => {
-		return tabs[0].url
-	})
+// async function openIncognito() {
+// 	const tabUrl = await browser.tabs.query({active: true, currentWindow: true})
+// 	.then((tabs) => {
+// 		return tabs[0].url
+// 	})
 
-	await browser.windows.create({
-		url: tabUrl,
-		incognito: true
-	})
-}
+// 	await browser.windows.create({
+// 		url: tabUrl,
+// 		incognito: true
+// 	})
+// }
 
 async function injectMenu() {
 
@@ -23,7 +23,7 @@ async function injectMenu() {
 	// 	else
 	// 		return await openIncognito()
 	// })
-	
+	await browser.runtime.sendMessage({event: "saveBundleTest", test: null})
 	browser.tabs.executeScript({
 		file: "../testMenu/dist/testMenu-Build.js",
 	})
