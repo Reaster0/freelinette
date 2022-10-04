@@ -338,11 +338,9 @@ export async function multiPageInit(document, pageDocument, currentTest, window)
 	// 	}
 	// })
 
-	window.onbeforeunload = async function() {
-		//window.localStorage.setItem("testMenuPosX", pageDocument.getElementById("menu_contain").style.left)
-		//window.localStorage.setItem("testMenuPosY", pageDocument.getElementById("menu_contain").style.top)
-		// window.localStorage.setItem("currentTest", JSON.stringify(currentTest))
-		await sendToBackground({
+	window.onbeforeunload = function() {
+		//put an await here trigger a message
+		sendToBackground({
 			event: "WindowReload",
 			currentTest: currentTest,
 			position: {

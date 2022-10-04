@@ -70,7 +70,7 @@ export function getCSSSelector(el) {
 	}
 	else {
 		let classes
-		if (el.className.baseVal) //case of svg elements
+		if (el.className.baseVal != null) //case of svg elements
 			classes = el.className.baseVal.split(" ")
 		else
 			classes = el.className.split(" ")
