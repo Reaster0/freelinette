@@ -1,5 +1,5 @@
 import { dragElement, sendToBackground } from "../utils.js"
-import {syncDisplayTest, replaceIframeWindowInit, saveBtnInit, exitBtnInit, drawerSystemInit, toggleShowParams, actionBtnInit, paramsBtnInit, exportJSONBtnInit, addNewTestBtnInit, elementPickerInit, multiPageInit } from "./initItem.js"
+import { saveBtnInit, exitBtnInit, drawerSystemInit, toggleShowParams, actionBtnInit, paramsBtnInit, exportJSONBtnInit, addNewTestBtnInit, elementPickerInit, multiPageInit } from "./initItem.js"
 import htmlPage from "./testMenu.html"
 import cssPage from "./testMenu.css"
 
@@ -68,11 +68,11 @@ export function injectHtml(document){
 				}
 			}
 		
-			let testsQueue = []
+			// let testsQueue = []
 			let currentTest = {
 				"name": crypto.randomUUID(),
 				"website": location.toString(),
-				"tests": testsQueue
+				"tests": []
 			}
 		
 			//menu to create tests
@@ -113,7 +113,7 @@ export function injectHtml(document){
 			actionBtnInit(testInput, document)
 			paramsBtnInit(document, pageDocument, testInput)
 			elementPickerInit(document, testInput, pageDocument)
-			addNewTestBtnInit(document, testsQueue, testInput, _testInput, currentTest)
+			addNewTestBtnInit(document, testInput, _testInput, currentTest)
 			exportJSONBtnInit(document, currentTest)
 			exitBtnInit(document, window)
 			saveBtnInit(document, currentTest)

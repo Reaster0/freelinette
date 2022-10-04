@@ -138,9 +138,9 @@ export function exportJSONBtnInit(document, testsQueue){
 	})
 }
 
-//append a new test in the dom
-//is deprecated TODO: remove
-export function newTestAppend(document, parentNode, test, id){
+//append a new test in the list of tests
+//is deprecated TODO: remake
+export function newTestAppend(document, parentNode, test, id, currentTest){
 
 	const testElement = document.createElement("div")
 	testElement.className = "newTestInput"
@@ -174,10 +174,13 @@ export function newTestAppend(document, parentNode, test, id){
 	deleteBtn.className = "buttonDelete"
 	deleteBtn.innerHTML = "X"
 	deleteBtn.onclick = function(){
-		testsQueue.splice(testElement.attributes.number, 1)
+		// console.log("deleting testQueue")
+		// console.log(currentTest.tests)
+		currentTest.tests.splice(testElement.attributes.number, 1)
+		window.localStorage.setItem("currentTest", JSON.stringify(currentTest))
 		parentNode.innerHTML = ""
-		for (let key in testsQueue)
-			newTestAppend(parentNode, testsQueue[key], key)
+		for (let key in currentTest.tests)
+			newTestAppend(document, parentNode, currentTest.tests[key], key, currentTest)
 	}
 
 	testElement.appendChild(actionBtn)
@@ -188,12 +191,12 @@ export function newTestAppend(document, parentNode, test, id){
 }
 
 //init for the button to add new tests
-export function addNewTestBtnInit(document, testsQueue, testInput, _testInput, currentTest){
+export function addNewTestBtnInit(document, testInput, _testInput, currentTest){
 	document.getElementById("btnConfirmTest").addEventListener("click", () => {
 
-	testsQueue.push(structuredClone(_testInput))
+	currentTest.tests.push(structuredClone(_testInput))
 	window.localStorage.setItem("currentTest", JSON.stringify(currentTest))
-	newTestAppend(document, document.getElementById("testList"), structuredClone(_testInput), testsQueue.length - 1)
+	newTestAppend(document, document.getElementById("testList"), structuredClone(_testInput), currentTest.tests.length - 1, currentTest)
 	
 	const addBtn = document.getElementById("btnConfirmTest")
 	addBtn.disabled = true
@@ -213,7 +216,7 @@ export function addNewTestBtnInit(document, testsQueue, testInput, _testInput, c
 		"valueExtend": null,
 	}
 	document.getElementById("inputTypeParam").value = null
-	console.log(testsQueue)
+	console.log(currentTest.tests)
 	})
 	document.getElementById("btnConfirmTest").disabled = true
 	document.getElementById("btnConfirmTest").className = "btnActionFullAlt deButtoned"
@@ -249,9 +252,14 @@ export function elementPickerInit(document, testInput, pageDocument){
 	elementBtn.addEventListener("click", (e) => {
 		if (e.target.using === true)
 			return
-		saintPickerInit(pageDocument, document)
-		document.getElementById("btnParamSelect").innerHTML = '<option selected value="" hidden disabled>Select</option>'
-		e.target.using = true;
+		try{
+			saintPickerInit(pageDocument, document)
+			document.getElementById("btnParamSelect").innerHTML = '<option selected value="" hidden disabled>Select</option>'
+			e.target.using = true;
+		}catch(e){
+			warning("There was an error with the element picker. Please try again.")
+			console.log("elementPickerInit error: " + e)
+		}
 	})
 
 	elementBtn.addEventListener("elemInspector", (e) => {
@@ -269,8 +277,8 @@ export function exitBtnInit(document, window) {
 		//const res = confirm("Are you sure you want to remove the test creation? All unsaved data will be lost.")
 		// if (res){
 			window.localStorage.removeItem("currentTest")
-			window.localStorage.removeItem("testMenuPosX")
-			window.localStorage.removeItem("testMenuPosY")
+			//window.localStorage.removeItem("testMenuPosX")
+			//window.localStorage.removeItem("testMenuPosY")
 			sendToBackground({event: "unRegisterTab"})
 			location.reload()
 		// }
@@ -310,7 +318,7 @@ export async function multiPageInit(document, pageDocument, currentTest, window)
 		currentTest.name = tempTest.name
 		currentTest.website = tempTest.website
 		currentTest.tests = tempTest.tests
-		syncDisplayTest(document, currentTest.tests)
+		syncDisplayTest(document, currentTest)
 	}
 
 	await sendToBackground({
@@ -346,11 +354,11 @@ export async function multiPageInit(document, pageDocument, currentTest, window)
 
 }
 //sync the display of tests with the testsQueue
-export function syncDisplayTest(document, testsQueue) {
+export function syncDisplayTest(document, currentTest) {
 	document.getElementById("testList").innerHTML = ""
-	console.log("syncDisplayTest: init ", testsQueue)
-	for(let key in testsQueue){
-		console.log(testsQueue[key])
-		newTestAppend(document, document.getElementById("testList"), structuredClone(testsQueue[key]), key)
+	console.log("syncDisplayTest: init ", currentTest.tests)
+	for(let key in currentTest.tests){
+		console.log(currentTest.tests[key])
+		newTestAppend(document, document.getElementById("testList"), structuredClone(currentTest.tests[key]), key, currentTest)
 	}
 }
