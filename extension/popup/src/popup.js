@@ -1,6 +1,8 @@
 console.log("popup launched")
 
 const ServerURL = "https://02deed4e-2189-4705-b726-e4487b2fd444.pub.instances.scw.cloud/freelinette"
+//const ServerURL = "http://localhost:3000/freelinette"
+
 
 // async function openIncognito() {
 // 	const tabUrl = await browser.tabs.query({active: true, currentWindow: true})

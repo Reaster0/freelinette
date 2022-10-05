@@ -3,6 +3,7 @@ import { CypressService } from './cypress.service';
 import { testDto, testBundleDto } from './dto/test.dto';
 import { Headers ,Controller, Get, Post, Body, ParseArrayPipe, Param, Delete, UseGuards, Query, HttpException, HttpStatus, ValidationPipe, Res } from '@nestjs/common';
 import { Test } from './entities/test.entity';
+import { execSync } from 'child_process';
 const fs = require('fs');
 
 @Controller('cypress')
@@ -69,7 +70,16 @@ export class CypressController {
 			if (!await this.cypressService.userAuth(token))
 				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
 		
-			return this.cypressService.launchTest(name, token);
+			const resTest = this.cypressService.launchTest(name, token);
+			
+			try {
+				execSync('pkill -f "Cypress --gpu-preferences=WAAAA*"')
+				console.log("Cypress zombie process killed");
+			} catch(e){
+				console.log("there was'nt any cypress zombie process running");
+			}
+			
+			return resTest;
 	}
 
 	@Get('screen/:name')

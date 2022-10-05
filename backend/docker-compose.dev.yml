@@ -43,7 +43,7 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - ME_CONFIG_MONGODB_URL=mongodb://localhost:27017
+      - ME_CONFIG_MONGODB_URL=mongodb://${DATABASE_HOST}:27017
     networks:
       - freelinette-network
 

@@ -28,6 +28,7 @@ RUN chmod +x /docker-entrypoint.sh
 
 COPY . /app/nestJS
 RUN mkdir -p /app/nestJS/cypress/e2e
+RUN mkdir -p /app/nestJS/cypress/screen
 
 ENTRYPOINT sh /docker-entrypoint.sh
 
@@ -58,8 +59,5 @@ RUN npm install -g n npm@latest &&\
 
 COPY docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
-
-# COPY . /app/nestJS
-# RUN mkdir -p /app/nestJS/cypress/e2e
 
 ENTRYPOINT sh /docker-entrypoint.sh
