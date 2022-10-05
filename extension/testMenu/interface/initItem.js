@@ -296,7 +296,7 @@ export function saveBtnInit(document, currentTest) {
 		if (!resName)
 			alert("The test was not saved")
 		currentTest.name = resName
-		const res = await fetch("http://localhost:3000/cypress/testList", {
+		const res = await fetch(`https://02deed4e-2189-4705-b726-e4487b2fd444.pub.instances.scw.cloud/freelinette/cypress/testList`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

@@ -1,5 +1,7 @@
 console.log("popup launched")
 
+const ServerURL = "https://02deed4e-2189-4705-b726-e4487b2fd444.pub.instances.scw.cloud/freelinette"
+
 // async function openIncognito() {
 // 	const tabUrl = await browser.tabs.query({active: true, currentWindow: true})
 // 	.then((tabs) => {
@@ -40,7 +42,7 @@ function init() {
 document.addEventListener('DOMContentLoaded', init)
 
 async function getAllTests() {
-	const testList = await fetch(`http://localhost:3000/cypress/testList?token=e3e0ad32-db66-43c1-9f5e-586ac4099acb`, {
+	const testList = await fetch(`${ServerURL}/cypress/testList`, {
 		method: 'GET',
 		headers: {
 			"token": "e3e0ad32-db66-43c1-9f5e-586ac4099acb"
@@ -112,7 +114,7 @@ async function runTest(name, event) {
 	event.target.nextSibling.style.display = "block"
 	event.target.style.display = "none"
 
-	const resultTest = await fetch(`http://localhost:3000/cypress/launch/${name}`, {
+	const resultTest = await fetch(`${ServerURL}/cypress/launch/${name}`, {
 		method: 'GET',
 		headers: {
 			"token": "e3e0ad32-db66-43c1-9f5e-586ac4099acb"
@@ -140,7 +142,7 @@ async function showResult(event) {
 		return
 
 	console.log("fail of the test")
-	const imgTest = await fetch(`http://localhost:3000/cypress/screen/${event.target.testName}`, {
+	const imgTest = await fetch(`${ServerURL}/cypress/screen/${event.target.testName}`, {
 		method: 'GET',
 		headers: {
 			"token": "e3e0ad32-db66-43c1-9f5e-586ac4099acb"
@@ -160,7 +162,7 @@ async function showResult(event) {
 
 async function deleteTest(name, event) {
 	console.log("deleteTest" + name);
-	await fetch(`http://localhost:3000/cypress/testList/${name}`, {
+	await fetch(`${ServerURL}/cypress/testList/${name}`, {
 		method: 'DELETE',
 		headers: {
 			"token": "e3e0ad32-db66-43c1-9f5e-586ac4099acb"
