@@ -7,30 +7,26 @@ services:
     restart: always
     build: 
       context: ./nestJS
-      target: prod
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.freelinette-back.rule=Host(`${DOMAIN}`) && PathPrefix(`/freelinette`)"
-      - "traefik.http.services.freelinette-back.loadbalancer.server.port=3000"
-      - "traefik.docker.network=web"
-   # env_file:
-   #   - .env
+      target: dev
+    ports:
+     - "3000:3000"
+    # env_file:
+    #   - .env
     environment:
       - DATABASE_NAME=${DATABASE_NAME}
       - DATABASE_HOST=${DATABASE_HOST}
       - DATABASE_PORT=${DATABASE_PORT}
-    # volumes:
-    #   - ./nestJS:/app/nestJS
+    volumes:
+      - ./nestJS:/app/nestJS
     networks:
       - freelinette-network
-      - web
       
   db:
     container_name: freelinette-db
     image: mongo
     restart: always
-    # ports:
-    #   - "27017:27017"
+    ports:
+      - "27017:27017"
     environment:
       - MONGODB_DATABASE=${DATABASE_NAME}
       # - MONGODB_INITDB_ROOT_USERNAME=${DATABASE_USER}
@@ -47,15 +43,9 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - ME_CONFIG_MONGODB_URL=mongodb://freelinette-db:27017
-      - ME_CONFIG_BASICAUTH=true
-      - ME_CONFIG_BASICAUTH_USERNAME=${DATABASE_GUI_USER}
-      - ME_CONFIG_BASICAUTH_PASSWORD=${DATABASE_GUI_PASSWORD}
+      - ME_CONFIG_MONGODB_URL=mongodb://localhost:27017
     networks:
       - freelinette-network
 
 networks:
     freelinette-network:
-
-    web:
-      external: true

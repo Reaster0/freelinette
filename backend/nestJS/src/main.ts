@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('freelinette');
   const options = new DocumentBuilder()
     .setTitle('freelinette')
     .setDescription('42XFree project')
