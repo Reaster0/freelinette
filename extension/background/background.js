@@ -8,9 +8,20 @@ let position = {
 	y: 0
 }
 
-browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+let tokenLogin = null
+
+browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 	
 	console.log("message = ", message)
+
+	if (message.event === "registerToken") {
+		tokenLogin = message.token
+		console.log("tokenLogin received = ", tokenLogin)
+	}
+
+	if (message.event === "getToken") {
+		sendResponse({token: tokenLogin})
+	}
 
 	//need to register the id of the tab that host the test menu
 	if (message.event === "testMenuInit") {

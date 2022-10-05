@@ -293,8 +293,8 @@ export function exitBtnInit(document, window) {
 export function saveBtnInit(document, currentTest) {
 	document.getElementById("btnSaveTest").addEventListener("click", async (e) => {
 		
-		const serverURL = "https://02deed4e-2189-4705-b726-e4487b2fd444.pub.instances.scw.cloud/freelinette"
-		//const serverURL = "http://localhost:3000/freelinette"
+		//const serverURL = "https://02deed4e-2189-4705-b726-e4487b2fd444.pub.instances.scw.cloud/freelinette"
+		const serverURL = "http://localhost:3000/freelinette"
 		
 		const resName = prompt("Insert the name of the test")
 		if (!resName)

@@ -1,7 +1,9 @@
+import { sendToBackground } from '../../testMenu/utils'
+
 console.log("popup launched")
 
-const ServerURL = "https://02deed4e-2189-4705-b726-e4487b2fd444.pub.instances.scw.cloud/freelinette"
-//const ServerURL = "http://localhost:3000/freelinette"
+//const ServerURL = "https://02deed4e-2189-4705-b726-e4487b2fd444.pub.instances.scw.cloud/freelinette"
+const ServerURL = "http://localhost:3000/freelinette"
 
 
 // async function openIncognito() {
@@ -37,6 +39,7 @@ async function injectMenu() {
 function init() {
 
 	document.getElementById('menu_injector').addEventListener('click', injectMenu)
+	document.getElementById('insertToken').addEventListener('keydown', registerToken)
 
 	getAllTests();
 }
@@ -172,4 +175,27 @@ async function deleteTest(name, event) {
 	})
 	event.target.parentNode.parentNode.innerHTML = ""
 	getAllTests()
+}
+
+async function registerToken(e){
+	if (e.key === "Enter") {
+		const token = e.target.value
+		const res = await fetch(`${ServerURL}/cypress/testList`, {
+			method: 'GET',
+			headers: {
+				"token": token
+			}
+		})
+		if (res.status === 200) {
+			sendToBackground({event: "registerToken", token: token})
+		}
+		else {
+			e.target.value = ""
+			e.target.placeholder = "Wrong token"
+		}
+	}
+}
+
+async function getToken() {
+	return await sendToBackground({event: "getToken"})
 }
