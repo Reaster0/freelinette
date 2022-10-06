@@ -10,7 +10,7 @@ let position = {
 
 let tokenLogin = null
 
-browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 	
 	console.log("message = ", message)
 
@@ -20,6 +20,7 @@ browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 	}
 
 	if (message.event === "getToken") {
+		console.log("ill send back the token=", tokenLogin)
 		sendResponse({token: tokenLogin})
 	}
 

@@ -195,30 +195,29 @@ export function newTestAppend(document, parentNode, test, id, currentTest){
 export function addNewTestBtnInit(document, testInput, _testInput, currentTest){
 	document.getElementById("btnConfirmTest").addEventListener("click", () => {
 
-	currentTest.tests.push(structuredClone(_testInput))
-	sendToBackground({event: "saveNewTest", test: _testInput})
-	//window.localStorage.setItem("currentTest", JSON.stringify(currentTest))
-	newTestAppend(document, document.getElementById("testList"), structuredClone(_testInput), currentTest.tests.length - 1, currentTest)
-	
-	const addBtn = document.getElementById("btnConfirmTest")
-	addBtn.disabled = true
-	document.getElementById("btnConfirmTest").className = "btnActionFullAlt deButtoned"
-	toggleShowParams(null, document)
-	document.getElementById("params-dropdown-button").disabled = true
-	document.getElementById("params-dropdown-button").classList.add("deButtoned")
-	
-	testInput.action = null
-	testInput.element = {
-		"selector": null,
-		"path": null,
-	}
-	testInput.params = {
-		"name": null,
-		"value": null,
-		"valueExtend": null,
-	}
-	document.getElementById("inputTypeParam").value = null
-	console.log(currentTest.tests)
+		currentTest.tests.push(structuredClone(_testInput))
+		sendToBackground({event: "saveNewTest", test: _testInput})
+		newTestAppend(document, document.getElementById("testList"), structuredClone(_testInput), currentTest.tests.length - 1, currentTest)
+		
+		const addBtn = document.getElementById("btnConfirmTest")
+		addBtn.disabled = true
+		document.getElementById("btnConfirmTest").className = "btnActionFullAlt deButtoned"
+		toggleShowParams(null, document)
+		document.getElementById("params-dropdown-button").disabled = true
+		document.getElementById("params-dropdown-button").classList.add("deButtoned")
+		
+		testInput.action = null
+		testInput.element = {
+			"selector": null,
+			"path": null,
+		}
+		testInput.params = {
+			"name": null,
+			"value": null,
+			"valueExtend": null,
+		}
+		document.getElementById("inputTypeParam").value = null
+		console.log(currentTest.tests)
 	})
 	document.getElementById("btnConfirmTest").disabled = true
 	document.getElementById("btnConfirmTest").className = "btnActionFullAlt deButtoned"
@@ -304,7 +303,7 @@ export function saveBtnInit(document, currentTest) {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				"token": "e3e0ad32-db66-43c1-9f5e-586ac4099acb",
+				"token": (await sendToBackground({event: "getToken"})).token,
 			},
 			body: JSON.stringify(currentTest)
 		}).then(res => res.json())

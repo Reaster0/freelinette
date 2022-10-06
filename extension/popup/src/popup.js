@@ -36,10 +36,16 @@ async function injectMenu() {
 	console.log("injectMenu launched in the popup")
 }
 
-function init() {
-
-	document.getElementById('menu_injector').addEventListener('click', injectMenu)
+async function init() {
+	
 	document.getElementById('insertToken').addEventListener('keydown', registerToken)
+	
+	if ((await sendToBackground({event: "getToken"})).token == null) 
+		return
+
+	document.getElementById("insertToken").style.display = "none"
+	document.getElementById("mainMenu").removeAttribute("hidden")
+	document.getElementById('menu_injector').addEventListener('click', injectMenu)
 
 	getAllTests();
 }
@@ -50,10 +56,10 @@ async function getAllTests() {
 	const testList = await fetch(`${ServerURL}/cypress/testList`, {
 		method: 'GET',
 		headers: {
-			"token": "e3e0ad32-db66-43c1-9f5e-586ac4099acb"
+			"token": (await sendToBackground({event: "getToken"})).token
 		}
 	})
-		.then(response => response.json())
+	.then(response => response.json())
 
 	for (const test in testList) {
 		const testAppend = document.createElement('div')
@@ -122,7 +128,7 @@ async function runTest(name, event) {
 	const resultTest = await fetch(`${ServerURL}/cypress/launch/${name}`, {
 		method: 'GET',
 		headers: {
-			"token": "e3e0ad32-db66-43c1-9f5e-586ac4099acb"
+			"token": (await sendToBackground({event: "getToken"})).token
 		}
 	})
 	.then(response => response.json())
@@ -150,7 +156,7 @@ async function showResult(event) {
 	const imgTest = await fetch(`${ServerURL}/cypress/screen/${event.target.testName}`, {
 		method: 'GET',
 		headers: {
-			"token": "e3e0ad32-db66-43c1-9f5e-586ac4099acb"
+			"token": (await sendToBackground({event: "getToken"})).token
 		}
 	})
 	.then(response => response.blob())
@@ -170,7 +176,7 @@ async function deleteTest(name, event) {
 	await fetch(`${ServerURL}/cypress/testList/${name}`, {
 		method: 'DELETE',
 		headers: {
-			"token": "e3e0ad32-db66-43c1-9f5e-586ac4099acb"
+			"token": (await sendToBackground({event: "getToken"})).token
 		}
 	})
 	event.target.parentNode.parentNode.innerHTML = ""
@@ -187,15 +193,13 @@ async function registerToken(e){
 			}
 		})
 		if (res.status === 200) {
+			console.log("token is valid")
 			sendToBackground({event: "registerToken", token: token})
+			init()
 		}
 		else {
 			e.target.value = ""
 			e.target.placeholder = "Wrong token"
 		}
 	}
-}
-
-async function getToken() {
-	return await sendToBackground({event: "getToken"})
 }
