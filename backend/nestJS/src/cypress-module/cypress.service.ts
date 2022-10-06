@@ -62,6 +62,8 @@ export class CypressService {
 			browser: 'chrome',
 			config: {
 				video: false,
+				viewportWidth: 1920,
+				viewportHeight: 1080,
 			},
 			
 		})
