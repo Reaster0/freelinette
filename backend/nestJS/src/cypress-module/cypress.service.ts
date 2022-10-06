@@ -36,8 +36,14 @@ export class CypressService {
 		return await user.update({$pull: {tests: {name: name}}}).exec();
 	}
 
+	//update the test if it exist or create it if it doesn't
 	async createNewTest(testo: testBundleDto, token: string): Promise<User> {
 		const user = await this.findUserById(token);
+		
+		const existingTest = user.tests.find((test) => test.name === testo.name);
+		if (existingTest)
+			await this.deleteTestByName(testo.name, token);
+		
 		user.tests.push(testBundleDto2Test(testo));
 		return user.save();
 	}
