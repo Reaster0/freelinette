@@ -8,17 +8,6 @@ import { User } from './entities/test.entity';
 
 @Module({
 	imports: [
-		// HttpModule.register({
-		// 	// baseURL: 'http://cgi-express',
-		// 	timeout: 5000,
-		// 	maxRedirects: 5,
-		// }),
-		// MongooseModule.forFeature([
-		// 	{
-		// 		name: 'testlist',
-		// 		schema: TestSchema,
-		// 	}
-		// ]),
 		MongooseModule.forFeature([
 			{
 				name: 'testlist',

@@ -53,7 +53,7 @@ async function init() {
 document.addEventListener('DOMContentLoaded', init)
 
 async function getAllTests() {
-	const testList = await fetch(`${ServerURL}/cypress/testList`, {
+	const testList = await fetch(`${process.env.SERVER_URL}/cypress/testList`, {
 		method: 'GET',
 		headers: {
 			"token": (await sendToBackground({event: "getToken"})).token
