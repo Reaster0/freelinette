@@ -22,7 +22,7 @@ export class CypressService {
 		return (await this.findUserById(token)).tests;
 	}
 
-	async findTestByName(name: string, token : string): Promise<any> {
+	async findTestByName(name: string, token : string): Promise<Test> {
 		const user = await this.findUserById(token);
 		return user.tests.find((test) => test.name === name);
 	}
@@ -37,22 +37,22 @@ export class CypressService {
 	}
 
 	//update the test if it exist or create it if it doesn't
-	async createNewTest(testo: testBundleDto, token: string): Promise<User> {
+	async saveTest(testInput: testBundleDto, token: string): Promise<User>{
 		const user = await this.findUserById(token);
-		
-		const existingTest = user.tests.find((test) => test.name === testo.name);
+		const existingTest = await this.findTestByName(testInput.name, token);
 		if (existingTest)
-			await this.deleteTestByName(testo.name, token);
+			await this.deleteTestByName(testInput.name, token);
 		
-		user.tests.push(testBundleDto2Test(testo));
+		user.tests.push(testBundleDto2Test(testInput));
 		return user.save();
 	}
-	
 
 	async launchTest(name: string, token : string): Promise<any> {
 		const testFind = await this.findTestByName(name, token);
 		if (!testFind)
-			throw new HttpException('Test not found', 404);
+		throw new HttpException('Test not found', 404);
+		
+		this.userModel.findOneAndUpdate({id: token, "tests._id": testFind._id}, {$set: {"tests.$.result": null}}).exec();
 		this.serializer(testFind);
 
 		return cypress.run({
@@ -65,13 +65,14 @@ export class CypressService {
 				viewportWidth: 1920,
 				viewportHeight: 1080,
 			},
-			
 		})
 		.then((res) => {
 			this.cleanupSerialize(name);
 			try{
 				fs.renameSync(`./cypress/screenshots/${name}.cy.js/Cypress test -- ${name} (failed).png`, `./cypress/screen/${token}.${name}.png`);}
 			catch {console.log("no Screenshots");}
+
+			this.userModel.findOneAndUpdate({id: token, "tests._id": testFind._id}, {$set: {"tests.$.result": res.totalFailed === 0 ? "success" : "failed"}}).exec();
 
 			return {
 				status: res.totalFailed === 0 ? "success" : "failed",
@@ -82,7 +83,7 @@ export class CypressService {
 				finishedAt: res.finishedAt,
 				duration: res.duration,
 			}
-			return res;
+			//return res;
 		})
 
 	}

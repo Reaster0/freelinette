@@ -89,5 +89,6 @@ export function testBundleDto2Test(testBundle: testBundleDto): Test {
 	result.name = testBundle.name;
 	result.website = testBundle.website;
 	result.test = arrayTestDto2Test(testBundle.tests);
+	result.result = null;
 	return result;
 }

@@ -2,8 +2,8 @@ import { sendToBackground } from '../../testMenu/utils'
 
 console.log("popup launched")
 
-const ServerURL = "https://02deed4e-2189-4705-b726-e4487b2fd444.pub.instances.scw.cloud/freelinette"
-//const ServerURL = "http://localhost:3000/freelinette"
+//const ServerURL = "https://02deed4e-2189-4705-b726-e4487b2fd444.pub.instances.scw.cloud/freelinette"
+const ServerURL = "http://localhost:3000/freelinette"
 
 
 // async function openIncognito() {
@@ -103,8 +103,20 @@ async function getAllTests() {
 			</svg>`
 		testAppend.appendChild(testLoad)
 
-		testResult.src = "../icons/test-neutral-white.png"
+		console.log("result=", testList[test])
 		testResult.className = "testTrigger"
+		if (testList[test].result == "failed"){
+			testResult.src = "../icons/test-fail.png"
+			testResult.className = "btnTestTrigger"
+			testResult.fail = true
+			testResult.testName = testList[test].name
+			testResult.addEventListener('click', (event) => showResult(event))
+		}
+		else if (testList[test].result == "success"){
+			testResult.src = "../icons/test-success.png"
+		}
+		else
+			testResult.src = "../icons/test-neutral-white.png"
 		testAppend.appendChild(testResult)
 
 

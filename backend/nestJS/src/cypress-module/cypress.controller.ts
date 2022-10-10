@@ -1,7 +1,6 @@
-import { TestStep } from './entities/test.entity';
 import { CypressService } from './cypress.service';
-import { testDto, testBundleDto } from './dto/test.dto';
-import { Headers ,Controller, Get, Post, Body, ParseArrayPipe, Param, Delete, UseGuards, Query, HttpException, HttpStatus, ValidationPipe, Res } from '@nestjs/common';
+import { testBundleDto } from './dto/test.dto';
+import { Headers ,Controller, Get, Post, Body, Param, Delete, HttpException, HttpStatus, Res } from '@nestjs/common';
 import { Test } from './entities/test.entity';
 import { execSync } from 'child_process';
 const fs = require('fs');
@@ -19,7 +18,7 @@ export class CypressController {
 			if (!await this.cypressService.userAuth(token))
 				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
 
-			return await this.cypressService.createNewTest(testDto, token);
+			return await this.cypressService.saveTest(testDto, token);
 	}
 
 	// @Post('serializer/:name')
@@ -72,6 +71,7 @@ export class CypressController {
 		
 			const resTest = this.cypressService.launchTest(name, token);
 			
+			//blackmagic here because when you run multiple tests at the same time, another process spawn and is not usefull beside taking 1 core of cpu
 			try {
 				execSync('pkill -f "Cypress --gpu-preferences=WAAAA*"')
 				console.log("Cypress zombie process killed");

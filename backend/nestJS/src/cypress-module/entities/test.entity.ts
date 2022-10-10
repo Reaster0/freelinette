@@ -37,6 +37,11 @@ export class Test {
 
 	@Prop([TestStep])
 	test: TestStep[];
+
+	@Prop(String)
+	result: string;
+
+	_id: string;
 }
 
 
