@@ -62,7 +62,7 @@ export class CypressController {
 				execSync('pkill -f "Cypress --gpu-preferences=WAAAA*"')
 				console.log("Cypress zombie process killed");
 			} catch(e){
-				console.log("there was'nt any cypress zombie process running before");
+				console.log("there wasn't any cypress zombie process running before");
 			}
 
 			const resTest = this.cypressService.launchTest(name, token);
@@ -71,7 +71,7 @@ export class CypressController {
 				execSync('pkill -f "Cypress --gpu-preferences=WAAAA*"')
 				console.log("Cypress zombie process killed");
 			} catch(e){
-				console.log("there was'nt any cypress zombie process running after");
+				console.log("there wasn't any cypress zombie process running after");
 			}
 			
 			return resTest;
