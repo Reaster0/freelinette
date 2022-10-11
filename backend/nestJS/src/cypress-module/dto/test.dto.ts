@@ -1,4 +1,3 @@
-import { INestApplication } from '@nestjs/common';
 import { Type } from 'class-transformer';
 import { IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
 import { Test, TestStep } from '../entities/test.entity';
@@ -84,6 +83,7 @@ export function arrayTestDto2Test(tests: testDto[]): TestStep[] {
 	return tests.map(test => testDto2TestStep(test));
 }
 
+//convert a testBundleDto to a Test
 export function testBundleDto2Test(testBundle: testBundleDto): Test {
 	const result = new Test();
 	result.name = testBundle.name;

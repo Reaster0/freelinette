@@ -1,4 +1,4 @@
-import { dragElement, sendToBackground } from "../utils.js"
+import { dragElement } from "../utils.js"
 import { saveBtnInit, exitBtnInit, drawerSystemInit, toggleShowParams, actionBtnInit, paramsBtnInit, exportJSONBtnInit, addNewTestBtnInit, elementPickerInit, multiPageInit } from "./initItem.js"
 import htmlPage from "./testMenu.html"
 import cssPage from "./testMenu.css"

@@ -1,6 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { testDto } from '../dto/test.dto';
 
 @Schema()
 export class TestStep {

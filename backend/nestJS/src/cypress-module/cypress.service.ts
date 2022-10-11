@@ -2,7 +2,7 @@ import { testBundleDto, testBundleDto2Test} from './dto/test.dto';
 import { HttpException, Injectable } from '@nestjs/common';
 const fs = require('fs');
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { Test, User } from './entities/test.entity';
 const cypress = require('cypress');
 import { srlNewStep, srlInit, srlEnd } from './converter';
@@ -46,6 +46,7 @@ export class CypressService {
 		return user.save();
 	}
 
+	//will transform the test json into a file, run it with cypress, move the screen and delete the file
 	async launchTest(name: string, token : string): Promise<any> {
 		const testFind = await this.findTestByName(name, token);
 		if (!testFind)

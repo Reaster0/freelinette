@@ -1,4 +1,4 @@
-import { testDto, elementDto, paramsDto, ParamValueDto } from './dto/test.dto';
+import { testDto, elementDto, paramsDto } from './dto/test.dto';
 
 export function srlInit(name: string, website: string): string {
 	//temp for testing
