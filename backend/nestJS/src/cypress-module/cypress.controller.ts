@@ -56,15 +56,22 @@ export class CypressController {
 		@Param('name') name: string): Promise<string> {
 			if (!await this.cypressService.userAuth(token))
 				throw new HttpException('Token Invalid', HttpStatus.FORBIDDEN);
-		
-			const resTest = this.cypressService.launchTest(name, token);
-			
+					
 			//blackmagic here because when you run multiple tests at the same time, another process spawn and is not usefull beside taking 1 core of cpu
 			try {
 				execSync('pkill -f "Cypress --gpu-preferences=WAAAA*"')
 				console.log("Cypress zombie process killed");
 			} catch(e){
-				console.log("there was'nt any cypress zombie process running");
+				console.log("there was'nt any cypress zombie process running before");
+			}
+
+			const resTest = this.cypressService.launchTest(name, token);
+
+			try {
+				execSync('pkill -f "Cypress --gpu-preferences=WAAAA*"')
+				console.log("Cypress zombie process killed");
+			} catch(e){
+				console.log("there was'nt any cypress zombie process running after");
 			}
 			
 			return resTest;
