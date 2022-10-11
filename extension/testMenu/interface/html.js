@@ -68,7 +68,6 @@ export function injectHtml(document){
 				}
 			}
 		
-			// let testsQueue = []
 			let currentTest = {
 				"name": crypto.randomUUID(),
 				"website": location.toString(),

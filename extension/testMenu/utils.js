@@ -34,25 +34,6 @@ export function getCSSPath(el) {
 
 	while (el.nodeType === Node.ELEMENT_NODE) {
 
-		// V1
-		//let selector = el.nodeName.toLowerCase()
-		// if (el.id) {
-		// 	selector += '#' + el.id
-		// 	path.unshift(selector)
-		// 	break
-		// } else {
-		// 	let sib = el, nth = 1
-		// 	while (sib = sib.previousElementSibling) {
-		// 		if (sib.nodeName.toLowerCase() == selector)
-		// 			nth++
-		// 	}
-		// 	if (nth != 1)
-		// 		selector += ":nth-of-type("+nth+")"
-		// }
-		// path.unshift(selector)
-		// el = el.parentNode
-
-		//V2
 		const selector = getCSSSelector(el)
 		path.unshift(selector)
 		if (selector[0] === '#')

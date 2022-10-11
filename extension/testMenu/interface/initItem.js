@@ -174,11 +174,8 @@ export function newTestAppend(document, parentNode, test, id, currentTest){
 	deleteBtn.className = "buttonDelete"
 	deleteBtn.innerHTML = "X"
 	deleteBtn.onclick = function(){
-		// console.log("deleting testQueue")
-		// console.log(currentTest.tests)
 		currentTest.tests.splice(testElement.attributes.number, 1)
 		sendToBackground({event: "deleteTest", index: testElement.attributes.number})
-		//window.localStorage.setItem("currentTest", JSON.stringify(currentTest))
 		parentNode.innerHTML = ""
 		for (let key in currentTest.tests)
 			newTestAppend(document, parentNode, currentTest.tests[key], key, currentTest)
@@ -275,17 +272,9 @@ export function elementPickerInit(document, testInput, pageDocument){
 
 export function exitBtnInit(document, window) {
 	document.getElementById("btnExitTest").addEventListener("click", (e) => {
-		//const res = confirm("Are you sure you want to remove the test creation? All unsaved data will be lost.")
-		// if (res){
-
-			//window.localStorage.removeItem("currentTest")
 			sendToBackground({event: "saveBundleTest", test: null})
-			
-			//window.localStorage.removeItem("testMenuPosX")
-			//window.localStorage.removeItem("testMenuPosY")
 			sendToBackground({event: "unRegisterTab"})
 			location.reload()
-		// }
 	})
 }
 
@@ -326,7 +315,6 @@ export async function multiPageInit(document, pageDocument, currentTest, window)
 
 	if (res.currentTest != null){
 		console.log("multiPageInit: i have a currentTest")
-		//const tempTest = JSON.parse(window.localStorage.getItem("currentTest"))
 		currentTest.name = res.currentTest.name
 		currentTest.website = res.currentTest.website
 		currentTest.tests = res.currentTest.tests
@@ -337,7 +325,7 @@ export async function multiPageInit(document, pageDocument, currentTest, window)
 	}
 
 	window.onbeforeunload = function() {
-		//put an await here trigger a message :/
+		//put an await here trigger a browser message when changing page, don't do it :/
 		sendToBackground({
 			event: "WindowReload",
 			currentTest: currentTest,

@@ -10,7 +10,6 @@ import { srlNewStep, srlInit, srlEnd } from './converter';
 @Injectable()
 export class CypressService {
 	constructor(
-		//@InjectModel('testlist') private readonly testModel: Model<Test>,
 		@InjectModel('testlist') private readonly userModel: Model<User>,	
 	) {}
 
