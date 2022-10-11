@@ -296,6 +296,7 @@ export function saveBtnInit(document, currentTest) {
 		if (!resName)
 			alert("The test was not saved")
 		currentTest.name = resName
+		try{
 		const res = await fetch(`${process.env.SERVER_URL}/cypress/testList`, {
 			method: "POST",
 			headers: {
@@ -305,12 +306,11 @@ export function saveBtnInit(document, currentTest) {
 			body: JSON.stringify(currentTest)
 		}).then(res => res.json())
 		console.log(res)
-
-		//TODO check the response in res
-
+	}catch(e){
+		window.alert("There was an error with the server. Please try again.")
+	}
 
 		console.log(resName)
-		//location.reload()
 	})
 }
 

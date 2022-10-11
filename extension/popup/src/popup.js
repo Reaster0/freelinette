@@ -33,7 +33,15 @@ async function injectMenu() {
 }
 
 async function init() {
-	
+
+	try{
+		await fetch(`${process.env.SERVER_URL}`)
+	}
+	catch (e) {
+		document.body.innerHTML = `<div class="button_slick Spotnik">server down</div>`
+		return
+	}
+
 	document.getElementById('insertToken').addEventListener('keydown', registerToken)
 	
 	if ((await sendToBackground({event: "getToken"})).token == null) 
