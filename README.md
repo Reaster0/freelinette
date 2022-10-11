@@ -14,7 +14,8 @@ DATABASE_GUI_PASSWORD
 DATABASE_NAME
 DATABASE_HOST
 DATABASE_PORT
-DOMAIN```
+DOMAIN
+```
 
 Extension.
 it's a webExtenstion made for firefox, it contain three parts, the popup menu, the injected script and the background script
