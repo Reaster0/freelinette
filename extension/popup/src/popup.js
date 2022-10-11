@@ -2,10 +2,6 @@ import { sendToBackground } from '../../testMenu/utils'
 
 console.log("popup launched")
 
-//const ServerURL = "https://02deed4e-2189-4705-b726-e4487b2fd444.pub.instances.scw.cloud/freelinette"
-const ServerURL = "http://localhost:3000/freelinette"
-
-
 // async function openIncognito() {
 // 	const tabUrl = await browser.tabs.query({active: true, currentWindow: true})
 // 	.then((tabs) => {
@@ -103,7 +99,6 @@ async function getAllTests() {
 			</svg>`
 		testAppend.appendChild(testLoad)
 
-		console.log("result=", testList[test])
 		testResult.className = "testTrigger"
 		if (testList[test].result == "failed"){
 			testResult.src = "../icons/test-fail.png"
@@ -137,7 +132,7 @@ async function runTest(name, event) {
 	event.target.nextSibling.style.display = "block"
 	event.target.style.display = "none"
 
-	const resultTest = await fetch(`${ServerURL}/cypress/launch/${name}`, {
+	const resultTest = await fetch(`${process.env.SERVER_URL}/cypress/launch/${name}`, {
 		method: 'GET',
 		headers: {
 			"token": (await sendToBackground({event: "getToken"})).token
@@ -165,7 +160,7 @@ async function showResult(event) {
 		return
 
 	console.log("fail of the test")
-	const imgTest = await fetch(`${ServerURL}/cypress/screen/${event.target.testName}`, {
+	const imgTest = await fetch(`${process.env.SERVER_URL}/cypress/screen/${event.target.testName}`, {
 		method: 'GET',
 		headers: {
 			"token": (await sendToBackground({event: "getToken"})).token
@@ -198,7 +193,7 @@ async function deleteTest(name, event) {
 async function registerToken(e){
 	if (e.key === "Enter") {
 		const token = e.target.value
-		const res = await fetch(`${ServerURL}/cypress/testList`, {
+		const res = await fetch(`${process.env.SERVER_URL}/cypress/testList`, {
 			method: 'GET',
 			headers: {
 				"token": token

@@ -23,7 +23,7 @@ module.exports = {
 	},
 	plugins: [
 		new EnvironmentPlugin({
-			SERVER_URL: "https://02deed4e-2189-4705-b726-e4487b2fd444.pub.instances.scw.cloud/freelinette"
+			SERVER_URL: `http://localhost:3000/freelinette`
 		})
 	]
 }
